@@ -127,7 +127,7 @@
             Help.setTitle(String('Help Section'))
             Help.setURL(String());
             Help.setDescription(String('Complete Commands List for the Duino-Coin Ecosystem Bot'));
-            Help.setThumbnail(String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png'));
+            Help.setThumbnail(String('https://i.postimg.cc/XJ3Rhtcn/Duinocoin.png'));
             Help.setTimestamp(new Date());
             Help.addField(String('!ping'), String('Pings the bot and it responds as fast as possible.'), true);
             Help.addField(String('!help'), String('Lists Server Commands'), true);
@@ -148,7 +148,7 @@
             Info.setTitle(String('Bot Information'))
             Info.setURL(String());
             Info.setDescription(String('Host Specifications'));
-            Info.setThumbnail(String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png'));
+            Info.setThumbnail(String('https://i.postimg.cc/XJ3Rhtcn/Duinocoin.png'));
             Info.setTimestamp(new Date());
             Info.addField(String('Created by:'), String('KosmicDaKerbal'), true);
             Info.addField(String('Bot Host:'), String('render.com'), true);
