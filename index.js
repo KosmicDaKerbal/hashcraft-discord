@@ -152,7 +152,6 @@
             Info.setTimestamp(new Date());
             Info.addField(String('Created by:'), String('KosmicDaKerbal'), true);
             Info.addField(String('Bot Host:'), String('render.com'), true);
-            Info.addField(String('Bot CPU Usage:'), String((obj)), true);
             Info.setFooter({
                 text: String('The Duino-Coin Ecosystem v0.1'),
                 iconURL: String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png')
