@@ -1,40 +1,38 @@
 {
 
-          "name": "scratch-for-discord-bot",
+                        "name": "DuinoCoin Ecosystem",
 
-          "version": "1.0.0",
+                        "version": "0.1",
 
-          "main": "index.js",
+                        "main": "index.js",
 
-          "scripts": {
+                        "scripts": {
 
-                    "start": "npm i && node .",
+                            "start": "npm i && node .",
 
-                    "node-update": "npm i --save-dev node@17 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH",
+                            "node-update": "npm i --save-dev node@17 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH",
 
-                    "node-clean": "rm -rf node_modules && rm package-lock.json && npm cache clear --force && npm cache clean --force && npm i"
+                            "node-clean": "rm -rf node_modules && rm package-lock.json && npm cache clear --force && npm cache clean --force && npm i"
 
-          },
+                        },
 
-          "dependencies": {
+                        "dependencies": {
 
-                    "discord-logs": "^2.2.1",
+                            "moment": "latest",
 
-                    "discord.js": "^13.17.1",
+                            "discord.js": "^13.7.0",
+"process":"^0.11.10",
+"easy-json-database": "^1.5.0",
+"discord-logs": "2.0.0",
+"os-utils": "0.0.14"
 
-                    "easy-json-database": "^1.5.0",
+                            
+                        },
 
-                    "moment": "latest",
+                        "devDependencies": {
 
-                    "process": "^0.11.10"
+                            "node": "^17"
 
-          },
+                        }
 
-          "devDependencies": {
-
-                    "node": "^17"
-
-          }
-
-}
-
+                    }
