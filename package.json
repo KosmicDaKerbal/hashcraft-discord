@@ -1,0 +1,40 @@
+{
+
+          "name": "scratch-for-discord-bot",
+
+          "version": "1.0.0",
+
+          "main": "index.js",
+
+          "scripts": {
+
+                    "start": "npm i && node .",
+
+                    "node-update": "npm i --save-dev node@17 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH",
+
+                    "node-clean": "rm -rf node_modules && rm package-lock.json && npm cache clear --force && npm cache clean --force && npm i"
+
+          },
+
+          "dependencies": {
+
+                    "discord-logs": "^2.2.1",
+
+                    "discord.js": "^13.17.1",
+
+                    "easy-json-database": "^1.5.0",
+
+                    "moment": "latest",
+
+                    "process": "^0.11.10"
+
+          },
+
+          "devDependencies": {
+
+                    "node": "^17"
+
+          }
+
+}
+
