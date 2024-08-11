@@ -97,6 +97,8 @@
     });
     server.listen(3000);
     
+    const version = 0.2;
+    
     s4d.client.on('ready', async () => {
       s4d.client.user.setActivity('The DuinoCoin Ecosystem', {
                type: "STREAMING",
@@ -135,7 +137,7 @@
           Help.addField(String('!help'), String('Lists Server Commands'), true);
           Help.addField(String('!info'), String('Show Bot System Info'), true);
           Help.addField(String('!donate'), String('Show your support to the project!'), true);
-          Help.setFooter({text: String((['The Duino-Coin Ecosystem v0.1','\n','Donate to my DuinoCoin Wallet: KosmicDaKerbal','\n','Donate to my Banano Wallet: ban_137xmpo7eqis7oymw9ob9b5qparzqc799jxw8o3udzm3p6rrtgj83wczwo7a'].join(''))), iconURL: String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png')});
+          Help.setFooter({text: String(('The Duino-Coin Ecosystem v' + String(version))), iconURL: String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png')});
     
         s4dmessage.channel.send({embeds: [Help]});
       } else if (command == '!info') {
@@ -149,7 +151,7 @@
           Info.setTimestamp(new Date());
           Info.addField(String('Created by:'), String('KosmicDaKerbal'), true);
           Info.addField(String('Bot Host:'), String('render.com'), true);
-          Info.setFooter({text: String((['The Duino-Coin Ecosystem v0.1','\n','Donate to my DuinoCoin Wallet: KosmicDaKerbal','\n','Donate to my Banano Wallet: ban_137xmpo7eqis7oymw9ob9b5qparzqc799jxw8o3udzm3p6rrtgj83wczwo7a'].join(''))), iconURL: String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png')});
+          Info.setFooter({text: String(('The Duino-Coin Ecosystem v' + String(version))), iconURL: String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png')});
     
         s4dmessage.channel.send({embeds: [Info]});
       } else if (command == '!donate') {
@@ -163,7 +165,7 @@
           Donate.setTimestamp(new Date());
           Donate.addField(String('DuinoCoin Wallet:'), String('KosmicDaKerbal'), false);
           Donate.addField(String('Banano Wallet:'), String('ban_137xmpo7eqis7oymw9ob9b5qparzqc799jxw8o3udzm3p6rrtgj83wczwo7a'), false);
-          Donate.setFooter({text: String('The Duino-Coin Ecosystem v0.1'), iconURL: String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png')});
+          Donate.setFooter({text: String(('The Duino-Coin Ecosystem v' + String(version))), iconURL: String('https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png')});
     
         s4dmessage.channel.send({embeds: [Donate]});
       } else if (command == '!faucet') {
