@@ -1,0 +1,17 @@
+{
+  "name": "duinocoin-ecosystem",
+  "version": "1.0",
+  "description": "A Powerful and modern Discord Bot that allows integration of Duinocoin to Discord.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npm i && node src/slashRegister.js && node ."
+  },
+  "keywords": [],
+  "author": "KosmicDaKerbal",
+  "license": "GPL v3",
+  "dependencies": {
+    "discord-logs": "^2.0.0",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5"
+  }
+}
