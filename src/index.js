@@ -59,7 +59,7 @@ client.on('interactionCreate', async (interact) => {
                 .addFields(
                     { name: 'Host', value: 'AlwaysData' , inline: true },
                     { name: 'RAM Usage', value: ram + 'MB', inline: true },
-                    { name: 'CPU Usage', value: getProcessPercent(), inline: true },
+                    { name: 'CPU Usage', value: 'foo', inline: true },
                 )
                 .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
                 .setTimestamp();
