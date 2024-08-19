@@ -57,6 +57,7 @@ client.on('interactionCreate', async (interact) => {
                 const collector = rep.createMessageComponentCollector({
                     componentType: ComponentType.Button,
                     filter,
+                    time: 10_000,
                 });
                 collector.on('collect', async (inter) => {
                     switch (inter.customId){
@@ -69,15 +70,19 @@ client.on('interactionCreate', async (interact) => {
                     }
                     confirm.setDisabled(true);
                     cancel.setDisabled(true);
-                    await interact.editReply({embeds: [confirmbox], components: [choice]});
-                })
+                });
+                collector.on('end', () =>{
+                    confirm.setDisabled(true);
+                    cancel.setDisabled(true);
+                    confirmbox.setDescription("Timed out: 10 Seconds").setColor (0xFF0000).setTimestamp();
+                });
 
             } else {
                 confirmbox.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
                 confirm.setDisabled(true);
                 cancel.setDisabled(true);
-                await interact.editReply({embeds: [confirmbox], components: [choice]});
             }
+            await interact.editReply({embeds: [confirmbox], components: [choice]});
         });
     })
     .on('error', (e) => {
