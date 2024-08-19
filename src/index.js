@@ -1,7 +1,7 @@
 require('dotenv').config();
 const ver = 0.3;
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
-const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType} = require ('discord.js');
+const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, MessageButton, ButtonStyle, ComponentType} = require ('discord.js');
 const http = require('http');
 const client = new Client({
     intents:[
@@ -37,15 +37,15 @@ client.on('interactionCreate', async (interact) => {
         res.on('end', async () => {
             //console.log(data);
             const json = JSON.parse(data);
-            const confirm = new ButtonBuilder()
-			.setCustomId('confirm')
-			.setLabel('Confirm')
-			.setStyle(ButtonStyle.Success);
+            const confirm = new MessageButton()
+            .setCustomId('confirm')
+            .setLabel('Confirm')
+            .setStyle('SUCCESS');
 
-		    const cancel = new ButtonBuilder()
-			.setCustomId('cancel')
-			.setLabel('Cancel')
-			.setStyle(ButtonStyle.Danger);
+		    const cancel = new MessageButton()
+            .setCustomId('cancel')
+            .setLabel('Cancel')
+            .setStyle('DANGER');
             if (json.success){
                 confirmbox.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
                 const choice = new ActionRowBuilder()
@@ -59,7 +59,7 @@ client.on('interactionCreate', async (interact) => {
                 collector.on('collect', async (inter) => {
                     switch (inter.customId){
                         case 'confirm':
-                            confirmbox.setDescription("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setColor (0x0000FF).setTimestamp();
+                            confirmbox.setDescription("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setColor (0x00FF00).setTimestamp();
                             await interact.editReply({embeds: [confirmbox]});
                             break;
                         case 'cancel':
