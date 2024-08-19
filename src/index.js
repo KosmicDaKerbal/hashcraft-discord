@@ -105,7 +105,6 @@ client.on("interactionCreate", async (interact) => {
 
       con.connect(async function (err) {
         if (err) throw err;
-        });
         confirmbox.setDescription(
           "Please Wait...\nConnected to DB.\nQuerying Account Link..."
         );
@@ -273,7 +272,7 @@ client.on("interactionCreate", async (interact) => {
             );
           }
         );
-      
+      });
       break;
   }
 });
