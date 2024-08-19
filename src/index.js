@@ -51,7 +51,7 @@ client.on('interactionCreate', async (interact) => {
                 const choice = new ActionRowBuilder()
 			    .addComponents(cancel, confirm);
                 const rep = await interact.editReply({embeds: [confirmbox], components: [choice]});
-                const filter = (i) => i.user.id === message.author.id;
+                const filter = (i) => i.user.id === interact.author.id;
                 const collector = rep.createMessageComponentCollector({
                     componentType: ComponentType.Button,
                     filter,
