@@ -10,7 +10,6 @@
   "author": "KosmicDaKerbal",
   "license": "GPL v3",
   "dependencies": {
-    "child_process": "^1.0.2",
     "discord-logs": "^2.0.0",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5"

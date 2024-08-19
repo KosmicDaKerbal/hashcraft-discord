@@ -4,7 +4,6 @@ const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
 const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType} = require ('discord.js');
 const http = require('http');
 const process = require('process');
-var exec = require("child_process").exec;
 var cpu = 0;
 const client = new Client({
     intents:[
@@ -14,21 +13,9 @@ const client = new Client({
         IntentsBitField.Flags.MessageContent,
     ],
 });
-function getProcessPercent() {
-    const pid = process.pid;
-    var cmd = `ps up "${pid}" | tail -n1 | tr -s ' ' | cut -f3 -d' '`;
-    setInterval(() => {
-      exec(cmd, function (err, percentValue) {
-        if (err) {
-          console.log("Command `ps` returned an error!");
-        } else {
-          console.log(`${percentValue* 1}%`);
-          cpu = `${percentValue* 1}%`;
-        }
-      });
-    }, 1000);
+function secNSec2ms (secNSec) {
+    return secNSec[0] * 1000 + secNSec[1] / 1000000
   }
-
 client.on('interactionCreate', async (interact) => {    
     if (!interact.isChatInputCommand()) return;
     switch (interact.commandName){
@@ -51,13 +38,24 @@ client.on('interactionCreate', async (interact) => {
                 ram = ram + (value/1000000);
             }
             ram = Math.round(ram);
+
+            var startTime  = process.hrtime();
+            var startUsage = process.cpuUsage();
+            var now = Date.now();
+            while (Date.now() - now < 500);
+            var elapTime = process.hrtime(startTime);
+            var elapUsage = process.cpuUsage(startUsage);
+            var elapTimeMS = secNSec2ms(elapTime);
+            var elapUserMS = secNSec2ms(elapUsage.user);
+            var elapSystMS = secNSec2ms(elapUsage.system);
+            var cpuPercent = Math.round(100 * (elapUserMS + elapSystMS) / elapTimeMS);
             const stats = new EmbedBuilder()
                 .setTitle("Bot Statistics")
                 .setColor (0xF18701)
                 .addFields(
                     { name: 'Host', value: 'AlwaysData' , inline: true },
                     { name: 'RAM Usage', value: ram + 'MB', inline: true },
-                    { name: 'CPU Usage', value: cpu, inline: true },
+                    { name: 'CPU Usage', value: cpuPercent + '%', inline: true },
                 )
                 .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
                 .setTimestamp();
