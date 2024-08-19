@@ -99,6 +99,7 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setStyle(ButtonStyle.Danger)
         .setDisabled(false);
       const choice = new ActionRowBuilder().addComponents(cancel, confirm);
+      const choice2 = new ActionRowBuilder().addComponents(cancel, confirm);
       const accountRemove = new ActionRowBuilder().addComponents(remove);
       await mainInteraction.reply({ embeds: [confirmbox] });
       const filter = (i) => i.user.id === mainInteraction.user.id;
@@ -170,7 +171,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     .setTimestamp();
                                   const rep = await sqlInteraction.reply({
                                     embeds: [confirmbox],
-                                    components: [choice],
+                                    components: [choice2],
                                   });
                                   const collector =
                                     rep.createMessageComponentCollector({
@@ -178,8 +179,6 @@ client.on("interactionCreate", async (mainInteraction) => {
                                       filter,
                                       time: 10_000,
                                     });
-                                    console.log(collector);
-
                                   collector.on("collect", async (linkInteraction) => {
                                     console.log(sqlInteraction.customId);
                                     switch (linkInteraction.customId) {
@@ -224,8 +223,6 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     });
                                     await sqlInteraction.reply({ embeds: [confirmbox] });
                                   });
-
-                                  
                                 } else {
                                   confirmbox
                                     .setDescription(
