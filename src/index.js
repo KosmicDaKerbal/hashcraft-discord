@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ver = 0.3;
+const ver = 0.4;
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
 const {
   Client,
@@ -99,11 +99,9 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setStyle(ButtonStyle.Danger)
         .setDisabled(false);
       const choice = new ActionRowBuilder().addComponents(cancel, confirm);
-      const choice2 = new ActionRowBuilder().addComponents(cancel, confirm);
       const accountRemove = new ActionRowBuilder().addComponents(remove);
       await mainInteraction.reply({ embeds: [confirmbox] });
       const filter = (i) => i.user.id === mainInteraction.user.id;
-
       con.connect(async function (err) {
         if (err) throw err;
         confirmbox.setDescription(
@@ -169,9 +167,12 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     )
                                     .setColor(0xffff00)
                                     .setTimestamp();
+                                  const choice2 = new ActionRowBuilder().addComponents(cancel, confirm);
+                                  filter = (i) => i.user.id === mainInteraction.user.id;
                                   const rep = await sqlInteraction.reply({
                                     embeds: [confirmbox],
                                     components: [choice2],
+                                    fetchReply: true,
                                   });
                                   const collector =
                                     rep.createMessageComponentCollector({
@@ -180,7 +181,6 @@ client.on("interactionCreate", async (mainInteraction) => {
                                       time: 10_000,
                                     });
                                   collector.on("collect", async (linkInteraction) => {
-                                    console.log(sqlInteraction.customId);
                                     switch (linkInteraction.customId) {
                                       case "confirm":
                                         confirmbox
