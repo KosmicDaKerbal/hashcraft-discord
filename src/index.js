@@ -1,7 +1,7 @@
 require('dotenv').config();
 const ver = 0.3;
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
-const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require ('discord.js');
+const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType} = require ('discord.js');
 const http = require('http');
 const client = new Client({
     intents:[
@@ -50,7 +50,24 @@ client.on('interactionCreate', async (interact) => {
                 confirmbox.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
                 const choice = new ActionRowBuilder()
 			    .addComponents(cancel, confirm);
-                await interact.editReply({embeds: [confirmbox], components: [choice]});
+                const rep = await interact.editReply({embeds: [confirmbox], components: [choice]});
+                const filter = (i) => i.user.id === message.author.id;
+                const collector = rep.createMessageComponentCollector({
+                    componentType: ComponentType.Button,
+                    filter,
+                });
+                collector.on('collect', async (inter) => {
+                    switch (inter){
+                        case 'confirm':
+                            confirmbox.setDescription("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setColor (0x0000FF).setTimestamp();
+                            await interact.editReply({embeds: [confirmbox]});
+                            break;
+                        case 'cancel':
+                            confirmbox.setDescription("Cancelled Linking Account: " + String(interact.options.get('account-name').value)).setColor (0xFF0000).setTimestamp();
+                            await interact.editReply({embeds: [confirmbox]});
+                        break;
+                    }
+                })
             } else {
                 confirmbox.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
                 await interact.editReply({embeds: [confirmbox]});
@@ -62,9 +79,8 @@ client.on('interactionCreate', async (interact) => {
     })
             break;    
     }
-    if (!interact.isButton) return;
-    //await interact.deferReply({ephemeral: true});
 });
+
 console.log ('Connecting...');
 client.on('ready', (c)=>{
 console.log ('Welcome to the DuinoCoin Ecosystem.');
