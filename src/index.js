@@ -62,10 +62,10 @@ client.on('interactionCreate', async (interact) => {
                 collector.on('collect', async (inter) => {
                     switch (inter.customId){
                         case 'confirm':
-                            confirmbox.setTitle("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setDescription('').setColor (0x00FF00).setTimestamp();
+                            confirmbox.setTitle("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setDescription('run /claim to get your daily DUCO').setColor (0x00FF00).setTimestamp();
                             break;
                         case 'cancel':
-                            confirmbox.setTitle("Cancelled Linking Account: " + String(interact.options.get('account-name').value)).setDescription('').setColor (0xFF0000).setTimestamp();
+                            confirmbox.setTitle("Cancelled Linking Account: " + String(interact.options.get('account-name').value)).setDescription('Try Again?').setColor (0xFF0000).setTimestamp();
                         break;
                     }
                     confirm.setDisabled(true);
