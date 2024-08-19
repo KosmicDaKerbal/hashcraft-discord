@@ -1,7 +1,7 @@
 require('dotenv').config();
 const ver = 0.3;
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
-const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, MessageButton, ButtonStyle, ComponentType} = require ('discord.js');
+const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType} = require ('discord.js');
 const http = require('http');
 const client = new Client({
     intents:[
@@ -37,15 +37,17 @@ client.on('interactionCreate', async (interact) => {
         res.on('end', async () => {
             //console.log(data);
             const json = JSON.parse(data);
-            const confirm = new MessageButton()
-            .setCustomId('confirm')
-            .setLabel('Confirm')
-            .setStyle('SUCCESS');
+            const confirm = new ButtonBuilder()
+			.setCustomId('confirm')
+			.setLabel('Confirm')
+			.setStyle(ButtonStyle.Success)
+            .setDisabled(false);
 
-		    const cancel = new MessageButton()
-            .setCustomId('cancel')
-            .setLabel('Cancel')
-            .setStyle('DANGER');
+		    const cancel = new ButtonBuilder()
+			.setCustomId('cancel')
+			.setLabel('Cancel')
+			.setStyle(ButtonStyle.Danger)
+            .setDisabled(false);
             if (json.success){
                 confirmbox.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
                 const choice = new ActionRowBuilder()
@@ -60,18 +62,21 @@ client.on('interactionCreate', async (interact) => {
                     switch (inter.customId){
                         case 'confirm':
                             confirmbox.setDescription("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setColor (0x00FF00).setTimestamp();
-                            await interact.editReply({embeds: [confirmbox]});
                             break;
                         case 'cancel':
                             confirmbox.setDescription("Cancelled Linking Account: " + String(interact.options.get('account-name').value)).setColor (0xFF0000).setTimestamp();
-                            await interact.editReply({embeds: [confirmbox]});
                         break;
                     }
+                    confirm.setDisabled(true);
+                    cancel.setDisabled(true);
+                    await interact.editReply({embeds: [confirmbox], components: [choice]});
                 })
 
             } else {
                 confirmbox.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
-                await interact.editReply({embeds: [confirmbox]});
+                confirm.setDisabled(true);
+                cancel.setDisabled(true);
+                await interact.editReply({embeds: [confirmbox], components: [choice]});
             }
         });
     })
