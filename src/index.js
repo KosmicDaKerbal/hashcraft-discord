@@ -223,7 +223,8 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     });
                                     await sqlInteraction.reply({ embeds: [confirmbox] });
                                   });
-                                } else {
+                                }
+                                 else {
                                   confirmbox
                                     .setDescription(
                                       "Error: " + String(json.message)
@@ -232,7 +233,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     .setTimestamp();
                                   confirm.setDisabled(true);
                                   cancel.setDisabled(true);
-                                  await sqlInteraction.editReply({
+                                  await sqlInteraction.reply({
                                     embeds: [confirmbox],
                                   });
                                 }
