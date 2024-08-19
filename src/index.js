@@ -1,5 +1,7 @@
 require('dotenv').config();
-const {Client, IntentsBitField, InteractionCollector} = require ('discord.js');
+const ver = 0.3;
+const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
+const {Client, IntentsBitField, InteractionCollector, EmbedBuilder} = require ('discord.js');
 const http = require('http');
 const client = new Client({
     intents:[
@@ -19,7 +21,14 @@ client.on('interactionCreate', async (interact) => {
         case 'stats':
             break;
         case 'faucet':
-        await interact.reply("Please Wait...");
+            const confirm = new EmbedBuilder()
+                .setTitle("Link Account to User")
+                .setDescription("Please Wait...")
+                .setColor (0xFF0000)
+                .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
+                .setTimestamp();
+        await interact.reply({embeds: [embed]});
+        
         http.get('http://server.duinocoin.com/v2/users/' + interact.options.get('account-name').value, (res) => {
         let data = '';
         res.on ('data', (chunk) =>  {
@@ -29,7 +38,8 @@ client.on('interactionCreate', async (interact) => {
             console.log(data);
             const json = JSON.parse(data);
             if (json.success){
-                await interact.editReply("Confirm Account Link: " + String(interact.options.get('account-name').value));
+                confirm.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
+                await interact.editReply({embeds: [confirm]});
             } else {
                 await interact.editReply("Error: " + String(json.message));
             }
