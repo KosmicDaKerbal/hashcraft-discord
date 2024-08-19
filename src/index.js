@@ -180,9 +180,9 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     });
 
                                   collector.on("collect", async (linkInteraction) => {
-                                    switch (sqlInteraction.customId) {
+                                    console.log(linkInteraction.customId);
+                                    switch (linkInteraction.customId) {
                                       case "confirm":
-                                        console.log("confirmed");
                                         confirmbox
                                           .setTitle(
                                             "Linked Account " +
