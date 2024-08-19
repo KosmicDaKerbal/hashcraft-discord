@@ -172,14 +172,16 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     embeds: [confirmbox],
                                     components: [choice],
                                   });
-                                  collector2 =
+                                  const collector =
                                     rep.createMessageComponentCollector({
                                       componentType: ComponentType.Button,
                                       filter,
                                       time: 10_000,
                                     });
+                                    console.log(collector);
 
-                                  collector2.on("collect", async (linkInteraction) => {
+                                  collector.on("collect", async (linkInteraction) => {
+                                    console.log(sqlInteraction.customId);
                                     switch (linkInteraction.customId) {
                                       case "confirm":
                                         confirmbox
@@ -223,7 +225,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     await sqlInteraction.reply({ embeds: [confirmbox] });
                                   });
 
-
+                                  
                                 } else {
                                   confirmbox
                                     .setDescription(
