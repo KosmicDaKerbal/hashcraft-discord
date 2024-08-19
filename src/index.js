@@ -59,12 +59,10 @@ client.on('interactionCreate', async (interact) => {
                 collector.on('collect', async (inter) => {
                     switch (inter.customId){
                         case 'confirm':
-                            console.log('confirmed');
                             confirmbox.setDescription("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setColor (0x0000FF).setTimestamp();
                             await interact.editReply({embeds: [confirmbox]});
                             break;
                         case 'cancel':
-                            console.log('cancelled');
                             confirmbox.setDescription("Cancelled Linking Account: " + String(interact.options.get('account-name').value)).setColor (0xFF0000).setTimestamp();
                             await interact.editReply({embeds: [confirmbox]});
                         break;
