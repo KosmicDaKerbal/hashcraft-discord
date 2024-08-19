@@ -1,7 +1,7 @@
 require('dotenv').config();
 const ver = 0.3;
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
-const {Client, IntentsBitField, InteractionCollector, EmbedBuilder} = require ('discord.js');
+const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require ('discord.js');
 const http = require('http');
 const client = new Client({
     intents:[
@@ -27,7 +27,7 @@ client.on('interactionCreate', async (interact) => {
                 .setColor (0xFF0000)
                 .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
                 .setTimestamp();
-        await interact.reply({embeds: [embed]});
+        await interact.reply({embeds: [confirm]});
         
         http.get('http://server.duinocoin.com/v2/users/' + interact.options.get('account-name').value, (res) => {
         let data = '';
@@ -37,12 +37,25 @@ client.on('interactionCreate', async (interact) => {
         res.on('end', async () => {
             console.log(data);
             const json = JSON.parse(data);
+            const confirm = new ButtonBuilder()
+			.setCustomId('confirm')
+			.setLabel('Confirm')
+			.setStyle(ButtonStyle.Success);
+
+		    const cancel = new ButtonBuilder()
+			.setCustomId('cancel')
+			.setLabel('Cancel')
+			.setStyle(ButtonStyle.Danger);
             if (json.success){
                 confirm.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
+                const choice = new ActionRowBuilder()
+			    .addComponents(cancel, confirm);
+                await interact.editReply({embeds: [confirm], components: [choice]});
             } else {
                 confirm.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
+                await interact.editReply({embeds: [confirm]});
             }
-            await interact.editReply({embeds: [confirm]});
+            
         });
     })
     .on('error', (e) => {
