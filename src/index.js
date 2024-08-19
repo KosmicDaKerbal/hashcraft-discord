@@ -62,16 +62,16 @@ client.on('interactionCreate', async (interact) => {
                 collector.on('collect', async (inter) => {
                     switch (inter.customId){
                         case 'confirm':
-                            confirmbox.setDescription("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setColor (0x00FF00).setTimestamp();
+                            confirmbox.setTitle("Linked Account: " + String(interact.options.get('account-name').value) + " Successfully.").setDescription().setColor (0x00FF00).setTimestamp();
                             break;
                         case 'cancel':
-                            confirmbox.setDescription("Cancelled Linking Account: " + String(interact.options.get('account-name').value)).setColor (0xFF0000).setTimestamp();
+                            confirmbox.setTitle("Cancelled Linking Account: " + String(interact.options.get('account-name').value)).setDescription().setColor (0xFF0000).setTimestamp();
                         break;
                     }
                     confirm.setDisabled(true);
                     cancel.setDisabled(true);
                     await interact.editReply({components: [choice]});
-                    await inter.reply({embeds: [confirmbox], components: [choice]});
+                    await inter.reply({embeds: [confirmbox]});
                 });
             } else {
                 confirmbox.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
