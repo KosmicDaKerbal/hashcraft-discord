@@ -35,7 +35,7 @@ client.on('interactionCreate', async (interact) => {
         data += chunk;
         });
         res.on('end', async () => {
-            console.log(data);
+            //console.log(data);
             const json = JSON.parse(data);
             const confirm = new ButtonBuilder()
 			.setCustomId('confirm')
@@ -63,7 +63,7 @@ client.on('interactionCreate', async (interact) => {
             break;    
     }
     if (!interact.isButton) return;
-    await interact.deferReply({ephemeral: true});
+    //await interact.deferReply({ephemeral: true});
 });
 console.log ('Connecting...');
 client.on('ready', (c)=>{
