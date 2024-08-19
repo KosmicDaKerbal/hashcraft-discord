@@ -173,7 +173,7 @@ client.on("interactionCreate", async (interact) => {
                                     });
 
                                   collector.on("collect", async (inter) => {
-                                    switch (interc.customId) {
+                                    switch (inter.customId) {
                                       case "confirm":
                                         confirmbox
                                           .setTitle(
