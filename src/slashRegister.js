@@ -4,15 +4,15 @@ const {REST, Routes, ApplicationCommandOptionType} = require ('discord.js');
 const commands = [
 {
     name: 'help',
-    description: 'Lists all Commands of the Bot.',
+    description: 'Complete Commands List for the Bot.',
 },
 {
     name: 'stats',
-    description: 'Show Bot System Info.',
+    description: 'Display Information about the Bot and Server',
 },
 {
     name: 'faucet',
-    description: 'Link Duino-Coin Wallet to this Discord User.',
+    description: "Link your DuinoCoin Wallet to this server's exclusive faucet.",
     options: [
         {
             name: 'account-name',
