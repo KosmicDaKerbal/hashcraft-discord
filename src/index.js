@@ -83,23 +83,7 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setColor(0xff0000)
         .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
         .setTimestamp();
-      const confirm = new ButtonBuilder()
-        .setCustomId("confirm")
-        .setLabel("Confirm")
-        .setStyle(ButtonStyle.Success)
-        .setDisabled(false);
-      const cancel = new ButtonBuilder()
-        .setCustomId("cancel")
-        .setLabel("Cancel")
-        .setStyle(ButtonStyle.Danger)
-        .setDisabled(false);
-      const remove = new ButtonBuilder()
-        .setCustomId("remove")
-        .setLabel("Remove")
-        .setStyle(ButtonStyle.Danger)
-        .setDisabled(false);
-      const choice = new ActionRowBuilder().addComponents(cancel, confirm);
-      const accountRemove = new ActionRowBuilder().addComponents(remove);
+
       await mainInteraction.reply({ embeds: [confirmbox] });
       const filter = (i) => i.user.id === mainInteraction.user.id;
       con.connect(async function (err) {
@@ -117,6 +101,28 @@ client.on("interactionCreate", async (mainInteraction) => {
               async function (err, result) {
                 if (err) throw err;
                 if (result == "[object Object]") {
+                  const confirm = new ButtonBuilder()
+                    .setCustomId("confirm")
+                    .setLabel("Confirm")
+                    .setStyle(ButtonStyle.Success)
+                    .setDisabled(false);
+                  const cancel = new ButtonBuilder()
+                    .setCustomId("cancel")
+                    .setLabel("Cancel")
+                    .setStyle(ButtonStyle.Danger)
+                    .setDisabled(false);
+                  const remove = new ButtonBuilder()
+                    .setCustomId("remove")
+                    .setLabel("Remove")
+                    .setStyle(ButtonStyle.Danger)
+                    .setDisabled(false);
+                  const choice = new ActionRowBuilder().addComponents(
+                    cancel,
+                    confirm
+                  );
+                  const accountRemove = new ActionRowBuilder().addComponents(
+                    remove
+                  );
                   confirmbox
                     .setDescription(
                       "You have not yet Linked your DuinoCoin Account to this Server."
@@ -137,7 +143,9 @@ client.on("interactionCreate", async (mainInteraction) => {
                     switch (sqlInteraction.customId) {
                       case "confirm":
                         confirm.setDisabled(true);
-                        cancel.setDisabled(true).setStyle(ButtonStyle.Secondary);
+                        cancel
+                          .setDisabled(true)
+                          .setStyle(ButtonStyle.Secondary);
                         await mainInteraction.editReply({
                           embeds: [confirmbox],
                           components: [choice],
@@ -160,14 +168,19 @@ client.on("interactionCreate", async (mainInteraction) => {
                                   confirmbox
                                     .setDescription(
                                       "Confirm Account Link: " +
-                                        String(
-                                          mainInteraction.options.get("account-name")
-                                            .value
-                                        )
+                                      String(
+                                        mainInteraction.options.get(
+                                          "account-name"
+                                        ).value
+                                      )
                                     )
                                     .setColor(0xffff00)
                                     .setTimestamp();
-                                  const choice2 = new ActionRowBuilder().addComponents(cancel, confirm);
+                                  const choice2 =
+                                    new ActionRowBuilder().addComponents(
+                                      cancel,
+                                      confirm
+                                    );
                                   const rep = await sqlInteraction.reply({
                                     embeds: [confirmbox],
                                     components: [choice2],
@@ -179,51 +192,59 @@ client.on("interactionCreate", async (mainInteraction) => {
                                       filter,
                                       time: 10_000,
                                     });
-                                  collector.on("collect", async (linkInteraction) => {
-                                    switch (linkInteraction.customId) {
-                                      case "confirm":
-                                        confirmbox
-                                          .setTitle(
-                                            "Linked Account " +
+                                  collector.on(
+                                    "collect",
+                                    async (linkInteraction) => {
+                                      switch (linkInteraction.customId) {
+                                        case "confirm":
+                                          confirmbox
+                                            .setTitle(
+                                              "Linked Account " +
                                               String(
                                                 mainInteraction.options.get(
                                                   "account-name"
                                                 ).value
                                               ) +
                                               " Successfully."
-                                          )
-                                          .setDescription(
-                                            "Run /claim to get your daily DUCO"
-                                          )
-                                          .setColor(0x00ff00)
-                                          .setTimestamp();
-                                        cancel.setStyle(ButtonStyle.Secondary);
-                                        break;
-                                      case "cancel":
-                                        confirmbox
-                                          .setTitle(
-                                            "Cancelled Linking Account " +
+                                            )
+                                            .setDescription(
+                                              "Run /claim to get your daily DUCO"
+                                            )
+                                            .setColor(0x00ff00)
+                                            .setTimestamp();
+                                          cancel.setStyle(
+                                            ButtonStyle.Secondary
+                                          );
+                                          break;
+                                        case "cancel":
+                                          confirmbox
+                                            .setTitle(
+                                              "Cancelled Linking Account " +
                                               String(
                                                 mainInteraction.options.get(
                                                   "account-name"
                                                 ).value
                                               )
-                                          )
-                                          .setDescription("Try Again?")
-                                          .setColor(0xff0000)
-                                          .setTimestamp();
-                                        confirm.setStyle(ButtonStyle.Secondary);
-                                        break;
+                                            )
+                                            .setDescription("Try Again?")
+                                            .setColor(0xff0000)
+                                            .setTimestamp();
+                                          confirm.setStyle(
+                                            ButtonStyle.Secondary
+                                          );
+                                          break;
+                                      }
+                                      confirm.setDisabled(true);
+                                      cancel.setDisabled(true);
+                                      await linkInteraction.editReply({
+                                        components: [choice],
+                                      });
+                                      await sqlInteraction.reply({
+                                        embeds: [confirmbox],
+                                      });
                                     }
-                                    confirm.setDisabled(true);
-                                    cancel.setDisabled(true);
-                                    await linkInteraction.editReply({
-                                      components: [choice],
-                                    });
-                                    await sqlInteraction.reply({ embeds: [confirmbox] });
-                                  });
-                                }
-                                 else {
+                                  );
+                                } else {
                                   confirmbox
                                     .setDescription(
                                       "Error: " + String(json.message)
@@ -243,19 +264,24 @@ client.on("interactionCreate", async (mainInteraction) => {
                             confirmbox
                               .setDescription(
                                 "Error while fetching API Request: ```\n" +
-                                  e +
-                                  "\n```"
+                                e +
+                                "\n```"
                               )
                               .setColor(0xff0000)
                               .setTimestamp();
-                            await sqlInteraction.reply({ embeds: [confirmbox] });
+                            await sqlInteraction.reply({
+                              embeds: [confirmbox],
+                            });
                           });
                         break;
                       case "cancel":
                         confirmbox
                           .setTitle(
                             "Cancelled Linking Account " +
-                              String(mainInteraction.options.get("account-name").value)
+                            String(
+                              mainInteraction.options.get("account-name")
+                                .value
+                            )
                           )
                           .setDescription("Try Again?")
                           .setColor(0xff0000)
