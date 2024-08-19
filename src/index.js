@@ -77,7 +77,7 @@ client.on('interactionCreate', async (interact) => {
                 confirmbox.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
                 confirm.setDisabled(true);
                 cancel.setDisabled(true);
-                await interact.editReply({embeds: [confirmbox], components: [choice]});
+                await interact.editReply({embeds: [confirmbox]});
             }
         });
     })
