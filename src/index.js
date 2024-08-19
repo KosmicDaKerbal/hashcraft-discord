@@ -1,123 +1,285 @@
-require('dotenv').config();
+require("dotenv").config();
 const ver = 0.3;
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
-const {Client, IntentsBitField, InteractionCollector, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType} = require ('discord.js');
-const http = require('http');
-const process = require('process');
-var cpu = 0;
-const client = new Client({
-    intents:[
-        IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMembers,
-        IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.MessageContent,
-    ],
+const {
+  Client,
+  IntentsBitField,
+  InteractionCollector,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ComponentType,
+} = require("discord.js");
+const http = require("http");
+const process = require("process");
+var mysql = require("mysql");
+var con = mysql.createConnection({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_KEY,
+  database: process.env.MYSQL_DB,
 });
-client.on('interactionCreate', async (interact) => {    
-    if (!interact.isChatInputCommand()) return;
-    switch (interact.commandName){
-        case 'help':
-            const help = new EmbedBuilder()
-                .setTitle("Help Section")
-                .setColor (0xF18701)
-                .addFields(
-                    { name: '/help', value: 'Complete Commands List for the Bot.' , inline: true },
-                    { name: '/stats', value: 'Display Information about the Bot and Server', inline: true },
-                    { name: '/faucet', value: "Link your DuinoCoin Wallet to this server's exclusive faucet.", inline: true },
-                )
-                .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
-                .setTimestamp();
-        await interact.reply({embeds: [help]});
-            break;
-        case 'stats':
-            var ram = 0;
-            for (const [key,value] of Object.entries(process.memoryUsage())){ 
-                ram = ram + (value/1000000);
-            }
-            ram = Math.round(ram);
-            const stats = new EmbedBuilder()
-                .setTitle("Bot Statistics")
-                .setColor (0xF18701)
-                .addFields(
-                    { name: 'Host', value: 'AlwaysData' , inline: true },
-                    { name: 'Database', value: 'MySQL' , inline: true },
-                    { name: 'RAM Usage', value: ram + 'MB', inline: true },
-                )
-                .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
-                .setTimestamp();
-        await interact.reply({embeds: [stats]});
-            break;
-        case 'faucet':
-            const confirmbox = new EmbedBuilder()
-                .setTitle("Link Account to User")
-                .setDescription("Please Wait...")
-                .setColor (0xFF0000)
-                .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
-                .setTimestamp();
-        await interact.reply({embeds: [confirmbox]});
-        
-        http.get('http://server.duinocoin.com/v2/users/' + interact.options.get('account-name').value, (res) => {
-        let data = '';
-        res.on ('data', (chunk) =>  {
-        data += chunk;
-        });
-        res.on('end', async () => {
-            const json = JSON.parse(data);
-            const confirm = new ButtonBuilder()
-			.setCustomId('confirm')
-			.setLabel('Confirm')
-			.setStyle(ButtonStyle.Success)
-            .setDisabled(false);
-		    const cancel = new ButtonBuilder()
-			.setCustomId('cancel')
-			.setLabel('Cancel')
-			.setStyle(ButtonStyle.Danger)
-            .setDisabled(false);
-            const choice = new ActionRowBuilder()
-			    .addComponents(cancel, confirm);
-            if (json.success){
-                confirmbox.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
-                const rep = await interact.editReply({embeds: [confirmbox], components: [choice]});
-                const filter = (i) => i.user.id === interact.user.id;
-                const collector = rep.createMessageComponentCollector({
+const client = new Client({
+  intents: [
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildMembers,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.MessageContent,
+  ],
+});
+client.on("interactionCreate", async (interact) => {
+  if (!interact.isChatInputCommand()) return;
+  const u = interact.user.id;
+  switch (interact.commandName) {
+    case "help":
+      const help = new EmbedBuilder()
+        .setTitle("Help Section")
+        .setColor(0xf18701)
+        .addFields(
+          {
+            name: "/help",
+            value: "Complete Commands List for the Bot.",
+            inline: true,
+          },
+          {
+            name: "/stats",
+            value: "Display Information about the Bot and Server",
+            inline: true,
+          },
+          {
+            name: "/faucet",
+            value:
+              "Link your DuinoCoin Wallet to this server's exclusive faucet.",
+            inline: true,
+          }
+        )
+        .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
+        .setTimestamp();
+      await interact.reply({ embeds: [help] });
+      break;
+    case "stats":
+      var ram = 0;
+      for (const [key, value] of Object.entries(process.memoryUsage())) {
+        ram = ram + value / 1000000;
+      }
+      ram = Math.round(ram);
+      const stats = new EmbedBuilder()
+        .setTitle("Bot Statistics")
+        .setColor(0xf18701)
+        .addFields(
+          { name: "Host", value: "AlwaysData", inline: true },
+          { name: "Database", value: "MySQL", inline: true },
+          { name: "RAM Usage", value: ram + "MB", inline: true }
+        )
+        .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
+        .setTimestamp();
+      await interact.reply({ embeds: [stats] });
+      break;
+    case "faucet":
+      const confirmbox = new EmbedBuilder()
+        .setTitle("Link Account to User")
+        .setDescription("Please Wait...\nConnecting to DB...")
+        .setColor(0xff0000)
+        .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
+        .setTimestamp();
+      const confirm = new ButtonBuilder()
+        .setCustomId("confirm")
+        .setLabel("Confirm")
+        .setStyle(ButtonStyle.Success)
+        .setDisabled(false);
+      const cancel = new ButtonBuilder()
+        .setCustomId("cancel")
+        .setLabel("Cancel")
+        .setStyle(ButtonStyle.Danger)
+        .setDisabled(false);
+      const remove = new ButtonBuilder()
+        .setCustomId("remove")
+        .setLabel("Remove")
+        .setStyle(ButtonStyle.Danger)
+        .setDisabled(false);
+      const choice = new ActionRowBuilder().addComponents(cancel, confirm);
+      const accountRemove = new ActionRowBuilder().addComponents(remove);
+      await interact.reply({ embeds: [confirmbox] });
+      const filter = (i) => i.user.id === interact.user.id;
+
+      con.connect(async function (err) {
+        if (err) throw err;
+        confirmbox.setDescription(
+          "Please Wait...\nConnected to DB.\nQuerying Account Link..."
+        );
+        await interact.editReply({ embeds: [confirmbox] });
+        //insert into Faucet(userid, wallet_name, last_used, claims) values (63409836209478, 'KosmicDaKerbal', '2024-01-24', 4) on duplicate key update userid = 63409836209478, wallet_name = 'KosmicDaKerbal', last_used = '2024-01-30', claims = 5;
+        con.query(
+          `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
+          function (err, result) {
+            if (err) throw err;
+            con.query(
+              `select wallet_name from Faucet where userid = ${u}`,
+              async function (err, result) {
+                if (err) throw err;
+                if (result == "[object Object]") {
+                  confirmbox
+                    .setDescription(
+                      "You have not yet Linked your DuinoCoin Account to this Server."
+                    )
+                    .setColor(0xff0000)
+                    .setTimestamp();
+                  confirm.setLabel("Link Duino-Coin Account");
+                  const rep2 = await interact.editReply({
+                    embeds: [confirmbox],
+                    components: [choice],
+                  });
+                  const collector2 = rep2.createMessageComponentCollector({
                     componentType: ComponentType.Button,
                     filter,
                     time: 10_000,
-                });
-                collector.on('collect', async (inter) => {
-                    switch (inter.customId){
-                        case 'confirm':
-                            confirmbox.setTitle("Linked Account " + String(interact.options.get('account-name').value) + " Successfully.").setDescription('Run /claim to get your daily DUCO').setColor (0x00FF00).setTimestamp();
-                            cancel.setStyle(ButtonStyle.Secondary);
-                            break;
-                        case 'cancel':
-                            confirmbox.setTitle("Cancelled Linking Account " + String(interact.options.get('account-name').value)).setDescription('Try Again?').setColor (0xFF0000).setTimestamp();
-                            confirm.setStyle(ButtonStyle.Secondary);
-                            break;
+                  });
+                  collector2.on("collect", async (interc) => {
+                    switch (interc.customId) {
+                      case "confirm":
+                        confirm.setLabel("Confirm");
+                        http
+                          .get(
+                            "http://server.duinocoin.com/v2/users/" +
+                              interact.options.get("account-name").value,
+                            (res) => {
+                              let data = "";
+                              res.on("data", (chunk) => {
+                                data += chunk;
+                              });
+                              res.on("end", async () => {
+                                const json = JSON.parse(data);
+
+                                if (json.success) {
+                                  confirmbox
+                                    .setDescription(
+                                      "Confirm Account Link: " +
+                                        String(
+                                          interact.options.get("account-name")
+                                            .value
+                                        )
+                                    )
+                                    .setColor(0xffff00)
+                                    .setTimestamp();
+                                  const rep = await interc.reply({
+                                    embeds: [confirmbox],
+                                    components: [choice],
+                                  });
+                                  const collector =
+                                    rep.createMessageComponentCollector({
+                                      componentType: ComponentType.Button,
+                                      filter,
+                                      time: 10_000,
+                                    });
+
+                                  collector.on("collect", async (inter) => {
+                                    switch (inter.customId) {
+                                      case "confirm":
+                                        confirmbox
+                                          .setTitle(
+                                            "Linked Account " +
+                                              String(
+                                                interact.options.get(
+                                                  "account-name"
+                                                ).value
+                                              ) +
+                                              " Successfully."
+                                          )
+                                          .setDescription(
+                                            "Run /claim to get your daily DUCO"
+                                          )
+                                          .setColor(0x00ff00)
+                                          .setTimestamp();
+                                        cancel.setStyle(ButtonStyle.Secondary);
+                                        break;
+                                      case "cancel":
+                                        confirmbox
+                                          .setTitle(
+                                            "Cancelled Linking Account " +
+                                              String(
+                                                interact.options.get(
+                                                  "account-name"
+                                                ).value
+                                              )
+                                          )
+                                          .setDescription("Try Again?")
+                                          .setColor(0xff0000)
+                                          .setTimestamp();
+                                        confirm.setStyle(ButtonStyle.Secondary);
+                                        break;
+                                    }
+                                    confirm.setDisabled(true);
+                                    cancel.setDisabled(true);
+                                    await interc.editReply({
+                                      components: [choice],
+                                    });
+                                    await inter.reply({ embeds: [confirmbox] });
+                                  });
+                                } else {
+                                  confirmbox
+                                    .setDescription(
+                                      "Error: " + String(json.message)
+                                    )
+                                    .setColor(0xff0000)
+                                    .setTimestamp();
+                                  confirm.setDisabled(true);
+                                  cancel.setDisabled(true);
+                                  await interc.editReply({
+                                    embeds: [confirmbox],
+                                  });
+                                }
+                              });
+                            }
+                          )
+                          .on("error", async (e) => {
+                            confirmbox
+                              .setDescription(
+                                "Error while fetching API Request: ```\n" +
+                                  e +
+                                  "\n```"
+                              )
+                              .setColor(0xff0000)
+                              .setTimestamp();
+                            await interc.reply({ embeds: [confirmbox] });
+                          });
+                        break;
+                      case "cancel":
+                        confirmbox
+                          .setTitle(
+                            "Cancelled Linking Account " +
+                              String(interact.options.get("account-name").value)
+                          )
+                          .setDescription("Try Again?")
+                          .setColor(0xff0000)
+                          .setTimestamp();
+                        confirm.setStyle(ButtonStyle.Secondary);
+                        confirm.setDisabled(true);
+                        cancel.setDisabled(true);
+                        await interc.editReply({ embeds: [confirmbox] });
                     }
-                    confirm.setDisabled(true);
-                    cancel.setDisabled(true);
-                    await interact.editReply({components: [choice]});
-                    await inter.reply({embeds: [confirmbox]});
-                });
-            } else {
-                confirmbox.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
-                confirm.setDisabled(true);
-                cancel.setDisabled(true);
-                await interact.editReply({embeds: [confirmbox]});
-            }
-        });
-    })
-    .on('error', async(e) => {
-        confirmbox.setDescription("Error while fetching API Request: ```\n" + e + "\n```").setColor (0xFF0000).setTimestamp();
-        await interact.reply({embeds: [confirmbox]});
-    })
-            break;    
-    }
+                  });
+                } else {
+                  confirmbox
+                    .setDescription("Account is Already Linked: " + result)
+                    .setColor(0x00ff00)
+                    .setTimestamp();
+                  await interact.editReply({
+                    embeds: [confirmbox],
+                    components: [accountRemove],
+                  });
+                }
+              }
+            );
+          }
+        );
+      });
+      break;
+  }
 });
 
-console.log ('Connecting...');
-client.on('ready', (c)=>{
-console.log ('Welcome to the DuinoCoin Ecosystem.');
-})
+console.log("Connecting...");
+client.on("ready", (c) => {
+  console.log("Welcome to the DuinoCoin Ecosystem.");
+});
 client.login(process.env.TOKEN);
