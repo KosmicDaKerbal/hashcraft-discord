@@ -38,24 +38,13 @@ client.on('interactionCreate', async (interact) => {
                 ram = ram + (value/1000000);
             }
             ram = Math.round(ram);
-
-            var startTime  = process.hrtime();
-            var startUsage = process.cpuUsage();
-            var now = Date.now();
-            while (Date.now() - now < 500);
-            var elapTime = process.hrtime(startTime);
-            var elapUsage = process.cpuUsage(startUsage);
-            var elapTimeMS = secNSec2ms(elapTime);
-            var elapUserMS = secNSec2ms(elapUsage.user);
-            var elapSystMS = secNSec2ms(elapUsage.system);
-            var cpuPercent = Math.round(100 * (elapUserMS + elapSystMS) / elapTimeMS);
             const stats = new EmbedBuilder()
                 .setTitle("Bot Statistics")
                 .setColor (0xF18701)
                 .addFields(
                     { name: 'Host', value: 'AlwaysData' , inline: true },
+                    { name: 'Database', value: 'MySQL' , inline: true },
                     { name: 'RAM Usage', value: ram + 'MB', inline: true },
-                    { name: 'CPU Usage', value: cpuPercent + '%', inline: true },
                 )
                 .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
                 .setTimestamp();
