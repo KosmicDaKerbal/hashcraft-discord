@@ -21,11 +21,9 @@ function getProcessPercent() {
       exec(cmd, function (err, percentValue) {
         if (err) {
           console.log("Command `ps` returned an error!");
-          return "Error";
         } else {
           console.log(`${percentValue* 1}%`);
           cpu = `${percentValue* 1}%`;
-          return cpu;
         }
       });
     }, 1000);
@@ -54,12 +52,12 @@ client.on('interactionCreate', async (interact) => {
             }
             ram = Math.round(ram);
             const stats = new EmbedBuilder()
-                .setTitle("Help Section")
+                .setTitle("Bot Statistics")
                 .setColor (0xF18701)
                 .addFields(
                     { name: 'Host', value: 'AlwaysData' , inline: true },
                     { name: 'RAM Usage', value: ram + 'MB', inline: true },
-                    { name: 'CPU Usage', value: 'foo', inline: true },
+                    { name: 'CPU Usage', value: cpu, inline: true },
                 )
                 .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
                 .setTimestamp();
