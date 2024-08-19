@@ -109,7 +109,6 @@ client.on("interactionCreate", async (interact) => {
           "Please Wait...\nConnected to DB.\nQuerying Account Link..."
         );
         await interact.editReply({ embeds: [confirmbox] });
-        //insert into Faucet(userid, wallet_name, last_used, claims) values (63409836209478, 'KosmicDaKerbal', '2024-01-24', 4) on duplicate key update userid = 63409836209478, wallet_name = 'KosmicDaKerbal', last_used = '2024-01-30', claims = 5;
         con.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           function (err, result) {
@@ -174,7 +173,7 @@ client.on("interactionCreate", async (interact) => {
                                     });
 
                                   collector.on("collect", async (inter) => {
-                                    switch (inter.customId) {
+                                    switch (interc.customId) {
                                       case "confirm":
                                         confirmbox
                                           .setTitle(
@@ -256,7 +255,7 @@ client.on("interactionCreate", async (interact) => {
                         confirm.setStyle(ButtonStyle.Secondary);
                         confirm.setDisabled(true);
                         cancel.setDisabled(true);
-                        await interc.editReply({ embeds: [confirmbox] });
+                        await interc.reply({ embeds: [confirmbox] });
                     }
                   });
                 } else {
