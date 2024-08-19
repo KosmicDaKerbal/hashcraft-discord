@@ -48,10 +48,10 @@ client.on('interactionCreate', async (interact) => {
 			.setLabel('Cancel')
 			.setStyle(ButtonStyle.Danger)
             .setDisabled(false);
+            const choice = new ActionRowBuilder()
+			    .addComponents(cancel, confirm);
             if (json.success){
                 confirmbox.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
-                const choice = new ActionRowBuilder()
-			    .addComponents(cancel, confirm);
                 const rep = await interact.editReply({embeds: [confirmbox], components: [choice]});
                 const filter = (i) => i.user.id === interact.user.id;
                 const collector = rep.createMessageComponentCollector({
