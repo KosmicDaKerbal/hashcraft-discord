@@ -14,7 +14,7 @@ const {
 const http = require("http");
 const process = require("process");
 var mysql = require("mysql");
-var con = mysql.createPool({
+var connection = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_KEY,
@@ -106,7 +106,7 @@ client.on("interactionCreate", async (interact) => {
           "Please Wait...\nQuerying Account Link..."
         );
         await interact.editReply({ embeds: [confirmbox] });
-        con.on('connection', function (connection) {
+        connection.on('connection', function (con) {
         con.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           function (err, result) {
