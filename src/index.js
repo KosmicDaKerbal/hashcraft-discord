@@ -21,13 +21,13 @@ client.on('interactionCreate', async (interact) => {
         case 'stats':
             break;
         case 'faucet':
-            const confirm = new EmbedBuilder()
+            const confirmbox = new EmbedBuilder()
                 .setTitle("Link Account to User")
                 .setDescription("Please Wait...")
                 .setColor (0xFF0000)
                 .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
                 .setTimestamp();
-        await interact.reply({embeds: [confirm]});
+        await interact.reply({embeds: [confirmbox]});
         
         http.get('http://server.duinocoin.com/v2/users/' + interact.options.get('account-name').value, (res) => {
         let data = '';
@@ -47,15 +47,14 @@ client.on('interactionCreate', async (interact) => {
 			.setLabel('Cancel')
 			.setStyle(ButtonStyle.Danger);
             if (json.success){
-                confirm.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
+                confirmbox.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
                 const choice = new ActionRowBuilder()
 			    .addComponents(cancel, confirm);
-                await interact.editReply({embeds: [confirm], components: [choice]});
+                await interact.editReply({embeds: [confirmbox], components: [choice]});
             } else {
-                confirm.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
-                await interact.editReply({embeds: [confirm]});
+                confirmbox.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
+                await interact.editReply({embeds: [confirmbox]});
             }
-            
         });
     })
     .on('error', (e) => {
@@ -63,6 +62,8 @@ client.on('interactionCreate', async (interact) => {
     })
             break;    
     }
+    if (!interact.isButton) return;
+    await interact.deferReply({ephemeral: true});
 });
 console.log ('Connecting...');
 client.on('ready', (c)=>{
