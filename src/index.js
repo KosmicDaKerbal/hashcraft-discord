@@ -106,6 +106,7 @@ client.on("interactionCreate", async (interact) => {
           "Please Wait...\nQuerying Account Link..."
         );
         await interact.editReply({ embeds: [confirmbox] });
+        con.on('connection', function (connection) {
         con.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           function (err, result) {
@@ -269,7 +270,7 @@ client.on("interactionCreate", async (interact) => {
             );
           }
         );
-      
+    });
       break;
   }
 });
