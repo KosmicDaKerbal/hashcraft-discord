@@ -49,11 +49,9 @@ client.on('interactionCreate', async (interact) => {
             break;
         case 'stats':
             var ram = 0;
-            /*
             for (const [key,value] of Object.entries(process.memoryUsage())){ 
                 ram = ram + (value/1000000);
             }
-                */
             ram = Math.round(ram);
             const stats = new EmbedBuilder()
                 .setTitle("Help Section")
@@ -65,7 +63,7 @@ client.on('interactionCreate', async (interact) => {
                 )
                 .setFooter({text:("Duino-Coin Ecosystem v" + ver), iconURL: ico})
                 .setTimestamp();
-        await interact.reply({embeds: [help]});
+        await interact.reply({embeds: [stats]});
             break;
         case 'faucet':
             const confirmbox = new EmbedBuilder()
