@@ -39,10 +39,10 @@ client.on('interactionCreate', async (interact) => {
             const json = JSON.parse(data);
             if (json.success){
                 confirm.setDescription("Confirm Account Link: " + String(interact.options.get('account-name').value)).setColor (0xFFFF00).setTimestamp();
-                await interact.editReply({embeds: [confirm]});
             } else {
-                await interact.editReply("Error: " + String(json.message));
+                confirm.setDescription("Error: " + String(json.message)).setColor (0xFF0000).setTimestamp();
             }
+            await interact.editReply({embeds: [confirm]});
         });
     })
     .on('error', (e) => {
