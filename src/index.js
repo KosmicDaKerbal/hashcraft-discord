@@ -168,7 +168,6 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     .setColor(0xffff00)
                                     .setTimestamp();
                                   const choice2 = new ActionRowBuilder().addComponents(cancel, confirm);
-                                  filter = (i) => i.user.id === mainInteraction.user.id;
                                   const rep = await sqlInteraction.reply({
                                     embeds: [confirmbox],
                                     components: [choice2],
