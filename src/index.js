@@ -14,7 +14,7 @@ const {
 const http = require("http");
 const process = require("process");
 var mysql = require("mysql");
-var connection = mysql.createPool({
+var con = mysql.createConnection({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_KEY,
@@ -102,11 +102,14 @@ client.on("interactionCreate", async (interact) => {
       const accountRemove = new ActionRowBuilder().addComponents(remove);
       await interact.reply({ embeds: [confirmbox] });
       const filter = (i) => i.user.id === interact.user.id;
+
+      con.connect(async function (err) {
+        if (err) throw err;
+        });
         confirmbox.setDescription(
-          "Please Wait...\nQuerying Account Link..."
+          "Please Wait...\nConnected to DB.\nQuerying Account Link..."
         );
         await interact.editReply({ embeds: [confirmbox] });
-        connection.on('connection', function (con) {
         con.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           function (err, result) {
@@ -270,7 +273,7 @@ client.on("interactionCreate", async (interact) => {
             );
           }
         );
-    });
+      
       break;
   }
 });
@@ -278,6 +281,5 @@ client.on("interactionCreate", async (interact) => {
 console.log("Connecting...");
 client.on("ready", (c) => {
   console.log("Welcome to the DuinoCoin Ecosystem.");
-  
 });
 client.login(process.env.TOKEN);
