@@ -285,10 +285,13 @@ client.on("interactionCreate", async (mainInteraction) => {
                           )
                           .setDescription("Try Again?")
                           .setColor(0xff0000)
-                          .setTimestamp();
-                        confirm.setStyle(ButtonStyle.Secondary);
-                        confirm.setDisabled(true);
-                        cancel.setDisabled(true);
+                          .setTimestamp();                       
+                        confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
+                        cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
+                        await mainInteraction.editReply({
+                          embeds: [confirmbox],
+                          components: [choice],
+                        });
                         await sqlInteraction.reply({ embeds: [confirmbox] });
                     }
                   });
