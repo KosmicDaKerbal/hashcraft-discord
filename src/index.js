@@ -28,10 +28,10 @@ const client = new Client({
     IntentsBitField.Flags.MessageContent,
   ],
 });
-client.on("interactionCreate", async (interact) => {
-  if (!interact.isChatInputCommand()) return;
-  const u = interact.user.id;
-  switch (interact.commandName) {
+client.on("interactionCreate", async (mainInteraction) => {
+  if (!mainInteraction.isChatInputCommand()) return;
+  const u = mainInteraction.user.id;
+  switch (mainInteraction.commandName) {
     case "help":
       const help = new EmbedBuilder()
         .setTitle("Help Section")
@@ -56,7 +56,7 @@ client.on("interactionCreate", async (interact) => {
         )
         .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
         .setTimestamp();
-      await interact.reply({ embeds: [help] });
+      await mainInteraction.reply({ embeds: [help] });
       break;
     case "stats":
       var ram = 0;
@@ -74,7 +74,7 @@ client.on("interactionCreate", async (interact) => {
         )
         .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
         .setTimestamp();
-      await interact.reply({ embeds: [stats] });
+      await mainInteraction.reply({ embeds: [stats] });
       break;
     case "faucet":
       const confirmbox = new EmbedBuilder()
@@ -100,15 +100,15 @@ client.on("interactionCreate", async (interact) => {
         .setDisabled(false);
       const choice = new ActionRowBuilder().addComponents(cancel, confirm);
       const accountRemove = new ActionRowBuilder().addComponents(remove);
-      await interact.reply({ embeds: [confirmbox] });
-      const filter = (i) => i.user.id === interact.user.id;
+      await mainInteraction.reply({ embeds: [confirmbox] });
+      const filter = (i) => i.user.id === mainInteraction.user.id;
 
       con.connect(async function (err) {
         if (err) throw err;
         confirmbox.setDescription(
           "Please Wait...\nConnected to DB.\nQuerying Account Link..."
         );
-        await interact.editReply({ embeds: [confirmbox] });
+        await mainInteraction.editReply({ embeds: [confirmbox] });
         con.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           function (err, result) {
@@ -125,7 +125,7 @@ client.on("interactionCreate", async (interact) => {
                     .setColor(0xff0000)
                     .setTimestamp();
                   confirm.setLabel("Link Duino-Coin Account");
-                  const rep2 = await interact.editReply({
+                  const rep2 = await mainInteraction.editReply({
                     embeds: [confirmbox],
                     components: [choice],
                   });
@@ -134,14 +134,21 @@ client.on("interactionCreate", async (interact) => {
                     filter,
                     time: 10_000,
                   });
-                  collector2.on("collect", async (interc) => {
-                    switch (interc.customId) {
+                  collector2.on("collect", async (sqlInteraction) => {
+                    switch (sqlInteraction.customId) {
                       case "confirm":
-                        confirm.setLabel("Confirm");
+                        confirm.setDisabled(true);
+                        cancel.setDisabled(true).setStyle(ButtonStyle.Secondary);
+                        await mainInteraction.editReply({
+                          embeds: [confirmbox],
+                          components: [choice],
+                        });
+                        cancel.setDisabled(false).setStyle(ButtonStyle.Danger);
+                        confirm.setLabel("Confirm").setDisabled(false);
                         http
                           .get(
                             "http://server.duinocoin.com/v2/users/" +
-                              interact.options.get("account-name").value,
+                            mainInteraction.options.get("account-name").value,
                             (res) => {
                               let data = "";
                               res.on("data", (chunk) => {
@@ -155,13 +162,13 @@ client.on("interactionCreate", async (interact) => {
                                     .setDescription(
                                       "Confirm Account Link: " +
                                         String(
-                                          interact.options.get("account-name")
+                                          mainInteraction.options.get("account-name")
                                             .value
                                         )
                                     )
                                     .setColor(0xffff00)
                                     .setTimestamp();
-                                  const rep = await interc.reply({
+                                  const rep = await sqlInteraction.reply({
                                     embeds: [confirmbox],
                                     components: [choice],
                                   });
@@ -172,14 +179,14 @@ client.on("interactionCreate", async (interact) => {
                                       time: 10_000,
                                     });
 
-                                  collector.on("collect", async (inter) => {
-                                    switch (inter.customId) {
+                                  collector.on("collect", async (linkInteraction) => {
+                                    switch (linkInteraction.customId) {
                                       case "confirm":
                                         confirmbox
                                           .setTitle(
                                             "Linked Account " +
                                               String(
-                                                interact.options.get(
+                                                mainInteraction.options.get(
                                                   "account-name"
                                                 ).value
                                               ) +
@@ -197,7 +204,7 @@ client.on("interactionCreate", async (interact) => {
                                           .setTitle(
                                             "Cancelled Linking Account " +
                                               String(
-                                                interact.options.get(
+                                                mainInteraction.options.get(
                                                   "account-name"
                                                 ).value
                                               )
@@ -210,10 +217,10 @@ client.on("interactionCreate", async (interact) => {
                                     }
                                     confirm.setDisabled(true);
                                     cancel.setDisabled(true);
-                                    await interc.editReply({
+                                    await linkInteraction.editReply({
                                       components: [choice],
                                     });
-                                    await inter.reply({ embeds: [confirmbox] });
+                                    await sqlInteraction.reply({ embeds: [confirmbox] });
                                   });
                                 } else {
                                   confirmbox
@@ -224,7 +231,7 @@ client.on("interactionCreate", async (interact) => {
                                     .setTimestamp();
                                   confirm.setDisabled(true);
                                   cancel.setDisabled(true);
-                                  await interc.editReply({
+                                  await sqlInteraction.editReply({
                                     embeds: [confirmbox],
                                   });
                                 }
@@ -240,14 +247,14 @@ client.on("interactionCreate", async (interact) => {
                               )
                               .setColor(0xff0000)
                               .setTimestamp();
-                            await interc.reply({ embeds: [confirmbox] });
+                            await sqlInteraction.reply({ embeds: [confirmbox] });
                           });
                         break;
                       case "cancel":
                         confirmbox
                           .setTitle(
                             "Cancelled Linking Account " +
-                              String(interact.options.get("account-name").value)
+                              String(mainInteraction.options.get("account-name").value)
                           )
                           .setDescription("Try Again?")
                           .setColor(0xff0000)
@@ -255,7 +262,7 @@ client.on("interactionCreate", async (interact) => {
                         confirm.setStyle(ButtonStyle.Secondary);
                         confirm.setDisabled(true);
                         cancel.setDisabled(true);
-                        await interc.reply({ embeds: [confirmbox] });
+                        await sqlInteraction.reply({ embeds: [confirmbox] });
                     }
                   });
                 } else {
@@ -263,7 +270,7 @@ client.on("interactionCreate", async (interact) => {
                     .setDescription("Account is Already Linked: " + result)
                     .setColor(0x00ff00)
                     .setTimestamp();
-                  await interact.editReply({
+                  await mainInteraction.editReply({
                     embeds: [confirmbox],
                     components: [accountRemove],
                   });
