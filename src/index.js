@@ -13,9 +13,6 @@ const client = new Client({
         IntentsBitField.Flags.MessageContent,
     ],
 });
-function secNSec2ms (secNSec) {
-    return secNSec[0] * 1000 + secNSec[1] / 1000000
-  }
 client.on('interactionCreate', async (interact) => {    
     if (!interact.isChatInputCommand()) return;
     switch (interact.commandName){
@@ -65,14 +62,12 @@ client.on('interactionCreate', async (interact) => {
         data += chunk;
         });
         res.on('end', async () => {
-            //console.log(data);
             const json = JSON.parse(data);
             const confirm = new ButtonBuilder()
 			.setCustomId('confirm')
 			.setLabel('Confirm')
 			.setStyle(ButtonStyle.Success)
             .setDisabled(false);
-
 		    const cancel = new ButtonBuilder()
 			.setCustomId('cancel')
 			.setLabel('Cancel')
@@ -113,8 +108,9 @@ client.on('interactionCreate', async (interact) => {
             }
         });
     })
-    .on('error', (e) => {
-        console.log (e);
+    .on('error', async(e) => {
+        confirmbox.setDescription("Error while fetching API Request: ```\n" + e + "\n```").setColor (0xFF0000).setTimestamp();
+        await interact.reply({embeds: [confirmbox]});
     })
             break;    
     }
