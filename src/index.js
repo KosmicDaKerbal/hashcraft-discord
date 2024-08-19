@@ -63,10 +63,12 @@ client.on('interactionCreate', async (interact) => {
                     switch (inter.customId){
                         case 'confirm':
                             confirmbox.setTitle("Linked Account " + String(interact.options.get('account-name').value) + " Successfully.").setDescription('Run /claim to get your daily DUCO').setColor (0x00FF00).setTimestamp();
+                            cancel.setStyle(ButtonStyle.Secondary);
                             break;
                         case 'cancel':
                             confirmbox.setTitle("Cancelled Linking Account " + String(interact.options.get('account-name').value)).setDescription('Try Again?').setColor (0xFF0000).setTimestamp();
-                        break;
+                            confirm.setStyle(ButtonStyle.Secondary);
+                            break;
                     }
                     confirm.setDisabled(true);
                     cancel.setDisabled(true);
