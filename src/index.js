@@ -14,7 +14,7 @@ const {
 const http = require("http");
 const process = require("process");
 var mysql = require("mysql");
-var con = mysql.createConnection({
+var con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_KEY,
