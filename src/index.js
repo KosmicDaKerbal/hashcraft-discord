@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ver = "0.4.3 dry-run";
+const ver = "0.4.4 dry-run";
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
 const {
   Client,
@@ -52,8 +52,14 @@ client.on("interactionCreate", async (mainInteraction) => {
             value:
               "Link your DuinoCoin Wallet to this server's exclusive faucet.",
             inline: true,
+          },
+          {
+            name: "Donate",
+            value:
+              "Support me by Donating to my BAN wallet (It's easier for transactions). Even a small amount would suffice.",
           }
         )
+        .setImage("https://i.postimg.cc/jdPyG88s/banano.jpg")
         .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
         .setTimestamp();
       await mainInteraction.reply({ embeds: [help] });
