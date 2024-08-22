@@ -297,8 +297,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                         confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
                         cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
                         await mainInteraction.editReply({
-                          embeds: [confirmbox],
-                          components: [choice],
+                          components: [choice]
                         });
                         await sqlInteraction.reply({ embeds: [confirmbox] });
                     }
