@@ -323,6 +323,6 @@ client.on("interactionCreate", async (mainInteraction) => {
 
 console.log("Connecting...");
 client.on("ready", (c) => {
-  console.log("Welcome to the DuinoCoin Ecosystem.");
+  console.log("Welcome to HashCraft.");
 });
 client.login(process.env.TOKEN);
