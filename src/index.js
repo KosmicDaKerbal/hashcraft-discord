@@ -82,7 +82,7 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setTimestamp();
       await mainInteraction.reply({ embeds: [stats] });
       break;
-    case "faucet":
+    case "link":
       const confirmbox = new EmbedBuilder()
         .setTitle("Link Account to User")
         .setDescription("Please Wait...\nConnecting to DB...")
