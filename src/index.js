@@ -85,7 +85,7 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setTimestamp();
 
       await mainInteraction.reply({ embeds: [confirmbox] });
-      con.connect(async function (err) {
+      con.acquireConnection(async function (err) {
         if (err) throw err;
         confirmbox.setDescription(
           "Please Wait...\nConnected to DB.\nQuerying Account Link..."
