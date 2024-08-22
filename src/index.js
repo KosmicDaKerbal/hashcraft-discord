@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ver = 0.4;
+const ver = "0.4.2";
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
 const {
   Client,
