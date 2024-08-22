@@ -238,10 +238,10 @@ client.on("interactionCreate", async (mainInteraction) => {
                                       }
                                       confirm.setDisabled(true);
                                       cancel.setDisabled(true);
-                                      await linkInteraction.editReply({
+                                      await sqlInteraction.editReply({
                                         components: [choice],
                                       });
-                                      await sqlInteraction.reply({
+                                      await linkInteraction.reply({
                                         embeds: [confirmbox],
                                       });
                                     }
