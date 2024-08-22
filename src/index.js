@@ -1,6 +1,6 @@
 require("dotenv").config();
-const ver = "0.4.4 dry-run";
-const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
+const ver = "0.4.5 dry-run";
+const ico = "https://i.postimg.cc/dVvZgrNp/Hash-Craft-Logo.png";
 const {
   Client,
   IntentsBitField,
@@ -48,7 +48,7 @@ client.on("interactionCreate", async (mainInteraction) => {
             inline: true,
           },
           {
-            name: "/faucet",
+            name: "/link",
             value:
               "Link your DuinoCoin Wallet to this server's exclusive faucet.",
             inline: true,
@@ -60,7 +60,7 @@ client.on("interactionCreate", async (mainInteraction) => {
           }
         )
         .setImage("https://i.postimg.cc/jdPyG88s/banano.jpg")
-        .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
+        .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
         .setTimestamp();
       await mainInteraction.reply({ embeds: [help] });
       break;
@@ -78,7 +78,7 @@ client.on("interactionCreate", async (mainInteraction) => {
           { name: "Database", value: "MySQL", inline: true },
           { name: "RAM Usage", value: ram + "MB", inline: true }
         )
-        .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
+        .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
         .setTimestamp();
       await mainInteraction.reply({ embeds: [stats] });
       break;
@@ -87,7 +87,7 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setTitle("Link Account to User")
         .setDescription("Please Wait...\nConnecting to DB...")
         .setColor(0xff0000)
-        .setFooter({ text: "Duino-Coin Ecosystem v" + ver, iconURL: ico })
+        .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
         .setTimestamp();
 
       await mainInteraction.reply({ embeds: [confirmbox] });

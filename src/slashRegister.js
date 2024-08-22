@@ -11,7 +11,7 @@ const commands = [
     description: 'Display Information about the Bot and Server',
 },
 {
-    name: 'faucet',
+    name: 'link',
     description: "Link your DuinoCoin Wallet to this server's exclusive faucet.",
     options: [
         {
