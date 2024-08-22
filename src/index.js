@@ -85,7 +85,6 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setTimestamp();
 
       await mainInteraction.reply({ embeds: [confirmbox] });
-      const filter = (i) => i.user.id === mainInteraction.user.id;
       con.connect(async function (err) {
         if (err) throw err;
         confirmbox.setDescription(
@@ -129,7 +128,9 @@ client.on("interactionCreate", async (mainInteraction) => {
                     )
                     .setColor(0xff0000)
                     .setTimestamp();
+
                   confirm.setLabel("Link Duino-Coin Account");
+                  const filter = (i) => i.user.id === mainInteraction.user.id;
                   const rep2 = await mainInteraction.editReply({
                     embeds: [confirmbox],
                     components: [choice],
@@ -181,6 +182,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                       cancel,
                                       confirm
                                     );
+                                  const filter = (i) => i.user.id === sqlInteraction.user.id;
                                   const rep = await sqlInteraction.reply({
                                     embeds: [confirmbox],
                                     components: [choice2],
