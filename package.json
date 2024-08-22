@@ -1,5 +1,5 @@
 {
-  "name": "duinocoin-ecosystem",
+  "name": "hashcraft",
   "version": "1.0",
   "description": "A Powerful and modern Discord Bot that allows integration of Duinocoin to Discord.",
   "main": "src/index.js",
