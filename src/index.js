@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ver = "0.4.3 Dry-Run";
+const ver = "0.4.3 dry-run";
 const ico = "https://i.postimg.cc/zGx8nznT/Duinocoin-Ecosystem.png";
 const {
   Client,
