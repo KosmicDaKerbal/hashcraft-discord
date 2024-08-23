@@ -350,7 +350,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                           remove
                         );
                         confirmbox
-                          .setDescription("Account is Already Linked: " + result)
+                          .setDescription("Account is Already Linked: " + result[0].wallet_name)
                           .setColor(0x00ff00)
                           .setTimestamp();
                         const exists = await mainInteraction.editReply({
@@ -376,7 +376,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     if (err) {
                                       confirmbox.setDescription.setTitle(
                                         "Removing Account " +
-                                        String(result) +
+                                        String(result[0].wallet_name) +
                                         " Failed"
                                       )
                                         .setDescription(
