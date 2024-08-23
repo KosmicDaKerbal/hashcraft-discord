@@ -142,9 +142,6 @@ client.on("interactionCreate", async (mainInteraction) => {
                           cancel,
                           confirm
                         );
-                        const accountRemove = new ActionRowBuilder().addComponents(
-                          remove
-                        );
                         confirmbox
                           .setDescription(
                             "You have not yet Linked your DuinoCoin Account to this Server."
@@ -349,6 +346,9 @@ client.on("interactionCreate", async (mainInteraction) => {
                           }
                         });
                       } else {
+                        const accountRemove = new ActionRowBuilder().addComponents(
+                          remove
+                        );
                         confirmbox
                           .setDescription("Account is Already Linked: " + result)
                           .setColor(0x00ff00)
