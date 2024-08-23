@@ -89,7 +89,7 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setColor(0xff0000)
         .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
         .setTimestamp();
-        const confirm = new ButtonBuilder()
+      const confirm = new ButtonBuilder()
         .setCustomId("confirm")
         .setLabel("Confirm")
         .setStyle(ButtonStyle.Success)
