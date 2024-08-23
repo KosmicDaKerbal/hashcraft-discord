@@ -137,7 +137,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                       await mainInteraction.editReply({ embeds: [confirmbox] });
                       console.log(err);
                     } else {
-                      if (result[0].wallet_name == " ") {
+                      if (result[0].wallet_name === ' ') {
                         const choice = new ActionRowBuilder().addComponents(
                           cancel,
                           confirm
