@@ -351,7 +351,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                         );
                         confirmbox
                           .setDescription("Account is Already Linked: " + result[0].wallet_name)
-                          .setColor(0x00ff00)
+                          .setColor(0xff0000)
                           .setTimestamp();
                         const exists = await mainInteraction.editReply({
                           embeds: [confirmbox],
