@@ -349,6 +349,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                         const accountRemove = new ActionRowBuilder().addComponents(
                           remove
                         );
+                        const name = result[0].wallet_name;
                         confirmbox
                           .setDescription("Account is Already Linked: " + result[0].wallet_name)
                           .setColor(0xff0000)
@@ -376,7 +377,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     if (err) {
                                       confirmbox.setDescription.setTitle(
                                         "Removing Account " +
-                                        String(result[0].wallet_name) +
+                                        String(name) +
                                         " Failed"
                                       )
                                         .setDescription(
@@ -385,10 +386,10 @@ client.on("interactionCreate", async (mainInteraction) => {
                                         .setColor(0xff0000)
                                         .setTimestamp();
                                       console.log(err);
-                                    } else { 
+                                    } else {
                                       confirmbox.setTitle(
                                         "Account " +
-                                        String(result[0].wallet_name) +
+                                        String(name) +
                                         " Unlink Successful"
                                       )
                                         .setDescription(
