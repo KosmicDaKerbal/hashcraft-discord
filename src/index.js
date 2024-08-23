@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ver = "0.4.5 dry-run";
+const ver = "0.4.6 dry-run";
 const ico = "https://i.postimg.cc/dVvZgrNp/Hash-Craft-Logo.png";
 const {
   Client,
@@ -89,233 +89,331 @@ client.on("interactionCreate", async (mainInteraction) => {
         .setColor(0xff0000)
         .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
         .setTimestamp();
-
+        const confirm = new ButtonBuilder()
+        .setCustomId("confirm")
+        .setLabel("Confirm")
+        .setStyle(ButtonStyle.Success)
+        .setDisabled(false);
+      const cancel = new ButtonBuilder()
+        .setCustomId("cancel")
+        .setLabel("Cancel")
+        .setStyle(ButtonStyle.Danger)
+        .setDisabled(false);
+      const remove = new ButtonBuilder()
+        .setCustomId("remove")
+        .setLabel("Remove")
+        .setStyle(ButtonStyle.Danger)
+        .setDisabled(false);
       await mainInteraction.reply({ embeds: [confirmbox] });
       con.getConnection(async function (err) {
-        if (err) throw err;
-        confirmbox.setDescription(
-          "Please Wait...\nConnected to DB.\nQuerying Account Link..."
-        );
-        await mainInteraction.editReply({ embeds: [confirmbox] });
-        con.query(
-          `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
-          function (err, result) {
-            if (err) throw err;
-            con.query(
-              `select wallet_name from Faucet where userid = ${u}`,
-              async function (err, result) {
-                if (err) throw err;
-                if (result == "[object Object]") {
-                  const confirm = new ButtonBuilder()
-                    .setCustomId("confirm")
-                    .setLabel("Confirm")
-                    .setStyle(ButtonStyle.Success)
-                    .setDisabled(false);
-                  const cancel = new ButtonBuilder()
-                    .setCustomId("cancel")
-                    .setLabel("Cancel")
-                    .setStyle(ButtonStyle.Danger)
-                    .setDisabled(false);
-                  const remove = new ButtonBuilder()
-                    .setCustomId("remove")
-                    .setLabel("Remove")
-                    .setStyle(ButtonStyle.Danger)
-                    .setDisabled(false);
-                  const choice = new ActionRowBuilder().addComponents(
-                    cancel,
-                    confirm
-                  );
-                  const accountRemove = new ActionRowBuilder().addComponents(
-                    remove
-                  );
-                  confirmbox
-                    .setDescription(
-                      "You have not yet Linked your DuinoCoin Account to this Server."
-                    )
-                    .setColor(0xff0000)
-                    .setTimestamp();
+        if (err) {
+          confirmbox.setDescription(
+            "Please Wait...\nConnecting to DB...\nInternal Server Error: Unable to connect to Faucet Database."
+          );
+          await mainInteraction.editReply({ embeds: [confirmbox] });
+          console.log(err);
+        } else {
+          confirmbox.setDescription(
+            "Please Wait...\nConnected to DB.\nQuerying Account Link..."
+          );
+          await mainInteraction.editReply({ embeds: [confirmbox] });
+          con.query(
+            `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
+            async function (err, result) {
+              if (err) {
+                confirmbox.setDescription(
+                  "Please Wait...\nConnected to DB.\nQuerying Account Link...\nQuery Failed: Couldn't update UserID"
+                );
+                await mainInteraction.editReply({ embeds: [confirmbox] });
+                console.log(err);
+              } else {
+                con.query(
+                  `select wallet_name from Faucet where userid = ${u}`,
+                  async function (err, result) {
+                    if (err) {
+                      confirmbox.setDescription(
+                        "Please Wait...\nConnected to DB.\nQuerying Account Link...\nQuery Failed: Couldn't get Wallet Name"
+                      );
+                      await mainInteraction.editReply({ embeds: [confirmbox] });
+                      console.log(err);
+                    } else {
+                      if (result == "[object Object]") {
+                        const choice = new ActionRowBuilder().addComponents(
+                          cancel,
+                          confirm
+                        );
+                        const accountRemove = new ActionRowBuilder().addComponents(
+                          remove
+                        );
+                        confirmbox
+                          .setDescription(
+                            "You have not yet Linked your DuinoCoin Account to this Server."
+                          )
+                          .setColor(0xff0000)
+                          .setTimestamp();
 
-                  confirm.setLabel("Link Duino-Coin Account");
-                  const filter = (i) => i.user.id === mainInteraction.user.id;
-                  const rep2 = await mainInteraction.editReply({
-                    embeds: [confirmbox],
-                    components: [choice],
-                  });
-                  const collector2 = rep2.createMessageComponentCollector({
-                    componentType: ComponentType.Button,
-                    filter,
-                    time: 10_000,
-                  });
-                  collector2.on("collect", async (sqlInteraction) => {
-                    switch (sqlInteraction.customId) {
-                      case "confirm":
-                        confirm.setDisabled(true);
-                        cancel
-                          .setDisabled(true)
-                          .setStyle(ButtonStyle.Secondary);
-                        await mainInteraction.editReply({
+                        confirm.setLabel("Link Duino-Coin Account");
+                        const filter = (i) => i.user.id === mainInteraction.user.id;
+                        const rep2 = await mainInteraction.editReply({
                           embeds: [confirmbox],
                           components: [choice],
                         });
-                        cancel.setDisabled(false).setStyle(ButtonStyle.Danger);
-                        confirm.setLabel("Confirm").setDisabled(false);
-                        http
-                          .get(
-                            "http://server.duinocoin.com/v2/users/" +
-                            mainInteraction.options.get("account-name").value,
-                            (res) => {
-                              let data = "";
-                              res.on("data", (chunk) => {
-                                data += chunk;
+                        const collector2 = rep2.createMessageComponentCollector({
+                          componentType: ComponentType.Button,
+                          filter,
+                          time: 10_000,
+                        });
+                        collector2.on("collect", async (sqlInteraction) => {
+                          switch (sqlInteraction.customId) {
+                            case "confirm":
+                              confirm.setDisabled(true);
+                              cancel
+                                .setDisabled(true)
+                                .setStyle(ButtonStyle.Secondary);
+                              await mainInteraction.editReply({
+                                embeds: [confirmbox],
+                                components: [choice],
                               });
-                              res.on("end", async () => {
-                                const json = JSON.parse(data);
-
-                                if (json.success) {
-                                  confirmbox
-                                    .setDescription(
-                                      "Confirm Account Link: " +
-                                      String(
-                                        mainInteraction.options.get(
-                                          "account-name"
-                                        ).value
-                                      )
-                                    )
-                                    .setColor(0xffff00)
-                                    .setTimestamp();
-                                  const choice2 =
-                                    new ActionRowBuilder().addComponents(
-                                      cancel,
-                                      confirm
-                                    );
-                                  const filter = (i) => i.user.id === sqlInteraction.user.id;
-                                  const rep = await sqlInteraction.reply({
-                                    embeds: [confirmbox],
-                                    components: [choice2],
-                                    fetchReply: true,
-                                  });
-                                  const collector =
-                                    rep.createMessageComponentCollector({
-                                      componentType: ComponentType.Button,
-                                      filter,
-                                      time: 10_000,
+                              cancel.setDisabled(false).setStyle(ButtonStyle.Danger);
+                              confirm.setLabel("Confirm").setDisabled(false);
+                              http
+                                .get(
+                                  "http://server.duinocoin.com/v2/users/" +
+                                  mainInteraction.options.get("account-name").value,
+                                  (res) => {
+                                    let data = "";
+                                    res.on("data", (chunk) => {
+                                      data += chunk;
                                     });
-                                  collector.on(
-                                    "collect",
-                                    async (linkInteraction) => {
-                                      switch (linkInteraction.customId) {
-                                        case "confirm":
-                                          confirmbox
-                                            .setTitle(
-                                              "Linked Account " +
-                                              String(
-                                                mainInteraction.options.get(
-                                                  "account-name"
-                                                ).value
-                                              ) +
-                                              " Successfully."
+                                    res.on("end", async () => {
+                                      const json = JSON.parse(data);
+
+                                      if (json.success) {
+                                        confirmbox
+                                          .setDescription(
+                                            "Confirm Account Link: " +
+                                            String(
+                                              mainInteraction.options.get(
+                                                "account-name"
+                                              ).value
                                             )
-                                            .setDescription(
-                                              "Run /claim to get your daily DUCO"
-                                            )
-                                            .setColor(0x00ff00)
-                                            .setTimestamp();
-                                          cancel.setStyle(
-                                            ButtonStyle.Secondary
+                                          )
+                                          .setColor(0xffff00)
+                                          .setTimestamp();
+                                        const choice2 =
+                                          new ActionRowBuilder().addComponents(
+                                            cancel,
+                                            confirm
                                           );
-                                          break;
-                                        case "cancel":
-                                          confirmbox
-                                            .setTitle(
-                                              "Cancelled Linking Account " +
-                                              String(
-                                                mainInteraction.options.get(
-                                                  "account-name"
-                                                ).value
-                                              )
-                                            )
-                                            .setDescription("Try Again?")
-                                            .setColor(0xff0000)
-                                            .setTimestamp();
-                                          confirm.setStyle(
-                                            ButtonStyle.Secondary
-                                          );
-                                          break;
+                                        const filter = (i) => i.user.id === sqlInteraction.user.id;
+                                        const rep = await sqlInteraction.reply({
+                                          embeds: [confirmbox],
+                                          components: [choice2],
+                                          fetchReply: true,
+                                        });
+                                        const collector =
+                                          rep.createMessageComponentCollector({
+                                            componentType: ComponentType.Button,
+                                            filter,
+                                            time: 10_000,
+                                          });
+                                        collector.on(
+                                          "collect",
+                                          async (linkInteraction) => {
+                                            switch (linkInteraction.customId) {
+                                              case "confirm":
+                                                con.query(
+                                                  `insert into Faucet(userid, wallet_name) values (${u}, '${String(mainInteraction.options.get("account-name").value)}') on duplicate key update userid = ${u}, wallet_name = '${String(mainInteraction.options.get("account-name").value)}';`,
+                                                  async function (err, result) {
+                                                    if (err) {
+                                                      confirmbox.setDescription.setTitle(
+                                                        "Link " +
+                                                        String(
+                                                          mainInteraction.options.get(
+                                                            "account-name"
+                                                          ).value
+                                                        ) +
+                                                        " Failed"
+                                                      )
+                                                        .setDescription(
+                                                          "An internal error occured while connecting to the database."
+                                                        )
+                                                        .setColor(0xff0000)
+                                                        .setTimestamp();
+                                                      confirm.setStyle(
+                                                        ButtonStyle.Secondary
+                                                      );
+                                                      cancel.setStyle(
+                                                        ButtonStyle.Secondary
+                                                      );
+                                                      console.log(err);
+                                                    } else {
+                                                      confirmbox
+                                                        .setTitle(
+                                                          "Linked Account " +
+                                                          String(
+                                                            mainInteraction.options.get(
+                                                              "account-name"
+                                                            ).value
+                                                          ) +
+                                                          " Successfully."
+                                                        )
+                                                        .setDescription(
+                                                          "Run /claim to get your daily ⧈ mDU"
+                                                        )
+                                                        .setColor(0x00ff00)
+                                                        .setTimestamp();
+                                                      cancel.setStyle(
+                                                        ButtonStyle.Secondary
+                                                      );
+                                                    }
+                                                  }
+                                                );
+                                                break;
+                                              case "cancel":
+                                                confirmbox
+                                                  .setTitle(
+                                                    "Cancelled Linking Account " +
+                                                    String(
+                                                      mainInteraction.options.get(
+                                                        "account-name"
+                                                      ).value
+                                                    )
+                                                  )
+                                                  .setDescription("Try Again?")
+                                                  .setColor(0xff0000)
+                                                  .setTimestamp();
+                                                confirm.setStyle(
+                                                  ButtonStyle.Secondary
+                                                );
+                                                break;
+                                            }
+                                            confirm.setDisabled(true);
+                                            cancel.setDisabled(true);
+                                            await sqlInteraction.editReply({
+                                              components: [choice],
+                                            });
+                                            await linkInteraction.reply({
+                                              embeds: [confirmbox],
+                                            });
+                                          }
+                                        );
+                                      } else {
+                                        confirmbox
+                                          .setDescription(
+                                            "Error: " + String(json.message)
+                                          )
+                                          .setColor(0xff0000)
+                                          .setTimestamp();
+                                        confirm.setDisabled(true);
+                                        cancel.setDisabled(true);
+                                        await sqlInteraction.reply({
+                                          embeds: [confirmbox],
+                                        });
                                       }
-                                      confirm.setDisabled(true);
-                                      cancel.setDisabled(true);
-                                      await sqlInteraction.editReply({
-                                        components: [choice],
-                                      });
-                                      await linkInteraction.reply({
-                                        embeds: [confirmbox],
-                                      });
-                                    }
-                                  );
-                                } else {
+                                    });
+                                  }
+                                )
+                                .on("error", async (e) => {
                                   confirmbox
                                     .setDescription(
-                                      "Error: " + String(json.message)
+                                      "Error while fetching API Request: ```\n" +
+                                      e +
+                                      "\n```"
                                     )
                                     .setColor(0xff0000)
                                     .setTimestamp();
-                                  confirm.setDisabled(true);
-                                  cancel.setDisabled(true);
                                   await sqlInteraction.reply({
                                     embeds: [confirmbox],
                                   });
-                                }
+                                });
+                              break;
+                            case "cancel":
+                              confirmbox
+                                .setTitle(
+                                  "Cancelled Linking Account " +
+                                  String(
+                                    mainInteraction.options.get("account-name")
+                                      .value
+                                  )
+                                )
+                                .setDescription("Try Again?")
+                                .setColor(0xff0000)
+                                .setTimestamp();
+                              confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
+                              cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
+                              await mainInteraction.editReply({
+                                components: [choice]
                               });
-                            }
-                          )
-                          .on("error", async (e) => {
-                            confirmbox
-                              .setDescription(
-                                "Error while fetching API Request: ```\n" +
-                                e +
-                                "\n```"
-                              )
-                              .setColor(0xff0000)
-                              .setTimestamp();
-                            await sqlInteraction.reply({
-                              embeds: [confirmbox],
-                            });
-                          });
-                        break;
-                      case "cancel":
-                        confirmbox
-                          .setTitle(
-                            "Cancelled Linking Account " +
-                            String(
-                              mainInteraction.options.get("account-name")
-                                .value
-                            )
-                          )
-                          .setDescription("Try Again?")
-                          .setColor(0xff0000)
-                          .setTimestamp();                       
-                        confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
-                        cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
-                        await mainInteraction.editReply({
-                          components: [choice]
+                              await sqlInteraction.reply({ embeds: [confirmbox] });
+                          }
                         });
-                        await sqlInteraction.reply({ embeds: [confirmbox] });
+                      } else {
+                        confirmbox
+                          .setDescription("Account is Already Linked: " + result)
+                          .setColor(0x00ff00)
+                          .setTimestamp();
+                        const exists = await mainInteraction.editReply({
+                          embeds: [confirmbox],
+                          components: [accountRemove],
+                          fetchReply: true,
+                        });
+                        const filter = (i) => i.user.id === mainInteraction.user.id;
+                        const collector =
+                          exists.createMessageComponentCollector({
+                            componentType: ComponentType.Button,
+                            filter,
+                            time: 10_000,
+                          });
+                        collector.on(
+                          "collect",
+                          async (existsInteraction) => {
+                            switch (existsInteraction.customId) {
+                              case 'remove':
+                                con.query(
+                                  `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
+                                  async function (err, result) {
+                                    if (err) {
+                                      confirmbox.setDescription.setTitle(
+                                        "Removing Account " +
+                                        String(result) +
+                                        " Failed"
+                                      )
+                                        .setDescription(
+                                          "An internal error occured while querying the database."
+                                        )
+                                        .setColor(0xff0000)
+                                        .setTimestamp();
+                                      console.log(err);
+                                    } else { 
+                                      confirmbox.setDescription.setTitle(
+                                        "Account " +
+                                        String(result) +
+                                        " Unlink Successful"
+                                      )
+                                        .setDescription(
+                                          "We're sad to see you go :("
+                                        )
+                                        .setColor(0x00ff00)
+                                        .setTimestamp();
+                                    }
+                                    remove.setStyle(
+                                      ButtonStyle.Success
+                                    ).setDisabled(true);
+                                    await mainInteraction.editReply({ components: [accountRemove] });
+                                    await existsInteraction.reply({ embeds: [confirmbox] });
+                                  });
+                                break;
+                            }
+                          });
+                      }
                     }
-                  });
-                } else {
-                  confirmbox
-                    .setDescription("Account is Already Linked: " + result)
-                    .setColor(0x00ff00)
-                    .setTimestamp();
-                  await mainInteraction.editReply({
-                    embeds: [confirmbox],
-                    components: [accountRemove],
-                  });
-                }
+                  }
+                );
               }
-            );
-          }
-        );
+            }
+          );
+        }
       });
       break;
   }
