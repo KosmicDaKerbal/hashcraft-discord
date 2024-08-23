@@ -388,7 +388,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                     } else { 
                                       confirmbox.setTitle(
                                         "Account " +
-                                        String(result) +
+                                        String(result[0].wallet_name) +
                                         " Unlink Successful"
                                       )
                                         .setDescription(
