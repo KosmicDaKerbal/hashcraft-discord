@@ -158,7 +158,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                         const collector2 = rep2.createMessageComponentCollector({
                           componentType: ComponentType.Button,
                           filter,
-                          time: 10_000,
+                          time: 30_000,
                         });
                         collector2.on("collect", async (sqlInteraction) => {
                           switch (sqlInteraction.customId) {
@@ -376,7 +376,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                           exists.createMessageComponentCollector({
                             componentType: ComponentType.Button,
                             filter,
-                            time: 10_000,
+                            time: 25_000,
                           });
                         collector.on(
                           "collect",
