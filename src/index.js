@@ -219,6 +219,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                           async (linkInteraction) => {
                                             switch (linkInteraction.customId) {
                                               case "confirm":
+                                                cancel.setStyle(ButtonStyle.Secondary);
                                                 con.query(
                                                   `insert into Faucet(userid, wallet_name) values (${u}, '${String(mainInteraction.options.get("account-name").value)}') on duplicate key update userid = ${u}, wallet_name = '${String(mainInteraction.options.get("account-name").value)}';`,
                                                   async function (err, result) {
@@ -260,9 +261,6 @@ client.on("interactionCreate", async (mainInteraction) => {
                                                         )
                                                         .setColor(0x00ff00)
                                                         .setTimestamp();
-                                                      cancel.setStyle(
-                                                        ButtonStyle.Secondary
-                                                      );
                                                     }
                                                   }
                                                 );
@@ -390,7 +388,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                       confirmbox.setTitle(
                                         "Account " +
                                         String(name) +
-                                        " Unlink Successful"
+                                        ": Unlink Successful"
                                       )
                                         .setDescription(
                                           "We're sad to see you go :("
