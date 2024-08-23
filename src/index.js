@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ver = "0.4.6 dry-run";
+const ver = "0.4.7 unstable";
 const ico = "https://i.postimg.cc/dVvZgrNp/Hash-Craft-Logo.png";
 const {
   Client,
@@ -371,7 +371,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                             switch (existsInteraction.customId) {
                               case 'remove':
                                 con.query(
-                                  `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
+                                  `update Faucet set wallet_name = ' ' where Faucet.userid = ${u}`,
                                   async function (err, result) {
                                     if (err) {
                                       confirmbox.setDescription.setTitle(
@@ -386,7 +386,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                         .setTimestamp();
                                       console.log(err);
                                     } else { 
-                                      confirmbox.setDescription.setTitle(
+                                      confirmbox.setTitle(
                                         "Account " +
                                         String(result) +
                                         " Unlink Successful"
