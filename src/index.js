@@ -144,7 +144,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                         );
                         confirmbox
                           .setDescription(
-                            "You have not yet Linked your DuinoCoin Account to this Server."
+                            "You have not yet linked your DuinoCoin Account to this server."
                           )
                           .setColor(0xff0000)
                           .setTimestamp();
@@ -293,6 +293,13 @@ client.on("interactionCreate", async (mainInteraction) => {
                                             });
                                           }
                                         );
+                                        collector.on("end", async () => {
+                                          confirm.setDisabled(true);
+                                          cancel.setDisabled(true);
+                                            await sqlInteraction.editReply({
+                                              components: [choice],
+                                            });
+                                        });
                                       } else {
                                         confirmbox
                                           .setDescription(
@@ -342,6 +349,13 @@ client.on("interactionCreate", async (mainInteraction) => {
                               });
                               await sqlInteraction.reply({ embeds: [confirmbox] });
                           }
+                        });
+                        collector2.on("end", async () => {
+                          confirm.setDisabled(true);
+                          cancel.setDisabled(true);
+                            await mainInteraction.editReply({
+                              components: [choice],
+                            });
                         });
                       } else {
                         const accountRemove = new ActionRowBuilder().addComponents(
@@ -404,6 +418,12 @@ client.on("interactionCreate", async (mainInteraction) => {
                                   });
                                 break;
                             }
+                          });
+                          collector.on("end", async () => {
+                            remove.setDisabled(true);
+                              await mainInteraction.editReply({
+                                components: [accountRemove],
+                              });
                           });
                       }
                     }
