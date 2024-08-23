@@ -446,12 +446,12 @@ client.on("interactionCreate", async (mainInteraction) => {
 console.log("Connecting...");
 client.on("ready", (c) => {
   console.log("Welcome to HashCraft.");
+  client.user.setPresence({ 
+    activities: [{ 
+        name: 'to /help', 
+        type: ActivityType.Listening 
+    }], 
+    status: 'idle' 
+  });
 });
 client.login(process.env.TOKEN);
-client.user.setPresence({ 
-  activities: [{ 
-      name: 'to /help', 
-      type: ActivityType.Listening 
-  }], 
-  status: 'idle' 
-});
