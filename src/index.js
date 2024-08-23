@@ -31,6 +31,7 @@ const client = new Client({
 });
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
+  client.user.setPresence({status: 'online'});
   const u = mainInteraction.user.id;
   switch (mainInteraction.commandName) {
     case "help":
