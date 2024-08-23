@@ -137,7 +137,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                       await mainInteraction.editReply({ embeds: [confirmbox] });
                       console.log(err);
                     } else {
-                      if (result[0].wallet_name === ' ') {
+                      if (result[0].wallet_name === null) {
                         const choice = new ActionRowBuilder().addComponents(
                           cancel,
                           confirm
@@ -371,7 +371,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                             switch (existsInteraction.customId) {
                               case 'remove':
                                 con.query(
-                                  `update Faucet set wallet_name = ' ' where Faucet.userid = ${u}`,
+                                  `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
                                   async function (err, result) {
                                     if (err) {
                                       confirmbox.setDescription.setTitle(
