@@ -448,7 +448,7 @@ client.on("ready", (c) => {
   console.log("Welcome to HashCraft.");
   client.user.setPresence({ 
     activities: [{ 
-        name: 'to /help', 
+        name: '/help', 
         type: ActivityType.Listening 
     }], 
     status: 'idle' 
