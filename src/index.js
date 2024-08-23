@@ -6,6 +6,7 @@ const {
   IntentsBitField,
   InteractionCollector,
   EmbedBuilder,
+  ActivityType,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
@@ -296,6 +297,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                         collector.on("end", async () => {
                                           confirm.setDisabled(true);
                                           cancel.setDisabled(true);
+                                          client.user.setPresence({status: 'idle'});
                                             await sqlInteraction.editReply({
                                               components: [choice],
                                             });
@@ -353,6 +355,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                         collector2.on("end", async () => {
                           confirm.setDisabled(true);
                           cancel.setDisabled(true);
+                          client.user.setPresence({status: 'idle'});
                             await mainInteraction.editReply({
                               components: [choice],
                             });
@@ -421,6 +424,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                           });
                           collector.on("end", async () => {
                             remove.setDisabled(true);
+                            client.user.setPresence({status: 'idle'});
                               await mainInteraction.editReply({
                                 components: [accountRemove],
                               });
@@ -443,3 +447,10 @@ client.on("ready", (c) => {
   console.log("Welcome to HashCraft.");
 });
 client.login(process.env.TOKEN);
+client.user.setPresence({ 
+  activities: [{ 
+      name: 'to /help', 
+      type: ActivityType.Listening 
+  }], 
+  status: 'idle' 
+});
