@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ver = "0.4.7 unstable";
+const ver = "0.4.7 dry-run";
 const ico = "https://i.postimg.cc/dVvZgrNp/Hash-Craft-Logo.png";
 const {
   Client,
