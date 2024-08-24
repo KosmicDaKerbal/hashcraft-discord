@@ -2,8 +2,8 @@ require("dotenv").config();
 const ver = "0.4.8 unstable";
 const ico = "https://i.postimg.cc/dVvZgrNp/Hash-Craft-Logo.png";
 const loading = "https://media.tenor.com/-n8JvVIqBXkAAAAM/dddd.gif";
-const done = "https://discord.com/assets/27311c5caafe667efb19.svg";
-const notdone = "https://discord.com/assets/2be29cad306554d57be9.svg";
+const done = "https://static.vecteezy.com/system/resources/thumbnails/017/350/123/small_2x/green-check-mark-icon-in-round-shape-design-png.png";
+const notdone = "https://static.vecteezy.com/system/resources/thumbnails/022/068/710/small_2x/rejected-sign-and-symbol-clip-art-free-png.png";
 const {
   Client,
   IntentsBitField,
