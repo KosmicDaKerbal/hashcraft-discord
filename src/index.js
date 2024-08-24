@@ -131,7 +131,7 @@ client.on("interactionCreate", async (mainInteraction) => {
           );
           await mainInteraction.editReply({ embeds: [confirmbox] });
           con.query(
-            `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
+            `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}, last_used = '0000-00-00'`,
             async function (err, result) {
               if (err) {
                 confirmbox.setDescription(
@@ -475,6 +475,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                 var streak = result[0].streak;
                 const use = result[0].last_used;
                 const timediff = claimtime.diff(use, 'day');
+                console.log(String(use));
                 switch (timediff) {
                   case !0:
                     var lost;
