@@ -446,7 +446,7 @@ client.on("interactionCreate", async (mainInteraction) => {
       break;
       case 'claim':
         const claimbox = new EmbedBuilder()
-        .setTitle({ text: "HashCraft Faucet" + ver, iconURL: loading })
+        .setTitle("HashCraft Faucet")
         .setDescription("Please Wait...")
         .setColor(0xff0000)
         .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
