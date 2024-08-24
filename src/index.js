@@ -484,7 +484,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                     drop = 100;
                   }
                   con.query(
-                    `insert into Faucet (userid, last_used, streak,) values (${u}, '${claimtime}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = ${claimtime};`,
+                    `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = ${claimtime};`,
                     async function (err, result) {
                       if (!err){
                         claimbox.setAuthor(
