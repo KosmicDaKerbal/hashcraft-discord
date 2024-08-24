@@ -492,6 +492,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                         ).setTitle(`Claimed: ⧈${drop}`).setDescription(`Current Streak: ${streak}`).setColor(0x00ff00);
                         await mainInteraction.editReply({ embeds: [claimbox] });
                       } else {
+                        console.log(err);
                         claimbox.setAuthor(
                           { name: 'HashCraft Faucet', iconURL: notdone}
                         ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
