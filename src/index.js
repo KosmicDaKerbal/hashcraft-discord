@@ -19,7 +19,6 @@ const http = require("http");
 const process = require("process");
 var mysql = require("mysql");
 const dayjs = require('dayjs');
-var isYesterday = require("dayjs/plugin/isYesterday");
 var con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
