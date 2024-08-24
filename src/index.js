@@ -476,7 +476,13 @@ client.on("interactionCreate", async (mainInteraction) => {
                 const use = result[0].last_used;
                 const timediff = claimtime.diff(use, 'day')
                 switch (timediff) {
-                  case !0:
+                  case 0:
+                    claimbox.setAuthor(
+                      { name: 'HashCraft Faucet', iconURL: notdone }
+                    ).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
+                    await mainInteraction.editReply({ embeds: [claimbox] });
+                    break;
+                  default:
                     var lost;
                     if (timediff == 1){
                       streak = streak + 1;
@@ -509,13 +515,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                           await mainInteraction.editReply({ embeds: [claimbox] });
                         }
                       });
-                    break;
-                  case 0:
-                    claimbox.setAuthor(
-                      { name: 'HashCraft Faucet', iconURL: notdone }
-                    ).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
-                    await mainInteraction.editReply({ embeds: [claimbox] });
-                    break;
+                break;
                 }
               } else {
                 claimbox.setAuthor(
