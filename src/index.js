@@ -456,10 +456,10 @@ client.on("interactionCreate", async (mainInteraction) => {
             claimbox.setDescription(
               "Internal Server Error: Unable to connect to Faucet Database."
             );
-            await mainInteraction.editReply({ embeds: [claimbox] });
+            await mainInteraction.reply({ embeds: [claimbox] });
             console.log(err);
           } else {
-            await mainInteraction.editReply({ embeds: [claimbox] });
+            await mainInteraction.reply({ embeds: [claimbox] });
             const claimtime = dayjs().format('YYYY-MM-DD');
             con.query(
               `select streak, last_used from Faucet where userid = ${u}`,
