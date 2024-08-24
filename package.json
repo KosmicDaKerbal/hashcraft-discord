@@ -1,6 +1,6 @@
 {
   "name": "hashcraft",
-  "version": "1.0",
+  "version": "0.4.9 dry-run",
   "description": "A Powerful and modern Discord Bot that allows integration of Duinocoin to Discord.",
   "main": "src/index.js",
   "scripts": {
