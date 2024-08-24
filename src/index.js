@@ -491,6 +491,11 @@ client.on("interactionCreate", async (mainInteraction) => {
                           { name: 'HashCraft Faucet', iconURL: done}
                         ).setTitle(`Claimed: ⧈${drop}`).setDescription(`Current Streak: ${streak}`).setColor(0x00ff00);
                         await mainInteraction.editReply({ embeds: [claimbox] });
+                      } else {
+                        claimbox.setAuthor(
+                          { name: 'HashCraft Faucet', iconURL: notdone}
+                        ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
+                        await mainInteraction.editReply({ embeds: [claimbox] });
                       }
                     });
                 }
