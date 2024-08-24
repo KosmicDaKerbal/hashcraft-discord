@@ -506,22 +506,20 @@ client.on("interactionCreate", async (mainInteraction) => {
                             } else {
                               drop = 100;
                             }
-                            if (lost && use != null){
-                              claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
-                              streak = 1;
-                             }
                             con.query(
                               `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = '${claimtime.format("YYYY-MM-DD")}';`,
                               async function (err, result) {
                                 if (!err) {
                                   claimbox.setAuthor(
                                     { name: 'HashCraft Faucet', iconURL: done }
-                                  ).setTitle(`Claim Successful`).setColor(0x00ff00);
-                                  await mainInteraction.editReply({ embeds: [claimbox] });
-                                  if (!lost || use == null){
-                                      streak = 1;
-                                      claimbox.setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`);
+                                  ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`).setColor(0x00ff00);
+                                  if (lost && use != null){
+                                   claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
+                                   streak = 1;
+                                  } else {
+                                    streak = 1;
                                   }
+                                  await mainInteraction.editReply({ embeds: [claimbox] });
                                 } else {
                                   claimbox.setAuthor(
                                     { name: 'HashCraft Faucet', iconURL: notdone }
