@@ -61,10 +61,16 @@ client.on("interactionCreate", async (mainInteraction) => {
             inline: true,
           },
           {
+            name: "/claim",
+            value:
+              "Get your daily ⧈ mDU",
+            inline: true,
+          },
+          {
             name: "Donate",
             value:
               "Support me by Donating to my BAN wallet (It's easier for transactions). Even a small amount would suffice.",
-          }
+          },
         )
         .setImage("https://i.postimg.cc/jdPyG88s/banano.jpg")
         .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
@@ -464,18 +470,29 @@ client.on("interactionCreate", async (mainInteraction) => {
             const claimtime = dayjs();
             claimtime.format("YYYY-MM-DD");
             con.query(
-              `select streak, last_used from Faucet where userid = ${u}`,
+              `select streak, last_used from Faucet where userid = ${u};`,
               async function (err, result) {
               if (!err){
                 const streak = result[0].streak;
                 const use = result[0].last_used;
                 if (claimtime.diff(use, 'day') == 1){
+                  streak++;
+                  var drop;
                   if (streak <= 100){
-                    const drop = Math.ceil(((streak * streak)/111)+10);
-                    console.log(drop);
+                    drop = Math.ceil(((streak * streak)/111)+10);
                   } else {
-                    const drop = 100;
+                    drop = 100;
                   }
+                  con.query(
+                    `insert into Faucet (userid, last_used, streak,) values (${u}, '${claimtime}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = ${claimtime};`,
+                    async function (err, result) {
+                      if (!err){
+                        claimbox.setAuthor(
+                          { name: 'HashCraft Faucet', iconURL: done}
+                        ).setTitle(`Claimed: ⧈${drop}`).setDescription(`Current Streak: ${streak}`).setColor(0x00ff00);
+                        await mainInteraction.editReply({ embeds: [claimbox] });
+                      }
+                    });
                 }
               }
               });
