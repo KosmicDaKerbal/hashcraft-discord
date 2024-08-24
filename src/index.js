@@ -483,7 +483,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                     drop = 100;
                   }
                   con.query(
-                    `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = ${claimtime.format("YYYY-MM-DD")};`,
+                    `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = '${claimtime.format("YYYY-MM-DD")}';`,
                     async function (err, result) {
                       if (!err){
                         claimbox.setAuthor(
@@ -491,7 +491,6 @@ client.on("interactionCreate", async (mainInteraction) => {
                         ).setTitle(`Claimed: ⧈${drop}`).setDescription(`Current Streak: ${streak}`).setColor(0x00ff00);
                         await mainInteraction.editReply({ embeds: [claimbox] });
                       } else {
-                        console.log(err);
                         claimbox.setAuthor(
                           { name: 'HashCraft Faucet', iconURL: notdone}
                         ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
