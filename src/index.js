@@ -502,7 +502,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                             }
                             var drop;
                             if (streak <= 100) {
-                              drop = Math.ceil(((streak * streak) / 111) + 10);
+                              drop = Math.round(((streak * streak) / 111) + 10);
                             } else {
                               drop = 100;
                             }
