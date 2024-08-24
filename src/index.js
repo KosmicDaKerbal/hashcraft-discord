@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ver = "0.4.8 unstable";
+const ver = "0.4.9 unstable";
 const ico = "https://i.postimg.cc/dVvZgrNp/Hash-Craft-Logo.png";
 const loading = "https://media.tenor.com/-n8JvVIqBXkAAAAM/dddd.gif";
 const done = "https://i.postimg.cc/gjWcVZgy/green-check-mark-icon-in-round-shape-design-png.webp";
@@ -476,8 +476,14 @@ client.on("interactionCreate", async (mainInteraction) => {
                 const use = result[0].last_used;
                 const timediff = claimtime.diff(use, 'day');
                 switch (timediff) {
-                  case 1:
-                    streak = streak + 1;
+                  case !0:
+                    var lost;
+                    if (timediff == 1){
+                      streak = streak + 1;
+                      lost = 0;
+                    } else {
+                      lost = 1;
+                    }
                     var drop;
                     if (streak <= 100) {
                       drop = Math.ceil(((streak * streak) / 111) + 10);
@@ -490,7 +496,11 @@ client.on("interactionCreate", async (mainInteraction) => {
                         if (!err) {
                           claimbox.setAuthor(
                             { name: 'HashCraft Faucet', iconURL: done }
-                          ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\n Current Streak: ${streak}`).setColor(0x00ff00);
+                          ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`).setColor(0x00ff00);
+                          if (lost){
+                           claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
+                           streak = 1;
+                          }
                           await mainInteraction.editReply({ embeds: [claimbox] });
                         } else {
                           claimbox.setAuthor(
@@ -506,10 +516,13 @@ client.on("interactionCreate", async (mainInteraction) => {
                     ).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
                     await mainInteraction.editReply({ embeds: [claimbox] });
                     break;
-                  default:
-
-                    break;
                 }
+              } else {
+                claimbox.setAuthor(
+                  { name: 'HashCraft Faucet', iconURL: notdone }
+                ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
+                await mainInteraction.reply({ embeds: [claimbox] });
+                console.log(err);
               }
             });
         }
