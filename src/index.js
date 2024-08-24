@@ -461,15 +461,14 @@ client.on("interactionCreate", async (mainInteraction) => {
             console.log(err);
           } else {
             await mainInteraction.reply({ embeds: [claimbox] });
-            const claimtime = dayjs().format('YYYY-MM-DD');
+            const claimtime = dayjs().format('DD-MM-YYYY');
             con.query(
               `select streak, last_used from Faucet where userid = ${u}`,
               async function (err, result) {
               if (!err){
                 const streak = result[0].streak;
                 const use = result[0].last_used;
-                console.log(use);
-                if (dayjs(use).isYesterday){
+                if (claimtime.diff(use, 'day') == 1){
                   if (streak <= 100){
                     const drop = Math.ceil(((streak * streak)/125)+10);
                     console.log(drop);
