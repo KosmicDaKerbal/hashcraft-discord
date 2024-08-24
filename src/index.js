@@ -471,8 +471,9 @@ client.on("interactionCreate", async (mainInteraction) => {
           con.query(
             `select wallet_name, streak, last_used from Faucet where userid = ${u};`,
             async function (err, result) {
+              console.log(result);
               if (!err) {
-                if (result[0].wallet_name || result == null){
+                if (result[0].wallet_name == null){
                   claimbox.setAuthor(
                     { name: 'HashCraft Faucet', iconURL: notdone }
                   ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
