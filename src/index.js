@@ -36,7 +36,7 @@ const client = new Client({
 });
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
-  client.user.setPresence({status: 'online'});
+  client.user.setPresence({ status: 'online' });
   const u = mainInteraction.user.id;
   switch (mainInteraction.commandName) {
     case "help":
@@ -309,10 +309,10 @@ client.on("interactionCreate", async (mainInteraction) => {
                                         collector.on("end", async () => {
                                           confirm.setDisabled(true);
                                           cancel.setDisabled(true);
-                                          client.user.setPresence({status: 'idle'});
-                                            await sqlInteraction.editReply({
-                                              components: [choice],
-                                            });
+                                          client.user.setPresence({ status: 'idle' });
+                                          await sqlInteraction.editReply({
+                                            components: [choice],
+                                          });
                                         });
                                       } else {
                                         confirmbox
@@ -367,10 +367,10 @@ client.on("interactionCreate", async (mainInteraction) => {
                         collector2.on("end", async () => {
                           confirm.setDisabled(true);
                           cancel.setDisabled(true);
-                          client.user.setPresence({status: 'idle'});
-                            await mainInteraction.editReply({
-                              components: [choice],
-                            });
+                          client.user.setPresence({ status: 'idle' });
+                          await mainInteraction.editReply({
+                            components: [choice],
+                          });
                         });
                       } else {
                         const accountRemove = new ActionRowBuilder().addComponents(
@@ -434,13 +434,13 @@ client.on("interactionCreate", async (mainInteraction) => {
                                 break;
                             }
                           });
-                          collector.on("end", async () => {
-                            remove.setDisabled(true);
-                            client.user.setPresence({status: 'idle'});
-                              await mainInteraction.editReply({
-                                components: [accountRemove],
-                              });
+                        collector.on("end", async () => {
+                          remove.setDisabled(true);
+                          client.user.setPresence({ status: 'idle' });
+                          await mainInteraction.editReply({
+                            components: [accountRemove],
                           });
+                        });
                       }
                     }
                   }
@@ -451,70 +451,82 @@ client.on("interactionCreate", async (mainInteraction) => {
         }
       });
       break;
-      case 'claim':
-        const claimbox = new EmbedBuilder()
-        .setAuthor({ name: 'HashCraft Faucet', iconURL: loading})
+    case 'claim':
+      const claimbox = new EmbedBuilder()
+        .setAuthor({ name: 'HashCraft Faucet', iconURL: loading })
         .setTitle("Please Wait...")
         .setColor(0xf18701)
         .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
         .setTimestamp();
-        con.getConnection(async function (err) {
-          if (err) {
-            claimbox.setAuthor(
-              { name: 'HashCraft Faucet', iconURL: notdone}
-            ).setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
-            await mainInteraction.reply({ embeds: [claimbox] });
-            console.log(err);
-          } else {
-            await mainInteraction.reply({ embeds: [claimbox] });
-            const claimtime = dayjs();
-            con.query(
-              `select streak, last_used from Faucet where userid = ${u};`,
-              async function (err, result) {
-              if (!err){
+      con.getConnection(async function (err) {
+        if (err) {
+          claimbox.setAuthor(
+            { name: 'HashCraft Faucet', iconURL: notdone }
+          ).setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
+          await mainInteraction.reply({ embeds: [claimbox] });
+          console.log(err);
+        } else {
+          await mainInteraction.reply({ embeds: [claimbox] });
+          const claimtime = dayjs();
+          con.query(
+            `select streak, last_used from Faucet where userid = ${u};`,
+            async function (err, result) {
+              if (!err) {
                 var streak = result[0].streak;
                 const use = result[0].last_used;
-                if (claimtime.diff(use, 'day') == 1){
-                  streak = streak + 1;
-                  var drop;
-                  if (streak <= 100){
-                    drop = Math.ceil(((streak * streak)/111)+10);
-                  } else {
-                    drop = 100;
-                  }
-                  con.query(
-                    `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = '${claimtime.format("YYYY-MM-DD")}';`,
-                    async function (err, result) {
-                      if (!err){
-                        claimbox.setAuthor(
-                          { name: 'HashCraft Faucet', iconURL: done}
-                        ).setTitle(`Claim Successful`).setDescription(`Claimed: ⧈${drop}\n Current Streak: ${streak}`).setColor(0x00ff00);
-                        await mainInteraction.editReply({ embeds: [claimbox] });
-                      } else {
-                        claimbox.setAuthor(
-                          { name: 'HashCraft Faucet', iconURL: notdone}
-                        ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
-                        await mainInteraction.editReply({ embeds: [claimbox] });
-                      }
-                    });
+                const timediff = claimtime.diff(use, 'day');
+                switch (timediff) {
+                  case 1:
+                    streak = streak + 1;
+                    var drop;
+                    if (streak <= 100) {
+                      drop = Math.ceil(((streak * streak) / 111) + 10);
+                    } else {
+                      drop = 100;
+                    }
+                    con.query(
+                      `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = '${claimtime.format("YYYY-MM-DD")}';`,
+                      async function (err, result) {
+                        if (!err) {
+                          claimbox.setAuthor(
+                            { name: 'HashCraft Faucet', iconURL: done }
+                          ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\n Current Streak: ${streak}`).setColor(0x00ff00);
+                          await mainInteraction.editReply({ embeds: [claimbox] });
+                        } else {
+                          claimbox.setAuthor(
+                            { name: 'HashCraft Faucet', iconURL: notdone }
+                          ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
+                          await mainInteraction.editReply({ embeds: [claimbox] });
+                        }
+                      });
+                    break;
+                  case 0:
+                    claimbox.setAuthor(
+                      { name: 'HashCraft Faucet', iconURL: notdone }
+                    ).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
+                    await mainInteraction.editReply({ embeds: [claimbox] });
+                    break;
+                  default:
+
+                    break;
                 }
               }
-              });
-            }
-          });
-        break;
+            });
+        }
+      });
+      break;
   }
 });
 
 console.log("Connecting...");
 client.on("ready", (c) => {
   console.log("Welcome to HashCraft.");
-  client.user.setPresence({ 
-    activities: [{ 
-        name: '/help', 
-        type: ActivityType.Listening 
-    }], 
-    status: 'idle' 
+  client.user.setPresence({
+    activities: [{
+      name: '/help',
+      type: ActivityType.Listening
+    }],
+    status: 'idle'
   });
 });
 client.login(process.env.TOKEN);
