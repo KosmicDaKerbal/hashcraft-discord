@@ -473,10 +473,10 @@ client.on("interactionCreate", async (mainInteraction) => {
               `select streak, last_used from Faucet where userid = ${u};`,
               async function (err, result) {
               if (!err){
-                const streak = result[0].streak;
+                var streak = result[0].streak;
                 const use = result[0].last_used;
                 if (claimtime.diff(use, 'day') == 1){
-                  streak++;
+                  streak = streak + 1;
                   var drop;
                   if (streak <= 100){
                     drop = Math.ceil(((streak * streak)/111)+10);
