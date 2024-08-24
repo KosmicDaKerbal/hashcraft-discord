@@ -461,7 +461,8 @@ client.on("interactionCreate", async (mainInteraction) => {
             console.log(err);
           } else {
             await mainInteraction.reply({ embeds: [claimbox] });
-            const claimtime = dayjs().format('DD-MM-YYYY');
+            const claimtime = dayjs();
+            claimtime.format("DD-MM-YYYY");
             con.query(
               `select streak, last_used from Faucet where userid = ${u}`,
               async function (err, result) {
