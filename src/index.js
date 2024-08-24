@@ -3,6 +3,7 @@ const ver = "0.4.8 unstable";
 const ico = "https://i.postimg.cc/dVvZgrNp/Hash-Craft-Logo.png";
 const loading = "https://media.tenor.com/-n8JvVIqBXkAAAAM/dddd.gif";
 const done = "https://discord.com/assets/27311c5caafe667efb19.svg";
+const notdone = "https://discord.com/assets/2be29cad306554d57be9.svg";
 const {
   Client,
   IntentsBitField,
@@ -446,16 +447,16 @@ client.on("interactionCreate", async (mainInteraction) => {
       break;
       case 'claim':
         const claimbox = new EmbedBuilder()
-        .setTitle("HashCraft Faucet")
-        .setDescription("Please Wait...")
-        .setColor(0xff0000)
+        .setAuthor({ name: 'HashCraft Faucet', iconURL: loading})
+        .setTitle("Please Wait...")
+        .setColor(0xf18701)
         .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
         .setTimestamp();
         con.getConnection(async function (err) {
           if (err) {
-            claimbox.setDescription(
-              "Internal Server Error: Unable to connect to Faucet Database."
-            );
+            claimbox.setAuthor(
+              { name: 'HashCraft Faucet', iconURL: notdone}
+            ).setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
             await mainInteraction.reply({ embeds: [claimbox] });
             console.log(err);
           } else {
@@ -467,9 +468,11 @@ client.on("interactionCreate", async (mainInteraction) => {
               if (!err){
                 const streak = result[0].streak;
                 const use = result[0].last_used;
+                console.log (user);
                 if (dayjs(use).isYesterday){
                   if (streak <= 100){
                     const drop = Math.ceil(((streak * streak)/125)+10);
+                    console.log(drop);
                   } else {
                     const drop = 100;
                   }
