@@ -131,7 +131,7 @@ client.on("interactionCreate", async (mainInteraction) => {
           );
           await mainInteraction.editReply({ embeds: [confirmbox] });
           con.query(
-            `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}, last_used = '0000-00-00'`,
+            `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
             async function (err, result) {
               if (err) {
                 confirmbox.setDescription(
@@ -474,8 +474,7 @@ client.on("interactionCreate", async (mainInteraction) => {
               if (!err) {
                 var streak = result[0].streak;
                 const use = result[0].last_used;
-                const timediff = claimtime.diff(use, 'day');
-                console.log(String(use));
+                const timediff = claimtime.diff(use, 'day')
                 switch (timediff) {
                   case !0:
                     var lost;
@@ -498,7 +497,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                           claimbox.setAuthor(
                             { name: 'HashCraft Faucet', iconURL: done }
                           ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`).setColor(0x00ff00);
-                          if (lost){
+                          if (lost && use != null){
                            claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
                            streak = 1;
                           }
