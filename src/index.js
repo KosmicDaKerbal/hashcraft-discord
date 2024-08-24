@@ -1,6 +1,8 @@
 require("dotenv").config();
-const ver = "0.4.7 dry-run";
+const ver = "0.4.8 unstable";
 const ico = "https://i.postimg.cc/dVvZgrNp/Hash-Craft-Logo.png";
+const loading = "https://media.tenor.com/-n8JvVIqBXkAAAAM/dddd.gif";
+const done = "https://discord.com/assets/27311c5caafe667efb19.svg";
 const {
   Client,
   IntentsBitField,
@@ -15,6 +17,8 @@ const {
 const http = require("http");
 const process = require("process");
 var mysql = require("mysql");
+const dayjs = require('dayjs');
+var isYesterday = require("dayjs/plugin/isYesterday");
 var con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -440,6 +444,41 @@ client.on("interactionCreate", async (mainInteraction) => {
         }
       });
       break;
+      case 'claim':
+        const claimbox = new EmbedBuilder()
+        .setTitle({ text: "HashCraft Faucet" + ver, iconURL: loading })
+        .setDescription("Please Wait...")
+        .setColor(0xff0000)
+        .setFooter({ text: "HashCraft v" + ver, iconURL: ico })
+        .setTimestamp();
+        con.getConnection(async function (err) {
+          if (err) {
+            claimbox.setDescription(
+              "Internal Server Error: Unable to connect to Faucet Database."
+            );
+            await mainInteraction.editReply({ embeds: [claimbox] });
+            console.log(err);
+          } else {
+            await mainInteraction.editReply({ embeds: [claimbox] });
+            const claimtime = dayjs().format('YYYY-MM-DD');
+            con.query(
+              `select streak, last_used from Faucet where userid = ${u}`,
+              async function (err, result) {
+              if (!err){
+                const streak = result[0].streak;
+                const use = result[0].last_used;
+                if (dayjs(use).isYesterday){
+                  if (streak <= 100){
+                    const drop = Math.ceil(((streak * streak)/125)+10);
+                  } else {
+                    const drop = 100;
+                  }
+                }
+              }
+              });
+            }
+          });
+        break;
   }
 });
 

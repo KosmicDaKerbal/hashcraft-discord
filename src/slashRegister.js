@@ -22,6 +22,10 @@ const commands = [
         },
     ],
 },
+{
+    name: 'claim',
+    description: 'Get your daily ⧈ mDU',
+},
 ];
 const rest = new REST({version:'10'}).setToken(process.env.TOKEN);
 (async() => {
