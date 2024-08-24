@@ -467,9 +467,8 @@ client.on("interactionCreate", async (mainInteraction) => {
               async function (err, result) {
               if (!err){
                 const streak = result[0].streak;
-                const use = String(result[0].last_used).substring(0,9);
+                const use = String(result[0].last_used).slice(0,9);
                 console.log(use);
-                console.log(dayjs(use));
                 if (dayjs(use).isYesterday){
                   if (streak <= 100){
                     const drop = Math.ceil(((streak * streak)/125)+10);
