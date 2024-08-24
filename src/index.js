@@ -468,7 +468,6 @@ client.on("interactionCreate", async (mainInteraction) => {
           } else {
             await mainInteraction.reply({ embeds: [claimbox] });
             const claimtime = dayjs();
-            claimtime.format("YYYY-MM-DD");
             con.query(
               `select streak, last_used from Faucet where userid = ${u};`,
               async function (err, result) {
@@ -484,7 +483,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                     drop = 100;
                   }
                   con.query(
-                    `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = ${claimtime};`,
+                    `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = ${claimtime};`,
                     async function (err, result) {
                       if (!err){
                         claimbox.setAuthor(
