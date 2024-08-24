@@ -518,6 +518,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                    streak = 1;
                                   } else {
                                     streak = 1;
+                                    claimbox.setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`);
                                   }
                                   await mainInteraction.editReply({ embeds: [claimbox] });
                                 } else {
