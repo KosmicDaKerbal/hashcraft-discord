@@ -469,6 +469,7 @@ client.on("interactionCreate", async (mainInteraction) => {
               if (!err){
                 const streak = result[0].streak;
                 const use = result[0].last_used;
+                console.log(claimtime.diff(use, 'day'));
                 if (claimtime.diff(use, 'day') == 1){
                   if (streak <= 100){
                     const drop = Math.ceil(((streak * streak)/125)+10);
