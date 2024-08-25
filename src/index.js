@@ -43,10 +43,11 @@ client.on("interactionCreate", async (mainInteraction) => {
       setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
       break;
     case "link":
-      link.start(mainInteraction, mainInteraction.user.id, con);
+      link.start(mainInteraction, mainInteraction.user.id, con, client);
       break;
     case 'claim':
       claim.drop(mainInteraction, mainInteraction.user.id, con);
+      setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
       break;
       case 'deposit':
         break;

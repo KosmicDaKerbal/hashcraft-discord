@@ -8,7 +8,7 @@ const {
     ComponentType,
   } = require("discord.js");
 module.exports = {
-start: async function (embed, userid, con){
+start: async function (embed, userid, con, client){
     const u = userid;
     const confirmbox = new EmbedBuilder()
         .setTitle("Link Account to User")
