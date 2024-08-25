@@ -9,7 +9,7 @@ const {
     ComponentType,
   } = require("discord.js");
 const process = require("process");
-const http = require ("http");
+const https = require ("https");
 module.exports = {
  transfer: async function (embed, userid, con){
  const deposit = new EmbedBuilder()
@@ -37,7 +37,7 @@ module.exports = {
                       `update Faucet set mdu_bal = ${bal-dep} where Faucet.userid = ${userid}`,
                       async function (err) {
                         if (!err){
-                          http.get("http://server.duinocoin.com/transaction?username=" + process.env.MASTER_USER + "&password=" + process.env.MASTER_KEY + "&recipient=" + recip + "&amount=" + dep + "&memo=HashCraft_Faucet",(res) => {
+                          https.get("http://server.duinocoin.com/transaction?username=".concat(process.env.MASTER_USER).concat("&password=").concat(process.env.MASTER_KEY).concat("&recipient=").concat(recip).concat("&amount=").concat(dep).concat("&memo=HashCraft_Faucet"),(res) => {
                             let data = "";
                             res.on("data", (chunk) => {
                               data += chunk;
