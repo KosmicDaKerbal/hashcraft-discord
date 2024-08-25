@@ -3,7 +3,6 @@ const dayjs = require('dayjs');
   const {
     EmbedBuilder,
   } = require("discord.js");
-const link = require("./link");
 module.exports = {
 drop: async function (embed, userid, con){
     const u = userid;
