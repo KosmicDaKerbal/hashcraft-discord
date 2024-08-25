@@ -26,6 +26,18 @@ const commands = [
     name: 'claim',
     description: 'Get your daily ⧈ mDU',
 },
+{
+    name: 'deposit',
+    description: "Convert your ⧈ mDU into DUCO and transfer it to your account",
+    options: [
+        {
+            name: 'amount',
+            description: 'Amount to deposit',
+            type: ApplicationCommandOptionType.Integer,
+            required: true,
+        },
+    ],
+},
 ];
 const rest = new REST({version:'10'}).setToken(process.env.TOKEN);
 (async() => {

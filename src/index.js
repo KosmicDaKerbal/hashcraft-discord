@@ -16,6 +16,7 @@ var help = require('./commands/help');
 var link = require('./commands/link');
 var claim = require('./commands/claim');
 var stats = require('./commands/stats');
+const deposit = require("./commands/deposit");
 var con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -50,6 +51,8 @@ client.on("interactionCreate", async (mainInteraction) => {
       setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
       break;
       case 'deposit':
+        deposit.transfer(mainInteraction, mainInteraction.user.id, con);
+        setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
         break;
   }
 });
