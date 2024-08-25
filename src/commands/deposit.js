@@ -47,6 +47,7 @@ module.exports = {
                             });
                             res.on("end", async () => {
                             const json = JSON.parse(data);
+                              console.log(data);
                               if (json.success){
                                 const txid = String(json.result).split(",")[2];
                                 deposit.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.SUCCESS })
