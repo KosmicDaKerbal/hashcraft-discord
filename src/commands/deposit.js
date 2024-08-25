@@ -29,29 +29,30 @@ module.exports = {
             con.query(
               `select mdu_bal, wallet_name from Faucet where userid = ${userid}`,
               async function (err, result) {
-                const dep = embed.options.get("amount").value;
+                const dep = embed.options.get("amount").value / 100;
                 const recip = result[0].wallet_name;
                 const bal = result[0].mdu_bal;
+                const send = dep/100;
                 if (!err) {
                   if (bal >= dep){
                     con.query(
                       `update Faucet set mdu_bal = ${bal-dep} where Faucet.userid = ${userid}`,
                       async function (err) {
                         if (!err){
-                          const url = `http://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(dep) + `&memo=HashCraft_Faucet`;
+                          const url = `http://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(send) + `&memo=HashCraft_Faucet`;
                           http.get(url,(res) => {
                             let data = "";
                             res.on("data", (chunk) => {
                               data += chunk;
                             });
                             res.on("end", async () => {
-                              console.log(data);
                             const json = JSON.parse(data);
                               if (json.success){
+                                const txid = String(json.result).split(",")[2];
                                 deposit.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.SUCCESS })
                                 .setTitle("Deposit Successful")
                                 .setColor(0x00ff00)
-                                .setDescription(`Successfully transferred ⧈${dep} into ${dep/100} and sent to ${recip}`)
+                                .setDescription(`Successfully transferred ⧈${dep} into ${dep/100} and sent to ${recip}\nTxID: [${txid}](https://explorer.duinocoin.com?search=${txid})`)
                                 .setTimestamp();
                               } else {
                                 deposit.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
