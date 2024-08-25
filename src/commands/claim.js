@@ -1,18 +1,11 @@
 const process = require("process");
-var mysql = require("mysql");
 const dayjs = require('dayjs');
-var con = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_KEY,
-    database: process.env.MYSQL_DB,
-  });
   const {
     EmbedBuilder,
   } = require("discord.js");
 const link = require("./link");
 module.exports = {
-drop: async function (embed, userid){
+drop: async function (embed, userid, con){
     const u = userid;
     const claimbox = new EmbedBuilder()
     .setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.PROCESSING })

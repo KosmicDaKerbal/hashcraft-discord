@@ -1,9 +1,4 @@
 require("dotenv").config();
-const ver = "0.4.9 dry-run";
-  const ico = "";
-  const loading = "";
-  const done = "";
-  const notdone = "";
 const {
   Client,
   IntentsBitField,
@@ -21,7 +16,12 @@ var help = require('./commands/help');
 var link = require('./commands/link');
 var claim = require('./commands/claim');
 var stats = require('./commands/stats');
-
+var con = mysql.createPool({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_KEY,
+  database: process.env.MYSQL_DB,
+});
 const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -36,21 +36,22 @@ client.on("interactionCreate", async (mainInteraction) => {
   switch (mainInteraction.commandName) {
     case "help":
       help.send(mainInteraction);
+      setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
       break;
     case "stats":
       stats.send(mainInteraction);
+      setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
       break;
     case "link":
-      link.start(mainInteraction, mainInteraction.user.id);
+      link.start(mainInteraction, mainInteraction.user.id, con);
       break;
     case 'claim':
-      claim.drop(mainInteraction, mainInteraction.user.id);
+      claim.drop(mainInteraction, mainInteraction.user.id, con);
       break;
       case 'deposit':
         break;
   }
 });
-
 console.log("Connecting...");
 client.on("ready", (c) => {
   console.log("Welcome to HashCraft.");

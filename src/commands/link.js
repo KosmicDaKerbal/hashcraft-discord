@@ -1,12 +1,5 @@
 const process = require("process");
 const http = require("http");
-var mysql = require("mysql");
-var con = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_KEY,
-    database: process.env.MYSQL_DB,
-  });
 const {
     EmbedBuilder,
     ActionRowBuilder,
@@ -15,7 +8,7 @@ const {
     ComponentType,
   } = require("discord.js");
 module.exports = {
-start: async function (embed, userid){
+start: async function (embed, userid, con){
     const u = userid;
     const confirmbox = new EmbedBuilder()
         .setTitle("Link Account to User")
@@ -286,12 +279,13 @@ start: async function (embed, userid){
                           }
                         });
                         collector2.on("end", async () => {
-                          confirm.setDisabled(true);
+                          confirm.setLabel("Link Duino-Coin Account").setDisabled(true);
                           cancel.setDisabled(true);
                           client.user.setPresence({ status: 'idle' });
                           await embed.editReply({
                             components: [choice],
                           });
+                          confirm.setLabel("Confirm");
                         });
                       } else {
                         const accountRemove = new ActionRowBuilder().addComponents(
