@@ -20,7 +20,7 @@ module.exports = {
     .setTimestamp();
     con.getConnection(async function (err) {
         if (!err) {
-          if (embed.options.get("amount") <= 0){
+          if (embed.options.get("amount").value <= 0){
             deposit.setTitle("Amount should be greater than 0").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
             await embed.reply({ embeds: [deposit] });
           } else {
@@ -28,7 +28,7 @@ module.exports = {
             con.query(
               `select mdu_bal, wallet_name where userid = ${userid}`,
               async function (err, result) {
-                const dep = embed.options.get("amount");
+                const dep = embed.options.get("amount").value;
                 const recip = result[0].wallet_name;
                 const bal = result[0].mdu_bal;
                 if (!err) {
