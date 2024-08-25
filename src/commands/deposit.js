@@ -26,7 +26,7 @@ module.exports = {
           } else {
             await embed.reply({ embeds: [deposit] });
             con.query(
-              `select mdu_bal, wallet_name where userid = ${userid}`,
+              `select mdu_bal, wallet_name from Faucet where userid = ${userid}`,
               async function (err, result) {
                 const dep = embed.options.get("amount").value;
                 const recip = result[0].wallet_name;
