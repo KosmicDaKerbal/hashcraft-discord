@@ -1,5 +1,6 @@
 const process = require("process");
 var mysql = require("mysql");
+const dayjs = require('dayjs');
 var con = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -9,6 +10,7 @@ var con = mysql.createPool({
   const {
     EmbedBuilder,
   } = require("discord.js");
+const link = require("./link");
 module.exports = {
 drop: async function (embed, userid){
     const u = userid;

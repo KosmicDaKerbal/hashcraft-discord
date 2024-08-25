@@ -17,7 +17,6 @@ const {
 
 const process = require("process");
 var mysql = require("mysql");
-const dayjs = require('dayjs');
 var help = require('./commands/help');
 var link = require('./commands/link');
 var claim = require('./commands/claim');
@@ -34,7 +33,6 @@ const client = new Client({
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
-  const u = mainInteraction.user.id;
   switch (mainInteraction.commandName) {
     case "help":
       help.send(mainInteraction);
