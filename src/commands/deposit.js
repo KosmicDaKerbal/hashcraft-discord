@@ -37,7 +37,7 @@ module.exports = {
                       `update Faucet set mdu_bal = ${bal-dep} where Faucet.userid = ${userid}`,
                       async function (err) {
                         if (!err){
-                          https.get("https://server.duinocoin.com/transaction?username=".concat(process.env.MASTER_USER).concat("&amp;password=").concat(process.env.MASTER_KEY).concat("&amp;recipient=").concat(recip).concat("&amp;amount=").concat(dep).concat("&amp;memo=HashCraft_Faucet"),(res) => {
+                          https.get("https://server.duinocoin.com/transaction?username=".concat(process.env.MASTER_USER).concat("%26password=").concat(process.env.MASTER_KEY).concat("%26recipient=").concat(recip).concat("%26amount=").concat(dep).concat("%26memo=HashCraft_Faucet"),(res) => {
                             let data = "";
                             res.on("data", (chunk) => {
                               data += chunk;
