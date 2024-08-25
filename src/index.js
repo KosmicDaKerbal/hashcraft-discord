@@ -475,7 +475,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                   `select wallet_name, streak, last_used from Faucet where userid = ${u};`,
                   async function (err, result) {
                     if (!err) {
-                      if (result[0].wallet_name == null){
+                      if (result[0].wallet_name == null) {
                         claimbox.setAuthor(
                           { name: 'HashCraft Faucet', iconURL: notdone }
                         ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
@@ -493,7 +493,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                             break;
                           default:
                             var lost;
-                            if (timediff == 1){
+                            if (timediff == 1) {
                               streak = streak + 1;
                               lost = 0;
                             } else {
@@ -505,19 +505,19 @@ client.on("interactionCreate", async (mainInteraction) => {
                             } else {
                               drop = 100;
                             }
+                            claimbox.setAuthor(
+                              { name: 'HashCraft Faucet', iconURL: done }
+                            ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`).setColor(0x00ff00);
+                            if (lost && use != null) {
+                              claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
+                              streak = 1;
+                            } else {
+                              streak = 1;
+                            }
                             con.query(
                               `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = '${claimtime.format("YYYY-MM-DD")}';`,
                               async function (err, result) {
                                 if (!err) {
-                                  claimbox.setAuthor(
-                                    { name: 'HashCraft Faucet', iconURL: done }
-                                  ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`).setColor(0x00ff00);
-                                  if (lost && use != null){
-                                   claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
-                                   streak = 1;
-                                  } else {
-                                    streak = 1;
-                                  }
                                   await mainInteraction.editReply({ embeds: [claimbox] });
                                 } else {
                                   claimbox.setAuthor(
@@ -526,7 +526,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                                   await mainInteraction.editReply({ embeds: [claimbox] });
                                 }
                               });
-                        break;
+                            break;
                         }
                       }
                     } else {
