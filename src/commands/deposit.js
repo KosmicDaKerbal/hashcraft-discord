@@ -43,8 +43,7 @@ module.exports = {
                       async function (err) {
                         if (!err){
                           const url = `https://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(send) + `&memo=HashCraft_Faucet`;
-                          var command = `/usr/bin/curl --url '${url}' --http1.1 -4`;
-                          exec(command, function(error, stdout, stderr){
+                          exec(url, function(error, stdout, stderr){
                             console.log('stdout: ' + stdout);
                             console.log('stderr: ' + stderr);
                             if(error !== null)
