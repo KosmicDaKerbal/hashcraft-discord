@@ -32,7 +32,7 @@ module.exports = {
             con.query(
               `select mdu_bal, wallet_name from Faucet where userid = ${userid}`,
               async function (err, result) {
-                const dep = embed.options.get("amount").value / 100;
+                const dep = embed.options.get("amount").value;
                 const recip = result[0].wallet_name;
                 const bal = result[0].mdu_bal;
                 const send = dep/100;
@@ -43,7 +43,7 @@ module.exports = {
                       async function (err) {
                         if (!err){
                           const url = `https://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(send) + `&memo=HashCraft_Faucet`;
-                          var command = `curl '${url}' --http1.1 -6 --ssl-reqd --compressed-ssh`;
+                          var command = `curl --url '${url}' --http1.1 -6 --ssl-reqd --compressed-ssh --cacert './cert.pem'`;
                           exec(command, function(error, stdout, stderr){
                             console.log('stdout: ' + stdout);
                             console.log('stderr: ' + stderr);
