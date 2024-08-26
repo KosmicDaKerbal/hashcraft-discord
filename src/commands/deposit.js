@@ -8,12 +8,8 @@ const {
     ButtonStyle,
     ComponentType,
   } = require("discord.js");
-var util = require('util');
-var exec = require('child_process').exec;
 const process = require("process");
 const http = require ("http");
-const { stringify } = require("querystring");
-const { ChildProcess } = require("child_process");
 module.exports = {
  transfer: async function (embed, userid, con){
  const deposit = new EmbedBuilder()

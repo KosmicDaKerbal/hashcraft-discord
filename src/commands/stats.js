@@ -13,8 +13,8 @@ send: async function (embed){
         .setTitle("Bot Statistics")
         .setColor(0xf18701)
         .addFields(
-          { name: "Host", value: "AlwaysData", inline: true },
-          { name: "Database", value: "MySQL", inline: true },
+          { name: "Host", value: "Server Inspiron", inline: true },
+          { name: "Database", value: "AlwaysData MySQL", inline: true },
           { name: "RAM Usage", value: ram + "MB", inline: true }
         )
         .setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON })
