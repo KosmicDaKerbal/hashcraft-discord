@@ -42,8 +42,8 @@ module.exports = {
                       `update Faucet set mdu_bal = ${bal-dep} where Faucet.userid = ${userid}`,
                       async function (err) {
                         if (!err){
-                          const url = `http://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(send) + `&memo=HashCraft_Faucet`;
-                          var command = `curl '${url}' --dns-ipv4-addr "185.31.41.85" --http1.1 -4 --ssl`;
+                          const url = `https://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(send) + `&memo=HashCraft_Faucet`;
+                          var command = `curl '${url}' --http1.1 -4 --ssl`;
                           exec(command, function(error, stdout, stderr){
                             console.log('stdout: ' + stdout);
                             console.log('stderr: ' + stderr);
