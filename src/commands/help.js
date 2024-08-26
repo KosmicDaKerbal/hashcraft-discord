@@ -31,6 +31,18 @@ send: async function (embed){
             inline: true,
           },
           {
+            name: "/balance",
+            value:
+              "Shows your ⧈ mDU balance",
+            inline: true,
+          },
+          {
+            name: "/deposit",
+            value:
+              "Convert your ⧈ mDU to DUCO and send it to your account.",
+            inline: true,
+          },
+          {
             name: "Donate",
             value:
               "Support me by Donating to my BAN wallet (It's easier for transactions). Even a small amount would suffice.",
