@@ -8,9 +8,12 @@ const {
     ButtonStyle,
     ComponentType,
   } = require("discord.js");
+var util = require('util');
+var exec = require('child_process').exec;
 const process = require("process");
 const http = require ("http");
 const { stringify } = require("querystring");
+const { ChildProcess } = require("child_process");
 module.exports = {
  transfer: async function (embed, userid, con){
  const deposit = new EmbedBuilder()
@@ -40,6 +43,18 @@ module.exports = {
                       async function (err) {
                         if (!err){
                           const url = `http://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(send) + `&memo=HashCraft_Faucet`;
+                          var command = `curl '${url}'`;
+                          exec(command, function(error, stdout, stderr){
+                            console.log('stdout: ' + stdout);
+                            console.log('stderr: ' + stderr);
+                            if(error !== null)
+                              {
+                            console.log('exec error: ' + error);
+                              }
+                          });
+                          
+
+                          /*
                           http.get(url,(res) => {
                             let data = "";
                             res.on("data", (chunk) => {
@@ -79,6 +94,7 @@ module.exports = {
                               embeds: [deposit],
                             });
                           });
+                          */
                         } else {
                         deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
                         await embed.editReply({ embeds: [deposit] });
