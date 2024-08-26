@@ -14,7 +14,7 @@ drop: async function (embed, userid, con){
     .setTimestamp();
   con.getConnection(async function (err) {
     if (err) {
-      claimbox.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.PROCESSING })
+      claimbox.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
       .setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
       await embed.reply({ embeds: [claimbox] });
       console.log(err);
@@ -65,7 +65,7 @@ drop: async function (embed, userid, con){
                         if (lost && use != null) {
                           claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
                           streak = 1;
-                        } else {
+                        } else if (use == null) {
                           streak = 1;
                         }
                         con.query(

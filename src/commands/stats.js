@@ -1,4 +1,4 @@
-const process = require("process");
+require('dotenv').config({ path: require('find-config')('.env') });
 const {
     EmbedBuilder,
   } = require("discord.js");
