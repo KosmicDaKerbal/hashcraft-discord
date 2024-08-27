@@ -9,7 +9,6 @@ const {
   } = require("discord.js");
 module.exports = {
 start: async function (embed, userid, con, client){
-  await embed.deferReply();
     const u = userid;
     const confirmbox = new EmbedBuilder()
         .setTitle("Link Account to User")
@@ -32,25 +31,28 @@ start: async function (embed, userid, con, client){
         .setLabel("Remove")
         .setStyle(ButtonStyle.Danger)
         .setDisabled(false);
-      await embed.editReply({ embeds: [confirmbox] });
+      //await embed.editReply({ embeds: [confirmbox] });
       con.getConnection(async function (err) {
         if (err) {
+          await embed.deferReply();
           confirmbox.setDescription(
             "Please Wait...\nConnecting to DB...\nInternal Server Error: Unable to connect to Faucet Database."
           );
           await embed.editReply({ embeds: [confirmbox] });
           console.log(err);
         } else {
+          /*
           confirmbox.setDescription(
             "Please Wait...\nConnected to DB.\nQuerying Account Link..."
           );
-          await embed.editReply({ embeds: [confirmbox] });
+          await embed.editReply({ embeds: [confirmbox] });*/
           con.query(
             `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
             async function (err, result) {
               if (err) {
+                await embed.deferReply();
                 confirmbox.setDescription(
-                  "Please Wait...\nConnected to DB.\nQuerying Account Link...\nQuery Failed: Couldn't update UserID"
+                  "Query Failed: Couldn't update UserID"
                 );
                 await embed.editReply({ embeds: [confirmbox] });
                 console.log(err);
@@ -59,12 +61,14 @@ start: async function (embed, userid, con, client){
                   `select wallet_name from Faucet where userid = ${u}`,
                   async function (err, result) {
                     if (err) {
+                      await embed.deferReply();
                       confirmbox.setDescription(
-                        "Please Wait...\nConnected to DB.\nQuerying Account Link...\nQuery Failed: Couldn't get Wallet Name"
+                        "Query Failed: Couldn't get Wallet Name"
                       );
                       await embed.editReply({ embeds: [confirmbox] });
                       console.log(err);
                     } else {
+                      await embed.deferReply();
                       if (result[0].wallet_name === null) {
                         const choice = new ActionRowBuilder().addComponents(
                           cancel,
@@ -89,6 +93,7 @@ start: async function (embed, userid, con, client){
                           time: 30_000,
                         });
                         collector2.on("collect", async (sqlInteraction) => {
+                          await sqlInteraction.deferReply();
                           switch (sqlInteraction.customId) {
                             case "confirm":
                               confirm.setDisabled(true);
@@ -131,7 +136,7 @@ start: async function (embed, userid, con, client){
                                             confirm
                                           );
                                         const filter = (i) => i.user.id === sqlInteraction.user.id;
-                                        const rep = await sqlInteraction.reply({
+                                        const rep = await sqlInteraction.editreply({
                                           embeds: [confirmbox],
                                           components: [choice2],
                                           fetchReply: true,
@@ -145,6 +150,7 @@ start: async function (embed, userid, con, client){
                                         collector.on(
                                           "collect",
                                           async (linkInteraction) => {
+                                            await linkInteraction.deferReply();
                                             switch (linkInteraction.customId) {
                                               case "confirm":
                                                 cancel.setStyle(ButtonStyle.Secondary);
@@ -216,7 +222,7 @@ start: async function (embed, userid, con, client){
                                             await sqlInteraction.editReply({
                                               components: [choice],
                                             });
-                                            await linkInteraction.reply({
+                                            await linkInteraction.editReply({
                                               embeds: [confirmbox],
                                             });
                                           }
@@ -230,6 +236,7 @@ start: async function (embed, userid, con, client){
                                           });
                                         });
                                       } else {
+                                        await sqlInteraction.deferReply();
                                         confirmbox
                                           .setDescription(
                                             "Error: " + String(json.message)
@@ -238,7 +245,7 @@ start: async function (embed, userid, con, client){
                                           .setTimestamp();
                                         confirm.setDisabled(true);
                                         cancel.setDisabled(true);
-                                        await sqlInteraction.reply({
+                                        await sqlInteraction.editReply({
                                           embeds: [confirmbox],
                                         });
                                       }
@@ -246,6 +253,7 @@ start: async function (embed, userid, con, client){
                                   }
                                 )
                                 .on("error", async (e) => {
+                                  await sqlInteraction.deferReply();
                                   confirmbox
                                     .setDescription(
                                       "Error while fetching API Request: ```\n" +
@@ -254,12 +262,13 @@ start: async function (embed, userid, con, client){
                                     )
                                     .setColor(0xff0000)
                                     .setTimestamp();
-                                  await sqlInteraction.reply({
+                                  await sqlInteraction.editReply({
                                     embeds: [confirmbox],
                                   });
                                 });
                               break;
                             case "cancel":
+                              await sqlInteraction.deferReply();
                               confirmbox
                                 .setTitle(
                                   "Cancelled Linking Account " +
@@ -276,7 +285,7 @@ start: async function (embed, userid, con, client){
                               await embed.editReply({
                                 components: [choice]
                               });
-                              await sqlInteraction.reply({ embeds: [confirmbox] });
+                              await sqlInteraction.editReply({ embeds: [confirmbox] });
                           }
                         });
                         collector2.on("end", async () => {
@@ -317,6 +326,7 @@ start: async function (embed, userid, con, client){
                                 con.query(
                                   `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
                                   async function (err, result) {
+                                    await existsInteraction.deferReply();
                                     if (err) {
                                       confirmbox.setDescription.setTitle(
                                         "Removing Account " +
@@ -345,7 +355,7 @@ start: async function (embed, userid, con, client){
                                       ButtonStyle.Success
                                     ).setDisabled(true);
                                     await embed.editReply({ components: [accountRemove] });
-                                    await existsInteraction.reply({ embeds: [confirmbox] });
+                                    await existsInteraction.editReply({ embeds: [confirmbox] });
                                   });
                                 break;
                             }

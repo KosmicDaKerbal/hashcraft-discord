@@ -5,7 +5,6 @@ const process = require("process");
 const http = require ("http");
 module.exports = {
  transfer: async function (embed, userid, con){
-  await embed.deferReply();
  const deposit = new EmbedBuilder()
     .setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.PROCESSING })
     .setTitle("Please Wait...")
@@ -15,10 +14,12 @@ module.exports = {
     con.getConnection(async function (err) {
         if (!err) {
           if (embed.options.get("amount").value <= 0){
+            await embed.deferReply();
             deposit.setTitle("Amount should be greater than 0").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
             await embed.editReply({ embeds: [deposit] });
           } else {
-            await embed.editReply({ embeds: [deposit] });
+            await embed.deferReply();
+            //await embed.editReply({ embeds: [deposit] });
             con.query(
               `select mdu_bal, wallet_name from Faucet where userid = ${userid}`,
               async function (err, result) {
