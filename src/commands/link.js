@@ -9,6 +9,7 @@ const {
   } = require("discord.js");
 module.exports = {
 start: async function (embed, userid, con, client){
+  await embed.deferReply();
     const u = userid;
     const confirmbox = new EmbedBuilder()
         .setTitle("Link Account to User")
@@ -31,7 +32,7 @@ start: async function (embed, userid, con, client){
         .setLabel("Remove")
         .setStyle(ButtonStyle.Danger)
         .setDisabled(false);
-      await embed.reply({ embeds: [confirmbox] });
+      await embed.editReply({ embeds: [confirmbox] });
       con.getConnection(async function (err) {
         if (err) {
           confirmbox.setDescription(
