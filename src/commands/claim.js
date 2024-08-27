@@ -88,7 +88,7 @@ drop: async function (embed, userid, con){
                   claimbox.setAuthor(
                     { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
                   ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
-                  await embed.reply({ embeds: [claimbox] });
+                  await embed.editReply({ embeds: [claimbox] });
                   console.log(err);
                 }
               });
@@ -96,7 +96,7 @@ drop: async function (embed, userid, con){
             claimbox.setAuthor(
               { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
             ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
-            await embed.reply({ embeds: [claimbox] });
+            await embed.editReply({ embeds: [claimbox] });
             console.log(err);
           }
         });

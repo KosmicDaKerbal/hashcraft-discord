@@ -32,8 +32,8 @@ start: async function (embed, userid, con, client){
         .setStyle(ButtonStyle.Danger)
         .setDisabled(false);
       //await embed.editReply({ embeds: [confirmbox] });
+      await embed.deferReply();
       con.getConnection(async function (err) {
-        await embed.deferReply();
         if (err) {
           confirmbox.setDescription(
             "Please Wait...\nConnecting to DB...\nInternal Server Error: Unable to connect to Faucet Database."
