@@ -5,6 +5,7 @@ const dayjs = require('dayjs');
   } = require("discord.js");
 module.exports = {
 drop: async function (embed, userid, con){
+    await embed.deferReply();
     const u = userid;
     const claimbox = new EmbedBuilder()
     .setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.PROCESSING })
@@ -14,13 +15,11 @@ drop: async function (embed, userid, con){
     .setTimestamp();
   con.getConnection(async function (err) {
     if (err) {
-      await embed.deferReply();
       claimbox.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
       .setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
       await embed.editReply({ embeds: [claimbox] });
       console.log(err);
     } else {
-      await embed.deferReply();
       //await embed.editReply({ embeds: [claimbox] });
       con.query(
         `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,

@@ -4,16 +4,15 @@ const {
 const process = require("process");
 module.exports = {
     check: async function (embed, userid, con){
+      await embed.deferReply();
       const bal = new EmbedBuilder().setTitle("mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: "HashCraft v" + process.env.BOT_VERSION});
       con.getConnection(async function (err) {
         if (err) {
-          await embed.deferReply();
           bal.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
           .setTitle("Error: Unable to connect to DB.").setDescription("Please try again.").setColor(0xff0000);
           await embed.editReply({ embeds: [bal] });
           console.log(err);
         } else {
-          await embed.deferReply();
           //await embed.editReply({ embeds: [bal] });
       con.query(
         `select mdu_bal from Faucet where userid = ${userid}`,

@@ -33,8 +33,8 @@ start: async function (embed, userid, con, client){
         .setDisabled(false);
       //await embed.editReply({ embeds: [confirmbox] });
       con.getConnection(async function (err) {
+        await embed.deferReply();
         if (err) {
-          await embed.deferReply();
           confirmbox.setDescription(
             "Please Wait...\nConnecting to DB...\nInternal Server Error: Unable to connect to Faucet Database."
           );
@@ -50,7 +50,6 @@ start: async function (embed, userid, con, client){
             `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
             async function (err, result) {
               if (err) {
-                await embed.deferReply();
                 confirmbox.setDescription(
                   "Query Failed: Couldn't update UserID"
                 );
@@ -61,14 +60,12 @@ start: async function (embed, userid, con, client){
                   `select wallet_name from Faucet where userid = ${u}`,
                   async function (err, result) {
                     if (err) {
-                      await embed.deferReply();
                       confirmbox.setDescription(
                         "Query Failed: Couldn't get Wallet Name"
                       );
                       await embed.editReply({ embeds: [confirmbox] });
                       console.log(err);
                     } else {
-                      await embed.deferReply();
                       if (result[0].wallet_name === null) {
                         const choice = new ActionRowBuilder().addComponents(
                           cancel,
@@ -236,7 +233,6 @@ start: async function (embed, userid, con, client){
                                           });
                                         });
                                       } else {
-                                        await sqlInteraction.deferReply();
                                         confirmbox
                                           .setDescription(
                                             "Error: " + String(json.message)
@@ -253,7 +249,6 @@ start: async function (embed, userid, con, client){
                                   }
                                 )
                                 .on("error", async (e) => {
-                                  await sqlInteraction.deferReply();
                                   confirmbox
                                     .setDescription(
                                       "Error while fetching API Request: ```\n" +
@@ -268,7 +263,6 @@ start: async function (embed, userid, con, client){
                                 });
                               break;
                             case "cancel":
-                              await sqlInteraction.deferReply();
                               confirmbox
                                 .setTitle(
                                   "Cancelled Linking Account " +
