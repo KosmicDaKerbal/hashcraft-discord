@@ -90,7 +90,6 @@ start: async function (embed, userid, con, client){
                           time: 30_000,
                         });
                         collector2.on("collect", async (sqlInteraction) => {
-                          await sqlInteraction.deferReply();
                           switch (sqlInteraction.customId) {
                             case "confirm":
                               confirm.setDisabled(true);
@@ -101,6 +100,7 @@ start: async function (embed, userid, con, client){
                                 embeds: [confirmbox],
                                 components: [choice],
                               });
+                              await sqlInteraction.deferReply();
                               cancel.setDisabled(false).setStyle(ButtonStyle.Danger);
                               confirm.setLabel("Confirm").setDisabled(false);
                               http
@@ -216,11 +216,11 @@ start: async function (embed, userid, con, client){
                                             }
                                             confirm.setDisabled(true);
                                             cancel.setDisabled(true);
-                                            await sqlInteraction.editReply({
-                                              components: [choice],
-                                            });
                                             await linkInteraction.editReply({
                                               embeds: [confirmbox],
+                                            });
+                                            await sqlInteraction.editReply({
+                                              components: [choice],
                                             });
                                           }
                                         );
@@ -263,6 +263,7 @@ start: async function (embed, userid, con, client){
                                 });
                               break;
                             case "cancel":
+                              
                               confirmbox
                                 .setTitle(
                                   "Cancelled Linking Account " +

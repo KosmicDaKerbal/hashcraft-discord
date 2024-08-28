@@ -4,10 +4,6 @@ const {
   IntentsBitField,
   EmbedBuilder,
   ActivityType,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ComponentType,
 } = require("discord.js");
 
 const process = require("process");
@@ -35,31 +31,37 @@ const client = new Client({
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
-  switch (mainInteraction.commandName) {
-    case "help":
-      help.send(mainInteraction);
-      setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-      break;
-    case "stats":
-      stats.send(mainInteraction);
-      setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-      break;
-    case "link":
-      link.start(mainInteraction, mainInteraction.user.id, con, client);
-      break;
-    case 'claim':
-      claim.drop(mainInteraction, mainInteraction.user.id, con);
-      setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-      break;
-      case 'deposit':
-        deposit.transfer(mainInteraction, mainInteraction.user.id, con);
+  if (mainInteraction.member.roles.cache.some(role => role.name === 'HashCraft Verified') || mainInteraction.member.roles.cache.some(role => role.name === '⚠ UNVERIFIED ⚠')) {
+    switch (mainInteraction.commandName) {
+      case "help":
+        help.send(mainInteraction);
         setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
         break;
-      case 'balance':
-        balance.check(mainInteraction, mainInteraction.user.id, con);
+      case "stats":
+        stats.send(mainInteraction);
         setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
         break;
+      case "link":
+        link.start(mainInteraction, mainInteraction.user.id, con, client);
+        break;
+      case 'claim':
+        claim.drop(mainInteraction, mainInteraction.user.id, con);
+        setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+        break;
+        case 'deposit':
+          deposit.transfer(mainInteraction, mainInteraction.user.id, con);
+          setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+          break;
+        case 'balance':
+          balance.check(mainInteraction, mainInteraction.user.id, con);
+          setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+          break;
+    }
+  } else {
+    const verify = new EmbedBuilder().setTitle("User not verified").setColor(0xff0000).setDescription("Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#1267862884072030208> channel").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();
+    await mainInteraction.reply({ embeds: [verify] });
   }
+  
 });
 console.log("Connecting...");
 client.on("ready", (c) => {
