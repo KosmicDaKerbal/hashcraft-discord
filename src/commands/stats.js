@@ -1,4 +1,4 @@
-require('dotenv').config({ path: require('find-config')('.env') });
+const process = require("process");
 const {
     EmbedBuilder,
   } = require("discord.js");
@@ -18,7 +18,8 @@ send: async function (embed){
           { name: "RAM Usage", value: ram + "MB", inline: true }
         )
         .setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON })
-        .setTimestamp();
+        .setTimestamp()
+        .setImage(process.env.SERVER);
       await embed.reply({ embeds: [stats] });
 }
 }
