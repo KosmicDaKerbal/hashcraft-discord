@@ -1,43 +1,37 @@
 volumes:
-  hashcraftmariadb:
+  mariadb:
     driver: local
 
 networks:
     db:
         driver: bridge
+
 services:
-  botdb:
-    image: mariadb
-    restart: unless-stopped
-    expose:
-      - '3305'
-    ports:
-      - '3305:3306'
+  mariadb:
+    image: mariadb:10.6
+    restart: always
     environment:
-     - MYSQL_ROOT_PASSWORD=password
-     - MYSQL_USER=root
-     - MYSQL_PASSWORD=password
-     - MYSQL_TCP_PORT=3306
-     - MYSQL_DATABASE=mydb
+      MYSQL_ROOT_PASSWORD: YOUR_ROOT_PASSWORD_HERE
+      MYSQL_USER:  YOUR_MYSQL_USER_HERE 
+      MYSQL_PASSWORD: YOUR_USER_PW_HERE
+    expose:
+        - "40000"
+    ports:
+        - "40000:3306"
     volumes:
-      - hashcraftmariadb:/var/lib/hashcraft-mysql
+     - mariadb:/var/lib/mysql
     networks:
       db:
+              
   phpmyadmin:
     image: phpmyadmin
-    container_name: hashcraft-phpmyadmin
-    depends_on:
-      - botdb
     restart: always
     expose:
-      - '8081'
+      - "40001"
     ports:
-      - '8081:80'
+      - "40001:80"
     environment:
-      - PMA_HOST=botdb
-      - PMA_PORT=3305 
+      - PMA_HOST=mariadb
+      - PMA_PORT=3306 
     networks:
       db:
-  hashcraft:
-    image: hashcraft
-    restart: always
