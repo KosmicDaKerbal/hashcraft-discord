@@ -17,6 +17,8 @@ services:
      - MYSQL_ROOT_PASSWORD=password
      - MYSQL_USER=root
      - MYSQL_PASSWORD=password
+     - MYSQL_TCP_PORT=3305
+     - MYSQL_DATABASE=mydb
     volumes:
       - hashcraftmariadb:/var/lib/hashcraft-mysql
     networks:
