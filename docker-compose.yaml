@@ -1,4 +1,7 @@
 services:
+  hashcraft:
+    image: hashcraft
+    restart: always
   mariadb:
     platform: linux/x86_64
     image: mariadb
