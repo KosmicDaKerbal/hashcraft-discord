@@ -114,7 +114,7 @@ start: async function (embed, userid, con, client){
                                     });
                                     res.on("end", async () => {
                                       const json = JSON.parse(data);
-                                      console.log(data);
+                                      //console.log(data);
                                       if (json.success) {
                                         confirmbox
                                           .setDescription(
