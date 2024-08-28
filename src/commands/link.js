@@ -147,11 +147,6 @@ start: async function (embed, userid, con, client){
                                         collector.on(
                                           "collect",
                                           async (linkInteraction) => {
-                                            confirm.setDisabled(true);
-                                            cancel.setDisabled(true);
-                                            await sqlInteraction.editReply({
-                                              components: [choice],
-                                            });
                                             await linkInteraction.deferReply();
                                             switch (linkInteraction.customId) {
                                               case "confirm":
@@ -219,11 +214,14 @@ start: async function (embed, userid, con, client){
                                                 );
                                                 break;
                                             }
-                                            
+                                            confirm.setDisabled(true);
+                                            cancel.setDisabled(true);
+                                            await sqlInteraction.editReply({
+                                              components: [choice],
+                                            });
                                             await linkInteraction.editReply({
                                               embeds: [confirmbox],
                                             });
-                                            
                                           }
                                         );
                                         collector.on("end", async () => {
@@ -320,6 +318,10 @@ start: async function (embed, userid, con, client){
                           async (existsInteraction) => {
                             switch (existsInteraction.customId) {
                               case 'remove':
+                                remove.setStyle(
+                                  ButtonStyle.Success
+                                ).setDisabled(true);
+                                await embed.editReply({ components: [accountRemove] });
                                 con.query(
                                   `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
                                   async function (err, result) {
@@ -348,10 +350,7 @@ start: async function (embed, userid, con, client){
                                         .setColor(0x00ff00)
                                         .setTimestamp();
                                     }
-                                    remove.setStyle(
-                                      ButtonStyle.Success
-                                    ).setDisabled(true);
-                                    await embed.editReply({ components: [accountRemove] });
+                                    
                                     await existsInteraction.editReply({ embeds: [confirmbox] });
                                   });
                                 break;
