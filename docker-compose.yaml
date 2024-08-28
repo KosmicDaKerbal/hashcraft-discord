@@ -12,9 +12,9 @@ services:
     ports:
       - '3305:3305'
     environment:
-      MYSQL_ROOT_PASSWORD: YOUR_ROOT_PASSWORD_HERE
-      MYSQL_USER:  YOUR_MYSQL_USER_HERE 
-      MYSQL_PASSWORD: YOUR_USER_PW_HERE
+     - MYSQL_ROOT_PASSWORD=password
+     - MYSQL_USER=user
+     - MYSQL_PASSWORD=password
     volumes:
       - /hashcraft/db:/var/lib/hashcraft-mysql
     networks:
@@ -27,10 +27,9 @@ services:
     restart: always
     ports:
       - 8081:80
-    env_file:
-      - .env
     environment:
       - PMA_HOST=botdb
+      - PMA_PORT=3306 
     networks:
       db:
   hashcraft:
