@@ -1,5 +1,4 @@
 services:
-  # Database
   mariadb:
     platform: linux/x86_64
     image: mariadb
@@ -8,15 +7,10 @@ services:
     restart: always
     ports:
       - "3305:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: yourdb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
+    env_file:
+      - .env
     networks:
       - mariadb-phpmyadmin
-
-  # phpmyadmin
   phpmyadmin:
     depends_on:
       - mariadb
@@ -26,7 +20,8 @@ services:
       - "8090:80"
     environment:
       PMA_HOST: mariadb
-      MYSQL_ROOT_PASSWORD: password
+    env_file:
+      - .env
     networks:
       - mariadb-phpmyadmin
 
