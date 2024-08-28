@@ -1,5 +1,5 @@
 volumes:
-  /hashcraft/db:
+  hashcraftmariadb:
     driver: local
 
 networks:
@@ -18,7 +18,7 @@ services:
      - MYSQL_USER=root
      - MYSQL_PASSWORD=password
     volumes:
-      - /hashcraft/db:/var/lib/hashcraft-mysql
+      - hashcraftmariadb:/var/lib/hashcraft-mysql
     networks:
       db:
   phpmyadmin:
