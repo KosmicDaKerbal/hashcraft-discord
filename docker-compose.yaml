@@ -9,6 +9,11 @@ services:
       - "3305:3306"
     env_file:
       - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
     networks:
       - mariadb-phpmyadmin
   phpmyadmin:
@@ -18,10 +23,11 @@ services:
     restart: always
     ports:
       - "8090:80"
-    environment:
-      PMA_HOST: mariadb
     env_file:
       - .env
+    environment:
+      PMA_HOST: '${PMA_HOST}'
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
     networks:
       - mariadb-phpmyadmin
 
