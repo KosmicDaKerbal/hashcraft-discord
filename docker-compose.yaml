@@ -32,6 +32,3 @@ services:
 
 networks:
   mysql-phpmyadmin:
-
-volumes:
-  db_data:
