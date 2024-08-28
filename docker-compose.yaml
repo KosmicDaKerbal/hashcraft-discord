@@ -6,11 +6,6 @@ services:
     command: --transaction-isolation=READ-COMMITTED --skip-log-bin --innodb-file-per-table=1 --skip-innodb-read-only-compressed
     ports:
       - '3305:3305'
-    environment:
-      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-      MYSQL_DATABASE: '${MYSQL_DATABASE}'
-      MYSQL_USER: '${MYSQL_USER}'
-      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
     volumes:
       - db-data:/var/lib/hashcraft-mysql
     env_file:
@@ -27,9 +22,6 @@ services:
       - .env
     environment:
       - PMA_HOST: botdb
-      - MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-      - MYSQL_USER: '${MYSQL_USER}'
-      - MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
   hashcraft:
     image: hashcraft
     restart: always
