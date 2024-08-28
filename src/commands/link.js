@@ -147,6 +147,11 @@ start: async function (embed, userid, con, client){
                                         collector.on(
                                           "collect",
                                           async (linkInteraction) => {
+                                            confirm.setDisabled(true);
+                                            cancel.setDisabled(true);
+                                            await sqlInteraction.editReply({
+                                              components: [choice],
+                                            });
                                             await linkInteraction.deferReply();
                                             switch (linkInteraction.customId) {
                                               case "confirm":
@@ -214,11 +219,7 @@ start: async function (embed, userid, con, client){
                                                 );
                                                 break;
                                             }
-                                            confirm.setDisabled(true);
-                                            cancel.setDisabled(true);
-                                            await sqlInteraction.editReply({
-                                              components: [choice],
-                                            });
+                                            
                                             await linkInteraction.editReply({
                                               embeds: [confirmbox],
                                             });
