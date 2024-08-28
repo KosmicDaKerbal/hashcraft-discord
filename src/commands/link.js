@@ -150,7 +150,11 @@ start: async function (embed, userid, con, client){
                                             await linkInteraction.deferReply();
                                             switch (linkInteraction.customId) {
                                               case "confirm":
-                                                cancel.setStyle(ButtonStyle.Secondary);
+                                                confirm.setDisabled(true);
+                                                cancel.setDisabled(true).setStyle(ButtonStyle.Secondary);
+                                                await sqlInteraction.editReply({
+                                                  components: [choice],
+                                                });
                                                 con.query(
                                                   `insert into Faucet(userid, wallet_name) values (${u}, '${String(embed.options.get("account-name").value)}') on duplicate key update userid = ${u}, wallet_name = '${String(embed.options.get("account-name").value)}';`,
                                                   async function (err, result) {
@@ -197,6 +201,11 @@ start: async function (embed, userid, con, client){
                                                 );
                                                 break;
                                               case "cancel":
+                                                confirm.setDisabled(true);
+                                                cancel.setDisabled(true);
+                                                await sqlInteraction.editReply({
+                                                  components: [choice],
+                                                });
                                                 confirmbox
                                                   .setTitle(
                                                     "Cancelled Linking Account " +
@@ -214,11 +223,7 @@ start: async function (embed, userid, con, client){
                                                 );
                                                 break;
                                             }
-                                            confirm.setDisabled(true);
-                                            cancel.setDisabled(true);
-                                            await sqlInteraction.editReply({
-                                              components: [choice],
-                                            });
+                                            
                                             await linkInteraction.editReply({
                                               embeds: [confirmbox],
                                             });
