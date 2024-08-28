@@ -36,5 +36,7 @@ services:
 networks:
   mysql-phpmyadmin:
     ipam:
+      driver: bridge
       config:
         - subnet: 172.20.0.0/16
+        - gateway: 172.20.0.1
