@@ -25,7 +25,7 @@ services:
   hashcraft:
     image: hashcraft
     restart: always
-  depends_on:
+    depends_on:
       - mariadb
   networks:
       - mysql-phpmyadmin
