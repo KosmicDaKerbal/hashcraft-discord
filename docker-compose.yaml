@@ -1,4 +1,5 @@
 services:
+
   hashcraft:
     image: hashcraft
     restart: always
