@@ -15,7 +15,7 @@ module.exports = {
         } else {
           //await embed.editReply({ embeds: [bal] });
           con.query(
-            `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
+            `insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid}`,
             async function (err) {
               if (!err) {
                 con.query(
