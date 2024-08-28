@@ -7,13 +7,9 @@ networks:
         driver: bridge
 
 services:
-  mariadb:
+  botdb:
     image: mariadb
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER:  user
-      MYSQL_PASSWORD: password
+    restart: unless-stopped
     expose:
         - "40000"
     ports:
