@@ -1,5 +1,5 @@
 volumes:
-  mariadb:
+  /hashcraft/db:
     driver: local
 
 networks:
@@ -9,6 +9,8 @@ services:
   botdb:
     image: mariadb
     restart: unless-stopped
+    expose:
+      - '3305'
     ports:
       - '3305:3305'
     environment:
@@ -25,8 +27,10 @@ services:
     depends_on:
       - botdb
     restart: always
+    expose:
+      - '8081'
     ports:
-      - 8081:80
+      - '8081:80'
     environment:
       - PMA_HOST=botdb
       - PMA_PORT=3306 
