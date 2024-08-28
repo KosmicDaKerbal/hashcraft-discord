@@ -13,7 +13,7 @@ services:
       - '3305:3305'
     environment:
      - MYSQL_ROOT_PASSWORD=password
-     - MYSQL_USER=user
+     - MYSQL_USER=root
      - MYSQL_PASSWORD=password
     volumes:
       - /hashcraft/db:/var/lib/hashcraft-mysql
