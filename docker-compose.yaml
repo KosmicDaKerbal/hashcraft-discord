@@ -27,7 +27,7 @@ services:
     restart: always
     depends_on:
       - mariadb
-  networks:
+    networks:
       - mysql-phpmyadmin
 
 networks:
