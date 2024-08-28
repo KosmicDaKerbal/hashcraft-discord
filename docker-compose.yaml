@@ -10,10 +10,10 @@ services:
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD= '${MYSQL_ROOT_PASSWORD}'
-      MYSQL_DATABASE= '${MYSQL_DATABASE}'
-      MYSQL_USER= ${MYSQL_USER}'
-      MYSQL_PASSWORD= '${MYSQL_PASSWORD}'
+      - MYSQL_ROOT_PASSWORD= '${MYSQL_ROOT_PASSWORD}'
+      - MYSQL_DATABASE= '${MYSQL_DATABASE}'
+      - MYSQL_USER= ${MYSQL_USER}'
+      - MYSQL_PASSWORD= '${MYSQL_PASSWORD}'
     networks:
       - mariadb-phpmyadmin
   phpmyadmin:
@@ -26,8 +26,8 @@ services:
     env_file:
       - .env
     environment:
-      PMA_HOST= '${PMA_HOST}'
-      MYSQL_ROOT_PASSWORD= '${MYSQL_ROOT_PASSWORD}'
+      - PMA_HOST= '${PMA_HOST}'
+      - MYSQL_ROOT_PASSWORD= '${MYSQL_ROOT_PASSWORD}'
     networks:
       - mariadb-phpmyadmin
 networks:
