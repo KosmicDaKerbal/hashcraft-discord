@@ -6,7 +6,7 @@ services:
     platform: linux/x86_64
     image: mariadb
     volumes:
-      - /hashcraft/mariadb:/var/lib/mysql
+      - /mnt/SysHDD/hashcraft-mariadb:/var/lib/mysql
     restart: always
     ports:
       - "3305:3306"
