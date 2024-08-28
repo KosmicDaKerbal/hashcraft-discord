@@ -262,8 +262,7 @@ start: async function (embed, userid, con, client){
                                   });
                                 });
                               break;
-                            case "cancel":
-                              
+                            case "cancel":  
                               confirmbox
                                 .setTitle(
                                   "Cancelled Linking Account " +
@@ -275,12 +274,13 @@ start: async function (embed, userid, con, client){
                                 .setDescription("Try Again?")
                                 .setColor(0xff0000)
                                 .setTimestamp();
+                                await sqlInteraction.editReply({ embeds: [confirmbox] });
                               confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
                               cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
                               await embed.editReply({
                                 components: [choice]
                               });
-                              await sqlInteraction.editReply({ embeds: [confirmbox] });
+                              
                           }
                         });
                         collector2.on("end", async () => {
