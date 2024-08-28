@@ -150,11 +150,7 @@ start: async function (embed, userid, con, client){
                                             await linkInteraction.deferReply();
                                             switch (linkInteraction.customId) {
                                               case "confirm":
-                                                confirm.setDisabled(true);
-                                                cancel.setDisabled(true).setStyle(ButtonStyle.Secondary);
-                                                await sqlInteraction.editReply({
-                                                  components: [choice],
-                                                });
+                                                cancel.setStyle(ButtonStyle.Secondary);
                                                 con.query(
                                                   `insert into Faucet(userid, wallet_name) values (${u}, '${String(embed.options.get("account-name").value)}') on duplicate key update userid = ${u}, wallet_name = '${String(embed.options.get("account-name").value)}';`,
                                                   async function (err, result) {
@@ -201,11 +197,6 @@ start: async function (embed, userid, con, client){
                                                 );
                                                 break;
                                               case "cancel":
-                                                confirm.setDisabled(true);
-                                                cancel.setDisabled(true);
-                                                await sqlInteraction.editReply({
-                                                  components: [choice],
-                                                });
                                                 confirmbox
                                                   .setTitle(
                                                     "Cancelled Linking Account " +
@@ -223,7 +214,11 @@ start: async function (embed, userid, con, client){
                                                 );
                                                 break;
                                             }
-                                            
+                                            confirm.setDisabled(true);
+                                            cancel.setDisabled(true);
+                                            await sqlInteraction.editReply({
+                                              components: [choice2],
+                                            });
                                             await linkInteraction.editReply({
                                               embeds: [confirmbox],
                                             });
@@ -234,7 +229,7 @@ start: async function (embed, userid, con, client){
                                           cancel.setDisabled(true);
                                           client.user.setPresence({ status: 'idle' });
                                           await sqlInteraction.editReply({
-                                            components: [choice],
+                                            components: [choice2],
                                           });
                                         });
                                       } else {
