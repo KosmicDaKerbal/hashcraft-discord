@@ -1,3 +1,5 @@
+env_file:
+ - .env
 services:
   mariadb:
     platform: linux/x86_64
@@ -7,8 +9,6 @@ services:
     restart: always
     ports:
       - "3305:3306"
-    env_file:
-      - .env
     environment:
       MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
       MYSQL_DATABASE: '${MYSQL_DATABASE}'
@@ -23,8 +23,6 @@ services:
     restart: always
     ports:
       - "8090:80"
-    env_file:
-      - .env
     environment:
       PMA_HOST: '${PMA_HOST}'
       MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
