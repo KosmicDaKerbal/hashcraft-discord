@@ -1,11 +1,4 @@
 services:
-  hashcraft:
-    image: hashcraft
-    restart: always
-  depends_on:
-      - mariadb
-  networks:
-      - mysql-phpmyadmin
   mariadb:
     platform: linux/x86_64
     image: mariadb
@@ -28,6 +21,13 @@ services:
     env_file:
       - db.env
     networks:
+      - mysql-phpmyadmin
+  hashcraft:
+    image: hashcraft
+    restart: always
+  depends_on:
+      - mariadb
+  networks:
       - mysql-phpmyadmin
 
 networks:
