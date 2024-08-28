@@ -10,10 +10,10 @@ module.exports = {
         if (err) {
           bal.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
           .setTitle("Error: Unable to connect to DB.").setDescription("Please try again.").setColor(0xff0000);
-          await embed.editReply({ embeds: [bal] });
+          await embed.followUp({ embeds: [bal] });
           console.log(err);
         } else {
-          //await embed.editReply({ embeds: [bal] });
+          //await embed.followUp({ embeds: [bal] });
           con.query(
             `insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid}`,
             async function (err) {
@@ -26,19 +26,19 @@ module.exports = {
                         bal.setAuthor(
                           { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
                         ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
-                        await embed.editReply({ embeds: [bal] });
+                        await embed.followUp({ embeds: [bal] });
                       } else {
                         const balc = result[0].mdu_bal;
                         bal.setDescription(`Current Balance: ⧈${balc}\nRun /deposit to transfer ⧈ mDU to DUCO!`).setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.ICON });
-                        await embed.editReply({ embeds: [bal] });
+                        await embed.followUp({ embeds: [bal] });
                       }
                     } else {
                       bal.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL });
-                      await embed.editReply({ embeds: [bal] });
+                      await embed.followUp({ embeds: [bal] });
                     }});
               } else {
                 bal.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL });
-                await embed.editReply({ embeds: [bal] });
+                await embed.followUp({ embeds: [bal] });
               }
             });
         }});
