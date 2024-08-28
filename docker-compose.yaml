@@ -1,33 +1,37 @@
-volumes:
-  mariadb:
-    driver: local
-
-networks:
-    db:
-        driver: bridge
-
 services:
-  botdb:
+  # Database
+  mariadb:
+    platform: linux/x86_64
     image: mariadb
-    restart: unless-stopped
-    expose:
-        - "40000"
-    ports:
-        - "40000:3306"
     volumes:
-     - mariadb:/var/lib/mysql
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - "3305:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: yourdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
     networks:
-      db:
-              
+      - mariadb-phpmyadmin
+
+  # phpmyadmin
   phpmyadmin:
+    depends_on:
+      - mariadb
     image: phpmyadmin
     restart: always
-    expose:
-      - "40001"
     ports:
-      - "40001:80"
+      - "8090:80"
     environment:
-      - PMA_HOST=mariadb
-      - PMA_PORT=3306 
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: password
     networks:
-      db:
+      - mariadb-phpmyadmin
+
+networks:
+  mariadb-phpmyadmin:
+
+volumes:
+  db_data:
