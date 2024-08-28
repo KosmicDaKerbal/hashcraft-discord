@@ -12,12 +12,12 @@ services:
     expose:
       - '3305'
     ports:
-      - '3305:3305'
+      - '3305:3306'
     environment:
      - MYSQL_ROOT_PASSWORD=password
      - MYSQL_USER=root
      - MYSQL_PASSWORD=password
-     - MYSQL_TCP_PORT=3305
+     - MYSQL_PORT=3305
      - MYSQL_DATABASE=mydb
     volumes:
       - hashcraftmariadb:/var/lib/hashcraft-mysql
