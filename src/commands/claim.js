@@ -23,7 +23,7 @@ drop: async function (embed, userid, con){
       //await embed.editReply({ embeds: [claimbox] });
       con.query(
         `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
-        async function (err, result) {
+        async function (err) {
           if (!err) {
             const claimtime = dayjs();
             con.query(

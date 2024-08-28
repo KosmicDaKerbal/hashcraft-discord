@@ -14,16 +14,33 @@ module.exports = {
           console.log(err);
         } else {
           //await embed.editReply({ embeds: [bal] });
-      con.query(
-        `select mdu_bal from Faucet where userid = ${userid}`,
-        async function (err, result) {
-          if (!err) {
-            const balc = result[0].mdu_bal;
-            bal.setDescription(`Current Balance: ⧈${balc}\nRun /deposit to transfer ⧈ mDU to DUCO!`).setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.ICON });
-            await embed.editReply({ embeds: [bal] });
-          } else {
-            bal.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL });
-          }});
+          con.query(
+            `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
+            async function (err) {
+              if (!err) {
+                con.query(
+                  `select wallet_name, mdu_bal from Faucet where userid = ${userid}`,
+                  async function (err, result) {
+                    if (!err) {
+                      if (result[0].wallet_name == null) {
+                        claimbox.setAuthor(
+                          { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
+                        ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
+                        await embed.editReply({ embeds: [bal] });
+                      } else {
+                        const balc = result[0].mdu_bal;
+                        bal.setDescription(`Current Balance: ⧈${balc}\nRun /deposit to transfer ⧈ mDU to DUCO!`).setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.ICON });
+                        await embed.editReply({ embeds: [bal] });
+                      }
+                    } else {
+                      bal.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL });
+                      await embed.editReply({ embeds: [bal] });
+                    }});
+              } else {
+                bal.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL });
+                await embed.editReply({ embeds: [bal] });
+              }
+            });
         }});
     }
 }
