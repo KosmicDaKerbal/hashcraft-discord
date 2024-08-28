@@ -1,5 +1,14 @@
 services:
-
+  db:
+    image: mariadb
+    restart: unless-stopped
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:81
+    environment:
+      - PMA_ARBITRARY=1
   hashcraft:
     image: hashcraft
     restart: always
