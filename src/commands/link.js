@@ -214,7 +214,11 @@ start: async function (embed, userid, con, client){
                                                 );
                                                 break;
                                             }
-                                            
+                                            confirm.setDisabled(true);
+                                            cancel.setDisabled(true);
+                                            await sqlInteraction.editReply({
+                                              components: [choice],
+                                            });
                                             await linkInteraction.editReply({
                                               embeds: [confirmbox],
                                             });
@@ -318,10 +322,6 @@ start: async function (embed, userid, con, client){
                                 con.query(
                                   `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
                                   async function (err, result) {
-                                    remove.setStyle(
-                                      ButtonStyle.Success
-                                    ).setDisabled(true);
-                                    await embed.editReply({ components: [accountRemove] });
                                     await existsInteraction.deferReply();
                                     if (err) {
                                       confirmbox.setDescription.setTitle(
@@ -347,6 +347,10 @@ start: async function (embed, userid, con, client){
                                         .setColor(0x00ff00)
                                         .setTimestamp();
                                     }
+                                    remove.setStyle(
+                                      ButtonStyle.Success
+                                    ).setDisabled(true);
+                                    await embed.editReply({ components: [accountRemove] });
                                     await existsInteraction.editReply({ embeds: [confirmbox] });
                                   });
                                 break;
