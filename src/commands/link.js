@@ -274,14 +274,12 @@ start: async function (embed, userid, con, client){
                                 .setDescription("Try Again?")
                                 .setColor(0xff0000)
                                 .setTimestamp();
-                                confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
+                              confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
                               cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
-                                await sqlInteraction.reply({ embeds: [confirmbox] });
-
                               await embed.editReply({
                                 components: [choice]
                               });
-                              
+                              await sqlInteraction.reply({ embeds: [confirmbox] });
                           }
                         });
                         collector2.on("end", async () => {
