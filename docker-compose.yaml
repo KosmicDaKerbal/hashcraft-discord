@@ -3,8 +3,6 @@ services:
     image: mariadb
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --skip-log-bin --innodb-file-per-table=1 --skip-innodb-read-only-compressed
-    volumes:
-      - botdb:/var/lib/hashcraft-mysql
     env_file:
       - .env
   phpmyadmin:
