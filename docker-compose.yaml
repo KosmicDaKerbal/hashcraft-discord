@@ -11,8 +11,10 @@ services:
     restart: unless-stopped
     ports:
       - '3305:3305'
-    env_file:
-      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: YOUR_ROOT_PASSWORD_HERE
+      MYSQL_USER:  YOUR_MYSQL_USER_HERE 
+      MYSQL_PASSWORD: YOUR_USER_PW_HERE
     volumes:
       - /hashcraft/db:/var/lib/hashcraft-mysql
     networks:
