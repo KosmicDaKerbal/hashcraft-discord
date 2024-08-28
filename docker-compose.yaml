@@ -14,7 +14,7 @@ services:
       - MYSQL_USER='${MYSQL_USER}'
       - MYSQL_PASSWORD='${MYSQL_PASSWORD}'
     volumes:
-      - db-data:/var/lib/hashcraft-mysql
+      - /hashcraft/db:/var/lib/hashcraft-mysql
   phpmyadmin:
     image: phpmyadmin
     container_name: hashcraft-phpmyadmin
