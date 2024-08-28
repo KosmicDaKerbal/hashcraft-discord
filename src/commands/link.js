@@ -154,11 +154,6 @@ start: async function (embed, userid, con, client){
                                                 con.query(
                                                   `insert into Faucet(userid, wallet_name) values (${u}, '${String(embed.options.get("account-name").value)}') on duplicate key update userid = ${u}, wallet_name = '${String(embed.options.get("account-name").value)}';`,
                                                   async function (err, result) {
-                                                    confirm.setDisabled(true);
-                                            cancel.setDisabled(true);
-                                            await sqlInteraction.editReply({
-                                              components: [choice2],
-                                            });
                                                     if (err) {
                                                       confirmbox.setDescription.setTitle(
                                                         "Link " +
@@ -219,7 +214,11 @@ start: async function (embed, userid, con, client){
                                                 );
                                                 break;
                                             }
-                                            
+                                            confirm.setDisabled(true);
+                                            cancel.setDisabled(true);
+                                            await sqlInteraction.editReply({
+                                              components: [choice2],
+                                            });
                                             await linkInteraction.editReply({
                                               embeds: [confirmbox],
                                             });
