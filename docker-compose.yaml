@@ -1,21 +1,34 @@
 services:
   botdb:
     image: mariadb
+    container_name: hashcraft-db
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --skip-log-bin --innodb-file-per-table=1 --skip-innodb-read-only-compressed
+    ports:
+      - "3305:3305"
     volumes:
       - /hashcraft/db:/var/lib/hashcraft-mysql
     env_file:
       - .env
+    networks:
+      - hashcraft-net
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    container_name: hashcraft-phpmyadmin
     depends_on:
       - botdb
     restart: always
     ports:
       - 8081:80
+    volumes:
+      - /hashcraft/phpmyadmin_data:/var/www/html/
     env_file:
       - .env
+    networks:
+      - hashcraft-net
   hashcraft:
     image: hashcraft
     restart: always
+networks:
+  hashcraft-net:
+    driver: bridge
