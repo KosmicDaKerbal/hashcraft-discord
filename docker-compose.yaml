@@ -10,7 +10,8 @@ services:
     env_file:
       - db.env
     networks:
-      - mysql-phpmyadmin
+      mysql-phpmyadmin:
+        ipv4_address: 172.20.128.1
   phpmyadmin:
     depends_on:
       - mariadb
@@ -21,14 +22,19 @@ services:
     env_file:
       - db.env
     networks:
-      - mysql-phpmyadmin
+      mysql-phpmyadmin:
+        ipv4_address: 172.20.128.2
   hashcraft:
     image: hashcraft
     restart: always
     depends_on:
       - mariadb
     networks:
-      - mysql-phpmyadmin
+      mysql-phpmyadmin:
+        ipv4_address: 172.20.128.3
 
 networks:
   mysql-phpmyadmin:
+  ipam:
+      config:
+        - subnet: 172.20.0.0/16
