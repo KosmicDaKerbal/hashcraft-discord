@@ -3,15 +3,19 @@ services:
     image: mariadb
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --skip-log-bin --innodb-file-per-table=1 --skip-innodb-read-only-compressed
+    volumes:
+      - /hashcraft/db:/var/lib/hashcraft-mysql
     env_file:
       - .env
   phpmyadmin:
     image: phpmyadmin
+    depends_on:
+      - botdb
     restart: always
     ports:
-      - 8081:81
-    environment:
-      - PMA_ARBITRARY=1
+      - 8081:80
+    env_file:
+      - .env
   hashcraft:
     image: hashcraft
     restart: always
