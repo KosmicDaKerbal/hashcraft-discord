@@ -23,7 +23,7 @@ module.exports = {
                   async function (err, result) {
                     if (!err) {
                       if (result[0].wallet_name == null) {
-                        claimbox.setAuthor(
+                        embed.setAuthor(
                           { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
                         ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
                         await embed.editReply({ embeds: [bal] });
