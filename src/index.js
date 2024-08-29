@@ -32,7 +32,7 @@ const client = new Client({
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
-  if (mainInteraction.member.roles.cache.some(role => role.name === 'HashCraft Verified') || mainInteraction.member.roles.cache.some(role => role.name === '⚠ UNVERIFIED ⚠')) {
+  if (mainInteraction.member.roles.cache.some(role => role.name === 'HashCraft Verified') || mainInteraction.member.roles.cache.some(role => role.name !== '⚠ UNVERIFIED ⚠')) {
     switch (mainInteraction.commandName) {
       case "help":
         help.send(mainInteraction);
