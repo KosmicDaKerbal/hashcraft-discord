@@ -17,10 +17,10 @@ drop: async function (embed, userid, con){
     if (err) {
       claimbox.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
       .setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
-      await embed.editReply({ embeds: [claimbox] });
+      await embed.followUp({ embeds: [claimbox] });
       console.log(err);
     } else {
-      //await embed.editReply({ embeds: [claimbox] });
+      //await embed.followUp({ embeds: [claimbox] });
       con.query(
         `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
         async function (err) {
@@ -34,7 +34,7 @@ drop: async function (embed, userid, con){
                     claimbox.setAuthor(
                       { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
                     ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
-                    await embed.editReply({ embeds: [claimbox] });
+                    await embed.followUp({ embeds: [claimbox] });
                   } else {
                     var streak = result[0].streak;
                     const use = result[0].last_used;
@@ -44,7 +44,7 @@ drop: async function (embed, userid, con){
                         claimbox.setAuthor(
                           { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
                         ).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
-                        await embed.editReply({ embeds: [claimbox] });
+                        await embed.followUp({ embeds: [claimbox] });
                         break;
                       default:
                         var lost;
@@ -73,12 +73,12 @@ drop: async function (embed, userid, con){
                           `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = '${claimtime.format("YYYY-MM-DD")}';`,
                           async function (err, result) {
                             if (!err) {
-                              await embed.editReply({ embeds: [claimbox] });
+                              await embed.followUp({ embeds: [claimbox] });
                             } else {
                               claimbox.setAuthor(
                                 { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
                               ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
-                              await embed.editReply({ embeds: [claimbox] });
+                              await embed.followUp({ embeds: [claimbox] });
                             }
                           });
                         break;
@@ -88,7 +88,7 @@ drop: async function (embed, userid, con){
                   claimbox.setAuthor(
                     { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
                   ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
-                  await embed.editReply({ embeds: [claimbox] });
+                  await embed.followUp({ embeds: [claimbox] });
                   console.log(err);
                 }
               });
@@ -96,7 +96,7 @@ drop: async function (embed, userid, con){
             claimbox.setAuthor(
               { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
             ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
-            await embed.editReply({ embeds: [claimbox] });
+            await embed.followUp({ embeds: [claimbox] });
             console.log(err);
           }
         });

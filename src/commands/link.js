@@ -31,21 +31,21 @@ start: async function (embed, userid, con, client){
         .setLabel("Remove")
         .setStyle(ButtonStyle.Danger)
         .setDisabled(false);
-      //await embed.editReply({ embeds: [confirmbox] });
+      //await embed.followUp({ embeds: [confirmbox] });
       await embed.deferReply();
       con.getConnection(async function (err) {
         if (err) {
           confirmbox.setDescription(
             "Please Wait...\nConnecting to DB...\nInternal Server Error: Unable to connect to Faucet Database."
           );
-          await embed.editReply({ embeds: [confirmbox] });
+          await embed.followUp({ embeds: [confirmbox] });
           console.log(err);
         } else {
           /*
           confirmbox.setDescription(
             "Please Wait...\nConnected to DB.\nQuerying Account Link..."
           );
-          await embed.editReply({ embeds: [confirmbox] });*/
+          await embed.followUp({ embeds: [confirmbox] });*/
           con.query(
             `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
             async function (err, result) {
@@ -53,7 +53,7 @@ start: async function (embed, userid, con, client){
                 confirmbox.setDescription(
                   "Query Failed: Couldn't update UserID"
                 );
-                await embed.editReply({ embeds: [confirmbox] });
+                await embed.followUp({ embeds: [confirmbox] });
                 console.log(err);
               } else {
                 con.query(
@@ -63,7 +63,7 @@ start: async function (embed, userid, con, client){
                       confirmbox.setDescription(
                         "Query Failed: Couldn't get Wallet Name"
                       );
-                      await embed.editReply({ embeds: [confirmbox] });
+                      await embed.followUp({ embeds: [confirmbox] });
                       console.log(err);
                     } else {
                       if (result[0].wallet_name === null) {
@@ -80,7 +80,7 @@ start: async function (embed, userid, con, client){
 
                         confirm.setLabel("Link Duino-Coin Account");
                         const filter = (i) => i.user.id === embed.user.id;
-                        const rep2 = await embed.editReply({
+                        const rep2 = await embed.followUp({
                           embeds: [confirmbox],
                           components: [choice],
                         });
@@ -96,7 +96,7 @@ start: async function (embed, userid, con, client){
                               cancel
                                 .setDisabled(true)
                                 .setStyle(ButtonStyle.Secondary);
-                              await embed.editReply({
+                              await embed.followUp({
                                 embeds: [confirmbox],
                                 components: [choice],
                               });
@@ -133,7 +133,7 @@ start: async function (embed, userid, con, client){
                                             confirm
                                           );
                                         const filter = (i) => i.user.id === sqlInteraction.user.id;
-                                        const rep = await sqlInteraction.editReply({
+                                        const rep = await sqlInteraction.followUp({
                                           embeds: [confirmbox],
                                           components: [choice2],
                                           fetchReply: true,
@@ -216,10 +216,10 @@ start: async function (embed, userid, con, client){
                                             }
                                             confirm.setDisabled(true);
                                             cancel.setDisabled(true);
-                                            await sqlInteraction.editReply({
+                                            await sqlInteraction.followUp({
                                               components: [choice2],
                                             });
-                                            await linkInteraction.editReply({
+                                            await linkInteraction.followUp({
                                               embeds: [confirmbox],
                                             });
                                           }
@@ -228,7 +228,7 @@ start: async function (embed, userid, con, client){
                                           confirm.setDisabled(true);
                                           cancel.setDisabled(true);
                                           client.user.setPresence({ status: 'idle' });
-                                          await sqlInteraction.editReply({
+                                          await sqlInteraction.followUp({
                                             components: [choice2],
                                           });
                                         });
@@ -241,7 +241,7 @@ start: async function (embed, userid, con, client){
                                           .setTimestamp();
                                         confirm.setDisabled(true);
                                         cancel.setDisabled(true);
-                                        await sqlInteraction.editReply({
+                                        await sqlInteraction.followUp({
                                           embeds: [confirmbox],
                                         });
                                       }
@@ -257,7 +257,7 @@ start: async function (embed, userid, con, client){
                                     )
                                     .setColor(0xff0000)
                                     .setTimestamp();
-                                  await sqlInteraction.editReply({
+                                  await sqlInteraction.followUp({
                                     embeds: [confirmbox],
                                   });
                                 });
@@ -277,7 +277,7 @@ start: async function (embed, userid, con, client){
                                 await sqlInteraction.reply({ embeds: [confirmbox] });
                               confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
                               cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
-                              await embed.editReply({
+                              await embed.followUp({
                                 components: [choice]
                               });
                           }
@@ -286,7 +286,7 @@ start: async function (embed, userid, con, client){
                           confirm.setLabel("Link Duino-Coin Account").setDisabled(true);
                           cancel.setDisabled(true);
                           client.user.setPresence({ status: 'idle' });
-                          await embed.editReply({
+                          await embed.followUp({
                             components: [choice],
                           });
                           confirm.setLabel("Confirm");
@@ -300,7 +300,7 @@ start: async function (embed, userid, con, client){
                           .setDescription("Account is Already Linked: " + result[0].wallet_name)
                           .setColor(0xff0000)
                           .setTimestamp();
-                        const exists = await embed.editReply({
+                        const exists = await embed.followUp({
                           embeds: [confirmbox],
                           components: [accountRemove],
                           fetchReply: true,
@@ -320,7 +320,7 @@ start: async function (embed, userid, con, client){
                                 remove.setStyle(
                                   ButtonStyle.Success
                                 ).setDisabled(true);
-                                await embed.editReply({ components: [accountRemove] });
+                                await embed.followUp({ components: [accountRemove] });
                                 con.query(
                                   `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
                                   async function (err, result) {
@@ -350,7 +350,7 @@ start: async function (embed, userid, con, client){
                                         .setTimestamp();
                                     }
                                     
-                                    await existsInteraction.editReply({ embeds: [confirmbox] });
+                                    await existsInteraction.followUp({ embeds: [confirmbox] });
                                   });
                                 break;
                             }
@@ -358,7 +358,7 @@ start: async function (embed, userid, con, client){
                         collector.on("end", async () => {
                           remove.setDisabled(true);
                           client.user.setPresence({ status: 'idle' });
-                          await embed.editReply({
+                          await embed.followUp({
                             components: [accountRemove],
                           });
                         });

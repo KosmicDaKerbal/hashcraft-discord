@@ -16,9 +16,9 @@ module.exports = {
         if (!err) {
           if (embed.options.get("amount").value <= 0){
             deposit.setTitle("Amount should be greater than 0").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
-            await embed.editReply({ embeds: [deposit] });
+            await embed.followUp({ embeds: [deposit] });
           } else {
-            //await embed.editReply({ embeds: [deposit] });
+            //await embed.followUp({ embeds: [deposit] });
             con.query(
               `select mdu_bal, wallet_name from Faucet where userid = ${userid}`,
               async function (err, result) {
@@ -56,7 +56,7 @@ module.exports = {
                                   .setDescription(`An API Error Occured. Please try again.`)
                                   .setTimestamp();
                                 }
-                                await embed.editReply({ embeds: [deposit] });
+                                await embed.followUp({ embeds: [deposit] });
                                });
                              }).on("error", async (e) => {
                               deposit
@@ -69,27 +69,27 @@ module.exports = {
                                 .setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
                                 .setColor(0xff0000)
                                 .setTimestamp();
-                              await embed.editReply({
+                              await embed.followUp({
                                 embeds: [deposit],
                               });
                             });
                           } else {
                           deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
-                          await embed.editReply({ embeds: [deposit] });
+                          await embed.followUp({ embeds: [deposit] });
                           }
                         });
                     }
                     else {
                       deposit.setTitle("You don't have enough mDU!").setDescription("Current balance: ⧈" + bal).setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
-                      await embed.editReply({ embeds: [deposit] });
+                      await embed.followUp({ embeds: [deposit] });
                     }
                   } else {
                     deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
-                    await embed.editReply({ embeds: [deposit] });
+                    await embed.followUp({ embeds: [deposit] });
                   }
                 } else {
                   deposit.setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
-                  await embed.editReply({ embeds: [deposit] });
+                  await embed.followUp({ embeds: [deposit] });
                 }
               });
           }
