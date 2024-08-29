@@ -14,6 +14,7 @@ var claim = require('./commands/claim');
 var stats = require('./commands/stats');
 const deposit = require("./commands/deposit");
 const balance = require("./commands/balance");
+const slowmode = require("./commands/slowmode");
 var con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -33,30 +34,48 @@ client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
   if (mainInteraction.member.roles.cache.some(role => role.name === 'HashCraft Verified')) {
-    switch (mainInteraction.commandName) {
-      case "help":
-        help.send(mainInteraction);
-        setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-        break;
-      case "stats":
-        stats.send(mainInteraction);
-        setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-        break;
-      case "link":
-        link.start(mainInteraction, mainInteraction.user.id, con, client);
-        break;
-      case 'claim':
-        claim.drop(mainInteraction, mainInteraction.user.id, con);
-        setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-        break;
-        case 'deposit':
-          deposit.transfer(mainInteraction, mainInteraction.user.id, con);
-          setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-          break;
-        case 'balance':
-          balance.check(mainInteraction, mainInteraction.user.id, con);
-          setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-          break;
+    if (mainInteraction.channelId === '1267863776925847592'){
+      if (mainInteraction.member.roles.cache.some(role => role.name === 'Server Owner')){
+        switch (mainInteraction.commandName) {
+          case "slowmode":
+            slowmode.send(mainInteraction);
+            setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+            break;
+        }
+      } else {
+        switch (mainInteraction.commandName) {
+          case "help":
+            help.send(mainInteraction);
+            setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+            break;
+          case "stats":
+            stats.send(mainInteraction);
+            setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+            break;
+          case "link":
+            link.start(mainInteraction, mainInteraction.user.id, con, client);
+            break;
+          case 'claim':
+            claim.drop(mainInteraction, mainInteraction.user.id, con);
+            setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+            break;
+            case 'deposit':
+              deposit.transfer(mainInteraction, mainInteraction.user.id, con);
+              setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+              break;
+            case 'balance':
+              balance.check(mainInteraction, mainInteraction.user.id, con);
+              setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+              break;
+            default:
+              const owneronly = new EmbedBuilder().setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();
+              await mainInteraction.reply({ embeds: [owneronly], ephemeral: true});
+              break;
+        }
+      }      
+    } else {
+      const commandsonly = new EmbedBuilder().setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription("You can only use HashCraft on <#1267863776925847592>.").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();
+      await mainInteraction.reply({ embeds: [commandsonly], ephemeral: true});
     }
   } else {
     const verify = new EmbedBuilder().setTitle("User not verified").setColor(0xff0000).setDescription("Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#1267862884072030208> channel").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();

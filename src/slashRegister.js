@@ -42,6 +42,18 @@ const commands = [
     name: 'balance',
     description: 'Shows your ⧈ mDU balance',
 },
+{
+    name: 'slowmode',
+    description: "Set a Slowmode: SERVER OWNER ONLY",
+    options: [
+        {
+            name: 'duration',
+            description: 'Time in Seconds',
+            type: ApplicationCommandOptionType.Integer,
+            required: true,
+        },
+    ],
+},
 ];
 const rest = new REST({version:'10'}).setToken(process.env.TOKEN);
 (async() => {
