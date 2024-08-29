@@ -31,7 +31,7 @@ start: async function (embed, userid, con, client){
         .setLabel("Remove")
         .setStyle(ButtonStyle.Danger)
         .setDisabled(false);
-      //await embed.followUp({ embeds: [confirmbox] });
+      //await embed.editReply({ embeds: [confirmbox] });
       await embed.deferReply();
       con.getConnection(async function (err) {
         if (err) {
@@ -45,7 +45,7 @@ start: async function (embed, userid, con, client){
           confirmbox.setDescription(
             "Please Wait...\nConnected to DB.\nQuerying Account Link..."
           );
-          await embed.followUp({ embeds: [confirmbox] });*/
+          await embed.editReply({ embeds: [confirmbox] });*/
           con.query(
             `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
             async function (err, result) {
@@ -96,7 +96,7 @@ start: async function (embed, userid, con, client){
                               cancel
                                 .setDisabled(true)
                                 .setStyle(ButtonStyle.Secondary);
-                              await embed.followUp({
+                              await embed.editReply({
                                 embeds: [confirmbox],
                                 components: [choice],
                               });
@@ -216,7 +216,7 @@ start: async function (embed, userid, con, client){
                                             }
                                             confirm.setDisabled(true);
                                             cancel.setDisabled(true);
-                                            await sqlInteraction.followUp({
+                                            await sqlInteraction.editReply({
                                               components: [choice2],
                                             });
                                             await linkInteraction.followUp({
@@ -228,7 +228,7 @@ start: async function (embed, userid, con, client){
                                           confirm.setDisabled(true);
                                           cancel.setDisabled(true);
                                           client.user.setPresence({ status: 'idle' });
-                                          await sqlInteraction.followUp({
+                                          await sqlInteraction.editReply({
                                             components: [choice2],
                                           });
                                         });
@@ -277,7 +277,7 @@ start: async function (embed, userid, con, client){
                                 await sqlInteraction.reply({ embeds: [confirmbox] });
                               confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
                               cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
-                              await embed.followUp({
+                              await embed.editReply({
                                 components: [choice]
                               });
                           }
@@ -286,7 +286,7 @@ start: async function (embed, userid, con, client){
                           confirm.setLabel("Link Duino-Coin Account").setDisabled(true);
                           cancel.setDisabled(true);
                           client.user.setPresence({ status: 'idle' });
-                          await embed.followUp({
+                          await embed.editReply({
                             components: [choice],
                           });
                           confirm.setLabel("Confirm");
@@ -320,7 +320,7 @@ start: async function (embed, userid, con, client){
                                 remove.setStyle(
                                   ButtonStyle.Success
                                 ).setDisabled(true);
-                                await embed.followUp({ components: [accountRemove] });
+                                await embed.editReply({ components: [accountRemove] });
                                 con.query(
                                   `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
                                   async function (err, result) {
@@ -358,7 +358,7 @@ start: async function (embed, userid, con, client){
                         collector.on("end", async () => {
                           remove.setDisabled(true);
                           client.user.setPresence({ status: 'idle' });
-                          await embed.followUp({
+                          await embed.editReply({
                             components: [accountRemove],
                           });
                         });
