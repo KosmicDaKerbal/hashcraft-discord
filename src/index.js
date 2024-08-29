@@ -35,14 +35,6 @@ client.on("interactionCreate", async (mainInteraction) => {
   client.user.setPresence({ status: 'online' });
   if (mainInteraction.member.roles.cache.some(role => role.name === 'HashCraft Verified')) {
     if (mainInteraction.channelId === '1267863776925847592'){
-      if (mainInteraction.member.roles.cache.some(role => role.name === 'Server Owner')){
-        switch (mainInteraction.commandName) {
-          case "slowmode":
-            slowmode.send(mainInteraction);
-            setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-            break;
-        }
-      } else {
         switch (mainInteraction.commandName) {
           case "help":
             help.send(mainInteraction);
@@ -59,19 +51,27 @@ client.on("interactionCreate", async (mainInteraction) => {
             claim.drop(mainInteraction, mainInteraction.user.id, con);
             setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
             break;
-            case 'deposit':
-              deposit.transfer(mainInteraction, mainInteraction.user.id, con);
-              setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-              break;
-            case 'balance':
-              balance.check(mainInteraction, mainInteraction.user.id, con);
-              setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
-              break;
-            default:
+          case 'deposit':
+            deposit.transfer(mainInteraction, mainInteraction.user.id, con);
+            setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+            break;
+          case 'balance':
+            balance.check(mainInteraction, mainInteraction.user.id, con);
+            setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+            break;
+          default:
+            if (mainInteraction.member.roles.cache.some(role => role.name === 'Server Owner')){
+              switch (mainInteraction.commandName){
+                case 'slowmode':
+                  slowmode.set(mainInteraction);
+                  setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
+                break;
+              }
+            } else {
               const owneronly = new EmbedBuilder().setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();
               await mainInteraction.reply({ embeds: [owneronly], ephemeral: true});
+            }
               break;
-        }
       }      
     } else {
       const commandsonly = new EmbedBuilder().setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription("You can only use HashCraft on <#1267863776925847592>.").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();
