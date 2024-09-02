@@ -11,7 +11,7 @@ System Requirements: Linux Operating System with Docker Installed, at least 512M
 
 This faucet uses an in-system currency called mDU (Symbol: ⧈). The current conversion rate is 1 DUCO = 100 ⧈ mDU
 1. Account linking: Link and Un-Link your Duino-Coin Accounts to the Bot's Database using `/link`
-2. Faucet Claim: Get your daily drop of ⧈ mDU using `/claim`
+2. Faucet Claim: Get your daily drop of ⧈ mDU using `/claim`. The current drop amount depends on the following formula: `drop = round((1.046025869009)^n) + 10`, where `n = streak`
 3. Balance Check: Check how much ⧈ mDU you have using `/balance`
 4. Exchange ⧈ mDU for DUCO using `/deposit`
 
