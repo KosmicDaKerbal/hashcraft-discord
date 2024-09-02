@@ -14,7 +14,7 @@ start: async function (embed, userid, con, client){
         .setTitle("Link Account to User")
         .setDescription("Please Wait...\nConnecting to DB...")
         .setColor(0xff0000)
-        .setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON })
+        .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
         .setTimestamp();
       const confirm = new ButtonBuilder()
         .setCustomId("confirm")

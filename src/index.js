@@ -33,8 +33,8 @@ const client = new Client({
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
-  if (mainInteraction.member.roles.cache.some(role => role.name === 'HashCraft Verified')) {
-    if (mainInteraction.channelId === '1267863776925847592'){
+  if (mainInteraction.member.roles.cache.some(role => role.name === process.env.VERIFIED_ROLE)) {
+    if (mainInteraction.channelId === process.env.BOT_CHANNEL){
         switch (mainInteraction.commandName) {
           case "help":
             help.send(mainInteraction);
@@ -60,7 +60,7 @@ client.on("interactionCreate", async (mainInteraction) => {
             setTimeout(() => {client.user.setPresence({ status: 'idle' });}, 10000);
             break;
           default:
-            if (mainInteraction.member.roles.cache.some(role => role.name === 'Server Owner')){
+            if (mainInteraction.member.roles.cache.some(role => role.name === process.env.SERVER_OWNER)){
               switch (mainInteraction.commandName){
                 case 'slowmode':
                   slowmode.set(mainInteraction);
@@ -68,17 +68,17 @@ client.on("interactionCreate", async (mainInteraction) => {
                 break;
               }
             } else {
-              const owneronly = new EmbedBuilder().setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();
+              const owneronly = new EmbedBuilder().setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
               await mainInteraction.reply({ embeds: [owneronly], ephemeral: true});
             }
               break;
       }      
     } else {
-      const commandsonly = new EmbedBuilder().setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription("You can only use HashCraft on <#1267863776925847592>.").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();
+      const commandsonly = new EmbedBuilder().setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
       await mainInteraction.reply({ embeds: [commandsonly], ephemeral: true});
     }
   } else {
-    const verify = new EmbedBuilder().setTitle("User not verified").setColor(0xff0000).setDescription("Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#1267862884072030208> channel").setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON }).setTimestamp();
+    const verify = new EmbedBuilder().setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
     await mainInteraction.reply({ embeds: [verify] });
   }
   

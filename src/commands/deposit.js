@@ -7,15 +7,15 @@ module.exports = {
  transfer: async function (embed, userid, con){
   await embed.deferReply();
  const deposit = new EmbedBuilder()
-    .setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.PROCESSING })
+    .setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.PROCESSING })
     .setTitle("Please Wait...")
     .setColor(0xf18701)
-    .setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON })
+    .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
     .setTimestamp();
     con.getConnection(async function (err) {
         if (!err) {
           if (embed.options.get("amount").value <= 0){
-            deposit.setTitle("Amount should be greater than 0").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
+            deposit.setTitle("Amount should be greater than 0").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
             await embed.followUp({ embeds: [deposit] });
           } else {
             //await embed.followUp({ embeds: [deposit] });
@@ -44,13 +44,13 @@ module.exports = {
                                 console.log(data);
                                 if (json.success){
                                   const txid = String(json.result).split(",")[2];
-                                  deposit.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.SUCCESS })
+                                  deposit.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS })
                                   .setTitle("Deposit Successful")
                                   .setColor(0x00ff00)
                                   .setDescription(`Successfully converted ⧈${dep} into ${dep/100} DUCO and sent to Account: ${recip}\nTxID: [${txid}](https://explorer.duinocoin.com?search=${txid})`)
                                   .setTimestamp();
                                 } else {
-                                  deposit.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
+                                  deposit.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })
                                   .setTitle("Deposit Failed")
                                   .setColor(0xff0000)
                                   .setDescription(`An API Error Occured. Please try again.`)
@@ -66,7 +66,7 @@ module.exports = {
                                   "\n```"
                                 )
                                 .setTitle("Amount should be greater than 0")
-                                .setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
+                                .setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })
                                 .setColor(0xff0000)
                                 .setTimestamp();
                               await embed.followUp({
@@ -74,21 +74,21 @@ module.exports = {
                               });
                             });
                           } else {
-                          deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
+                          deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                           await embed.followUp({ embeds: [deposit] });
                           }
                         });
                     }
                     else {
-                      deposit.setTitle("You don't have enough mDU!").setDescription("Current balance: ⧈" + bal).setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
+                      deposit.setTitle("You don't have enough mDU!").setDescription("Current balance: ⧈" + bal).setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                       await embed.followUp({ embeds: [deposit] });
                     }
                   } else {
-                    deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
+                    deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                     await embed.followUp({ embeds: [deposit] });
                   }
                 } else {
-                  deposit.setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL }).setColor(0xff0000);
+                  deposit.setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                   await embed.followUp({ embeds: [deposit] });
                 }
               });

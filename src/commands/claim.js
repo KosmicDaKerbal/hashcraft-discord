@@ -8,14 +8,14 @@ drop: async function (embed, userid, con){
     await embed.deferReply();
     const u = userid;
     const claimbox = new EmbedBuilder()
-    .setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.PROCESSING })
+    .setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.PROCESSING })
     .setTitle("Please Wait...")
     .setColor(0xf18701)
-    .setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON })
+    .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
     .setTimestamp();
   con.getConnection(async function (err) {
     if (err) {
-      claimbox.setAuthor({ name: 'HashCraft Faucet', iconURL: process.env.FAIL })
+      claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })
       .setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
       await embed.followUp({ embeds: [claimbox] });
       console.log(err);
@@ -32,7 +32,7 @@ drop: async function (embed, userid, con){
                 if (!err) {
                   if (result[0].wallet_name == null) {
                     claimbox.setAuthor(
-                      { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
+                      { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                     ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
                     await embed.followUp({ embeds: [claimbox] });
                   } else {
@@ -42,7 +42,7 @@ drop: async function (embed, userid, con){
                     switch (timediff) {
                       case 0:
                         claimbox.setAuthor(
-                          { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
+                          { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                         ).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
                         await embed.followUp({ embeds: [claimbox] });
                         break;
@@ -56,12 +56,13 @@ drop: async function (embed, userid, con){
                         }
                         var drop;
                         if (streak <= 100) {
-                          drop = Math.round(((streak * streak) / 111) + 10);
+                          //drop = Math.round(((streak * streak) / 111) + 10);
+                          drop = Math.round(Math.pow(1.046025869009, streak) + 10);
                         } else {
                           drop = 100;
                         }
                         claimbox.setAuthor(
-                          { name: 'HashCraft Faucet', iconURL: process.env.SUCCESS }
+                          { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS }
                         ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`).setColor(0x00ff00);
                         if (lost && use != null) {
                           claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
@@ -76,7 +77,7 @@ drop: async function (embed, userid, con){
                               await embed.followUp({ embeds: [claimbox] });
                             } else {
                               claimbox.setAuthor(
-                                { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
+                                { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                               ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
                               await embed.followUp({ embeds: [claimbox] });
                             }
@@ -86,7 +87,7 @@ drop: async function (embed, userid, con){
                   }
                 } else {
                   claimbox.setAuthor(
-                    { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
+                    { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                   ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
                   await embed.followUp({ embeds: [claimbox] });
                   console.log(err);
@@ -94,7 +95,7 @@ drop: async function (embed, userid, con){
               });
           } else {
             claimbox.setAuthor(
-              { name: 'HashCraft Faucet', iconURL: process.env.FAIL }
+              { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
             ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
             await embed.followUp({ embeds: [claimbox] });
             console.log(err);

@@ -17,7 +17,7 @@ send: async function (embed){
           { name: "Database", value: process.env.STAT_DB, inline: true },
           { name: "RAM Usage", value: ram + "MB", inline: true }
         )
-        .setFooter({ text: "HashCraft v" + process.env.BOT_VERSION, iconURL: process.env.ICON })
+        .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
         .setTimestamp()
         .setImage(process.env.SERVER);
       await embed.reply({ embeds: [stats] });
