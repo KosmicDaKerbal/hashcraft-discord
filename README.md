@@ -30,9 +30,10 @@ Make sure you create the environment variables file, otherwise the bot will refu
 <br>Instructions to build and deploy the bot are so easy, thanks to Docker!
 1. Clone the repository: `git clone https://github.com/KosmicDaKerbal/hashcraft-discord.git`
 2. Locate to the repository folder: `cd ~/hashcraft-discord`
-3. Build Docker image ([Make sure you have Docker Installed](https://docs.docker.com/desktop/install/linux-install/)): `docker build -t <image name> .`
-4. Deploy with Docker Compose: `docker compose up -d`
-5. Your bot should be alive! Now, before you run any commands, you need to setup your database structure properly. Follow the instructions below.
+3. Create `.env` and `db.env` and specify all environment variables.
+4. Build Docker image ([Make sure you have Docker Installed](https://docs.docker.com/desktop/install/linux-install/)): `docker build -t <image name> .`
+5. Deploy with Docker Compose: `docker compose up -d`
+6. Your bot should be alive! Now, before you run any commands, you need to setup your database structure properly. Follow the instructions below.
 
 ### The Docker Compose installs two new images: MariaDB and PHPMyAdmin. This will allow you to manage your bot's database through a browser on port 8090.
 
