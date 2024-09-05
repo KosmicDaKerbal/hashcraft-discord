@@ -54,5 +54,10 @@ Table construction instructions:
 | `streak`      | SMALLINT    | 1           | UNSIGNED, NON NULLABLE       | -      |
 | `mdu_bal`     | INT(10)     | 0           | UNSIGNED, NON NULLABLE       | -      |
 
+...or you can use the following command in your MariaDB CLI:<br>
+`CREATE TABLE Faucet (userid BIGINT NOT NULL , wallet_name VARCHAR(32) NULL DEFAULT NULL , last_used DATE NULL DEFAULT NULL , claims SMALLINT UNSIGNED NOT NULL DEFAULT '0' , streak SMALLINT UNSIGNED NOT NULL DEFAULT '1' , mdu_bal INT(10) UNSIGNED NOT NULL DEFAULT '0' ) ENGINE = InnoDB;`
+<br>
+Replace <db-name> with the name of your database.
+
 4. Save the table and exit.
 5. Now, you can use all the commands without issues!
