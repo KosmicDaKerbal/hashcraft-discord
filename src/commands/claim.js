@@ -6,6 +6,7 @@ const {
 module.exports = {
   drop: async function (embed, userid, con) {
     await embed.deferReply();
+    console.log("reply deferred");
     const u = userid;
     const claimbox = new EmbedBuilder()
       .setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.PROCESSING })
@@ -14,6 +15,7 @@ module.exports = {
       .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
       .setTimestamp();
     con.getConnection(async function (err) {
+      console.log("connection get");
       if (err) {
         claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })
           .setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
@@ -25,16 +27,19 @@ module.exports = {
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           async function (err) {
             if (!err) {
+              console.log("query 1 no error");
               const claimtime = dayjs();
               con.query(
                 `select wallet_name, streak, last_used from Faucet where userid = ${u};`,
                 async function (err, result) {
                   if (!err) {
+                    console.log("query 2 no error");
                     if (result[0].wallet_name == null) {
                       claimbox.setAuthor(
                         { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                       ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
                       await embed.followUp({ embeds: [claimbox] });
+                      console.log("followed up with nonlinked");
                     } else {
                       var streak = result[0].streak;
                       const use = result[0].last_used;
@@ -75,6 +80,7 @@ module.exports = {
                             async function (err, result) {
                               if (!err) {
                                 await embed.followUp({ embeds: [claimbox] });
+                                console.log("followed up with success");
                               } else {
                                 claimbox.setAuthor(
                                   { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
