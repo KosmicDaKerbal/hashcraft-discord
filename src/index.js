@@ -98,7 +98,7 @@ client.on("ready", (c) => {
 client.login(process.env.TOKEN);
 http.createServer(function(req, res){
   hit = hit + 1;
-  if (hit >= 25){
+  if (hit >= (process.env.RESTART * 10)){
     process.exit(22);
   }
   res.write(`Bot is Working!\nHit: ${(hit + 1)/2}`);
