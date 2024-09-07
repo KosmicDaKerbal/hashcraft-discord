@@ -50,6 +50,7 @@ module.exports = {
                             { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                           ).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
                           await embed.followUp({ embeds: [claimbox] });
+                          console.log("followed up with claimed already");
                           break;
                         default:
                           var lost;
@@ -86,6 +87,7 @@ module.exports = {
                                   { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                                 ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
                                 await embed.followUp({ embeds: [claimbox] });
+                                console.log("followed up with unable to process query");
                               }
                             });
                           break;
