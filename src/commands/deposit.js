@@ -65,7 +65,7 @@ module.exports = {
                                 e +
                                 "\n```"
                               )
-                              .setTitle("Amount should be greater than 0")
+                              .setTitle("An API Error Occured. Please try again.")
                               .setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })
                               .setColor(0xff0000)
                               .setTimestamp();
