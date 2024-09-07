@@ -92,7 +92,6 @@ module.exports = {
                     await embed.followUp({ embeds: [claimbox] });
                     console.log(err);
                   }
-                  claim.release();
                 });
             } else {
               claimbox.setAuthor(

@@ -77,7 +77,6 @@ module.exports = {
                           deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                           await embed.followUp({ embeds: [deposit] });
                         }
-                        depfunc.release();
                       });
                   }
                   else {

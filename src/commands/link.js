@@ -191,7 +191,6 @@ module.exports = {
                                                       .setColor(0x00ff00)
                                                       .setTimestamp();
                                                   }
-                                                  link.release();
                                                 }
                                               );
                                               break;
@@ -350,7 +349,6 @@ module.exports = {
                                   }
 
                                   await existsInteraction.followUp({ embeds: [confirmbox] });
-                                  link.release();
                                 });
                               break;
                           }
