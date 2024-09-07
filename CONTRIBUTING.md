@@ -1,0 +1,1 @@
+To contribute to the project, simply fork the repository, commit your own additions and create a pull request. However, you can still use the code as-is with your own branding if you do not wish to contribute.
