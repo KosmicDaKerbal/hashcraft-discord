@@ -33,7 +33,7 @@ module.exports = {
       .setDisabled(false);
     //await embed.editReply({ embeds: [confirmbox] });
     await embed.deferReply();
-    con.getConnection(async function (err) {
+    con.getConnection(async function (err, link) {
       if (err) {
         confirmbox.setDescription(
           "Please Wait...\nConnecting to DB...\nInternal Server Error: Unable to connect to Faucet Database."
@@ -45,7 +45,7 @@ module.exports = {
         //   "Please Wait...\nConnected to DB.\nQuerying Account Link..."
         // );
         // await embed.editReply({ embeds: [confirmbox] });
-        con.query(
+        link.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           async function (err, result) {
             if (err) {
@@ -55,7 +55,7 @@ module.exports = {
               await embed.followUp({ embeds: [confirmbox] });
               console.log(err);
             } else {
-              con.query(
+              link.query(
                 `select wallet_name from Faucet where userid = ${u}`,
                 async function (err, result) {
                   if (err) {
@@ -149,7 +149,7 @@ module.exports = {
                                           switch (linkInteraction.customId) {
                                             case "confirm":
                                               cancel.setStyle(ButtonStyle.Secondary);
-                                              con.query(
+                                              link.query(
                                                 `insert into Faucet(userid, wallet_name) values (${u}, '${String(embed.options.get("account-name").value)}') on duplicate key update userid = ${u}, wallet_name = '${String(embed.options.get("account-name").value)}';`,
                                                 async function (err, result) {
                                                   if (err) {
@@ -191,6 +191,7 @@ module.exports = {
                                                       .setColor(0x00ff00)
                                                       .setTimestamp();
                                                   }
+                                                  link.release();
                                                 }
                                               );
                                               break;
@@ -319,7 +320,7 @@ module.exports = {
                                 ButtonStyle.Success
                               ).setDisabled(true);
                               await embed.editReply({ components: [accountRemove] });
-                              con.query(
+                              link.query(
                                 `update Faucet set wallet_name = null where Faucet.userid = ${u}`,
                                 async function (err, result) {
                                   await existsInteraction.deferReply();
@@ -349,6 +350,7 @@ module.exports = {
                                   }
 
                                   await existsInteraction.followUp({ embeds: [confirmbox] });
+                                  link.release();
                                 });
                               break;
                           }
@@ -365,6 +367,7 @@ module.exports = {
                 }
               );
             }
+            link.release();
           }
         );
       }

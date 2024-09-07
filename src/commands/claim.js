@@ -6,7 +6,6 @@ const {
 module.exports = {
   drop: async function (embed, userid, con) {
     await embed.deferReply();
-    console.log("reply deferred");
     const u = userid;
     const claimbox = new EmbedBuilder()
       .setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.PROCESSING })
@@ -14,8 +13,7 @@ module.exports = {
       .setColor(0xf18701)
       .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
       .setTimestamp();
-    con.getConnection(async function (err) {
-      console.log("connection get");
+    con.getConnection(async function (err, claim) {
       if (err) {
         claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })
           .setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
@@ -23,23 +21,20 @@ module.exports = {
         console.log(err);
       } else {
         //await embed.followUp({ embeds: [claimbox] });
-        con.query(
+        claim.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           async function (err) {
             if (!err) {
-              console.log("query 1 no error");
               const claimtime = dayjs();
-              con.query(
+              claim.query(
                 `select wallet_name, streak, last_used from Faucet where userid = ${u};`,
                 async function (err, result) {
                   if (!err) {
-                    console.log("query 2 no error");
                     if (result[0].wallet_name == null) {
                       claimbox.setAuthor(
                         { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                       ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
                       await embed.followUp({ embeds: [claimbox] });
-                      console.log("followed up with nonlinked");
                     } else {
                       var streak = result[0].streak;
                       const use = result[0].last_used;
@@ -50,7 +45,6 @@ module.exports = {
                             { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                           ).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
                           await embed.followUp({ embeds: [claimbox] });
-                          console.log("followed up with claimed already");
                           break;
                         default:
                           var lost;
@@ -76,18 +70,16 @@ module.exports = {
                           } else if (use == null) {
                             streak = 1;
                           }
-                          con.query(
+                          claim.query(
                             `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = '${claimtime.format("YYYY-MM-DD")}';`,
                             async function (err, result) {
                               if (!err) {
                                 await embed.followUp({ embeds: [claimbox] });
-                                console.log("followed up with success");
                               } else {
                                 claimbox.setAuthor(
                                   { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
                                 ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
                                 await embed.followUp({ embeds: [claimbox] });
-                                console.log("followed up with unable to process query");
                               }
                             });
                           break;
@@ -100,6 +92,7 @@ module.exports = {
                     await embed.followUp({ embeds: [claimbox] });
                     console.log(err);
                   }
+                  claim.release();
                 });
             } else {
               claimbox.setAuthor(
@@ -108,6 +101,7 @@ module.exports = {
               await embed.followUp({ embeds: [claimbox] });
               console.log(err);
             }
+            claim.release();
           });
       }
     });

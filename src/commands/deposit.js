@@ -12,14 +12,14 @@ module.exports = {
       .setColor(0xf18701)
       .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
       .setTimestamp();
-    con.getConnection(async function (err) {
+    con.getConnection(async function (err, depfunc) {
       if (!err) {
         if (embed.options.get("amount").value <= 0) {
           deposit.setTitle("Amount should be greater than 0").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
           await embed.followUp({ embeds: [deposit] });
         } else {
           //await embed.followUp({ embeds: [deposit] });
-          con.query(
+          depfunc.query(
             `select mdu_bal, wallet_name from Faucet where userid = ${userid}`,
             async function (err, result) {
               const dep = embed.options.get("amount").value;
@@ -29,7 +29,7 @@ module.exports = {
               if (recip != null) {
                 if (!err) {
                   if (bal >= dep) {
-                    con.query(
+                    depfunc.query(
                       `update Faucet set mdu_bal = ${bal - dep} where Faucet.userid = ${userid}`,
                       async function (err) {
                         if (!err) {
@@ -77,6 +77,7 @@ module.exports = {
                           deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                           await embed.followUp({ embeds: [deposit] });
                         }
+                        depfunc.release();
                       });
                   }
                   else {
@@ -91,6 +92,7 @@ module.exports = {
                 deposit.setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                 await embed.followUp({ embeds: [deposit] });
               }
+              depfunc.release();
             });
         }
       }
