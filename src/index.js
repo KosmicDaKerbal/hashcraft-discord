@@ -98,6 +98,6 @@ client.on("ready", (c) => {
 client.login(process.env.TOKEN);
 http.createServer(function(req, res){
   hit = hit + 1;
-  res.write(`Bot is Working!\nHit: ${hit}`);
+  res.write(`Bot is Working!\nHit: ${(hit + 1)/2}`);
   res.end();
 }).listen(8091);;
