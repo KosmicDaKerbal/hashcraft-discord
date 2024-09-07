@@ -29,6 +29,8 @@ services:
     restart: always
     depends_on:
       - mariadb
+    ports:
+      - "8091:8091"
     networks:
       mysql-phpmyadmin:
         ipv4_address: 172.20.128.3
