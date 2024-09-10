@@ -6,6 +6,7 @@ const {
   ActivityType,
 } = require("discord.js");
 var hit = 0;
+
 const process = require("process");
 const mysql = require("mysql");
 const http = require("http");
@@ -18,6 +19,7 @@ const balance = require("./commands/balance");
 const slowmode = require("./commands/slowmode");
 const purge = require("./commands/purge");
 const restart = require('./commands/restart');
+
 const con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -78,8 +80,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                 const reboot = restart.execute(mainInteraction, hit);
                 if (reboot){
                   client.user.setStatus('invisible');
-                  await client.destroy();
-                  setTimeout(async () => { process.exit(22) }, 15000);
+                  setTimeout(async () => { await client.destroy(); process.exit(22) }, 15000);
                 }
                 break; 
             }
@@ -111,7 +112,7 @@ client.on("ready", (c) => {
   });
 });
 client.login(process.env.TOKEN);
-http.createServer(function(req, res){
+http.createServer(function(res){
   hit = hit + 1;
   if (hit >= (process.env.RESTART * 20)){
     process.exit(22);
