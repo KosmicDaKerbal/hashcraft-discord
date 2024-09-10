@@ -39,7 +39,6 @@ module.exports = {
                 "DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again."
               );
               await embed.followUp({ embeds: [confirmbox] });
-              console.log(err);
             } else {
               link.query(
                 `select wallet_name from Faucet where userid = ${u}`,
@@ -49,7 +48,6 @@ module.exports = {
                       "DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again."
                     );
                     await embed.followUp({ embeds: [confirmbox] });
-                    console.log(err);
                   } else {
                     if (result[0].wallet_name === null) {
                       const choice = new ActionRowBuilder().addComponents(
@@ -159,7 +157,6 @@ module.exports = {
                                                     cancel.setStyle(
                                                       ButtonStyle.Secondary
                                                     );
-                                                    console.log(err);
                                                   } else {
                                                     confirmbox
                                                       .setTitle(
@@ -320,7 +317,6 @@ module.exports = {
                                       )
                                       .setColor(0xff0000)
                                       .setTimestamp();
-                                    console.log(err);
                                   } else {
                                     confirmbox.setTitle(
                                       "Account " +
