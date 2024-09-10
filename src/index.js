@@ -77,8 +77,8 @@ client.on("interactionCreate", async (mainInteraction) => {
               case 'restart':
                 const reboot = restart.execute(mainInteraction, hit);
                 if (reboot){
-                  client.user.setPresence({ status: 'invisible' })
-                  setTimeout(() => { process.exit(22) }, 10000);
+                  client.user.setStatus('invisible');
+                  setTimeout(() => { process.exit(22) }, 15000);
                 }
                 break; 
             }
