@@ -78,7 +78,8 @@ client.on("interactionCreate", async (mainInteraction) => {
                 const reboot = restart.execute(mainInteraction, hit);
                 if (reboot){
                   client.user.setStatus('invisible');
-                  setTimeout(async () => { await client.destroy(); process.exit(22) }, 15000);
+                  await client.destroy();
+                  setTimeout(async () => { process.exit(22) }, 15000);
                 }
                 break; 
             }
