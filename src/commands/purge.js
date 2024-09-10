@@ -12,7 +12,6 @@ module.exports = {
             purge.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.FAIL })
             .setTitle("Error: Operation cancelled.")
             .setDescription('Log:\n\`\`\`\n'+ err +'\n\`\`\`')
-            //w
             .setColor(0xff0000)
             );
             await embed.reply({ embeds: [purge] });
