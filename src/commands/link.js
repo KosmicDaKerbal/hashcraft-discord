@@ -206,8 +206,8 @@ module.exports = {
                                         }
                                       );
                                       collector.on("end", async () => {
-                                        confirm.setDisabled(true);
-                                        cancel.setDisabled(true);
+                                        confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);
+                                        cancel.setDisabled(true).setStyle(ButtonStyle.Secondary);
                                         client.user.setPresence({ status: 'idle' });
                                         await sqlInteraction.editReply({
                                           components: [choice2],
@@ -264,8 +264,8 @@ module.exports = {
                         }
                       });
                       collector2.on("end", async () => {
-                        confirm.setLabel("Link Duino-Coin Account").setDisabled(true);
-                        cancel.setDisabled(true);
+                        confirm.setLabel("Link Duino-Coin Account").setDisabled(true).setStyle(ButtonStyle.Secondary);
+                        cancel.setDisabled(true).setStyle(ButtonStyle.Secondary);
                         client.user.setPresence({ status: 'idle' });
                         await embed.editReply({
                           components: [choice],
