@@ -2,7 +2,7 @@ const process = require("process");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require("discord.js");
 const dayjs = require('dayjs');
 module.exports = {
-    execute: async function (embed, countdown, client) {
+    execute: async function (embed, countdown) {
         const restart = new EmbedBuilder().setTitle("Confirm Bot Restart").setDescription(`Current auto-restart countdown: Approximately ${(process.env.RESTART * 20) - ((countdown/2) * process.env.RESTART)} minutes from now.`).setColor(0xf18701).setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
         const restartConfirm = new ButtonBuilder()
         .setCustomId("reconfirm")
@@ -28,9 +28,9 @@ module.exports = {
             const rstime = dayjs();
             restart.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.SUCCESS }).setColor(0x00ff00).setTitle("Restarting...").setDescription(`Bot will now restart <t:${rstime.unix() + 10}:R> from now.`).setTimestamp();
             await rstInteraction.reply({ embeds: [restart] });
-            client.user.setPresence({ status: 'invisible' });
-            setTimeout(() => { process.exit(22) }, 10000);
+            return 1;
             }
         })
+        return 0;
     }
 }
