@@ -94,6 +94,10 @@ module.exports = {
               depfunc.release();
             });
         }
+      } else {
+        deposit.setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL })
+          .setTitle("Error: Unable to connect to DB.").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
+        await embed.followUp({ embeds: [deposit] });
       }
     });
   }

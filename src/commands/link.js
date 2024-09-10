@@ -25,26 +25,18 @@ module.exports = {
       .setLabel("Remove")
       .setStyle(ButtonStyle.Danger)
       .setDisabled(false);
-    //await embed.editReply({ embeds: [confirmbox] });
     await embed.deferReply();
     con.getConnection(async function (err, link) {
       if (err) {
-        confirmbox.setDescription(
-          "Please Wait...\nConnecting to DB...\nInternal Server Error: Unable to connect to Faucet Database."
-        );
+        confirmbox.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.");
         await embed.followUp({ embeds: [confirmbox] });
-        console.log(err);
       } else {
-        // confirmbox.setDescription(
-        //   "Please Wait...\nConnected to DB.\nQuerying Account Link..."
-        // );
-        // await embed.editReply({ embeds: [confirmbox] });
         link.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           async function (err, result) {
             if (err) {
               confirmbox.setDescription(
-                "Query Failed: Couldn't update UserID"
+                "DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again."
               );
               await embed.followUp({ embeds: [confirmbox] });
               console.log(err);
@@ -54,7 +46,7 @@ module.exports = {
                 async function (err, result) {
                   if (err) {
                     confirmbox.setDescription(
-                      "Query Failed: Couldn't get Wallet Name"
+                      "DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again."
                     );
                     await embed.followUp({ embeds: [confirmbox] });
                     console.log(err);
@@ -157,7 +149,7 @@ module.exports = {
                                                       " Failed"
                                                     )
                                                       .setDescription(
-                                                        "An internal error occured while connecting to the database."
+                                                        "DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again."
                                                       )
                                                       .setColor(0xff0000)
                                                       .setTimestamp();
@@ -324,7 +316,7 @@ module.exports = {
                                       " Failed"
                                     )
                                       .setDescription(
-                                        "An internal error occured while querying the database."
+                                        "DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again."
                                       )
                                       .setColor(0xff0000)
                                       .setTimestamp();

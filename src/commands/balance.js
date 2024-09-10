@@ -9,9 +9,8 @@ module.exports = {
     con.getConnection(async function (err, balance) {
       if (err) {
         bal.setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL })
-          .setTitle("Error: Unable to connect to DB.").setDescription("Please try again.").setColor(0xff0000);
+          .setTitle("Error: Unable to connect to DB.").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
         await embed.followUp({ embeds: [bal] });
-        console.log(err);
       } else {
         //await embed.followUp({ embeds: [bal] });
         balance.query(
@@ -38,7 +37,7 @@ module.exports = {
                   }
                 });
             } else {
-              bal.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL });
+              bal.setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL });
               await embed.followUp({ embeds: [bal] });
             }
             balance.release();

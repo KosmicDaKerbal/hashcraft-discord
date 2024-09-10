@@ -16,11 +16,9 @@ module.exports = {
     con.getConnection(async function (err, claim) {
       if (err) {
         claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })
-          .setTitle("Error: Unable to connect to DB.").setColor(0xff0000);
+          .setTitle("Error: Unable to connect to DB.").setColor(0xff0000).setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.");
         await embed.followUp({ embeds: [claimbox] });
-        console.log(err);
       } else {
-        //await embed.followUp({ embeds: [claimbox] });
         claim.query(
           `insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`,
           async function (err) {
@@ -72,13 +70,13 @@ module.exports = {
                           }
                           claim.query(
                             `insert into Faucet (userid, last_used, streak) values (${u}, '${claimtime.format("YYYY-MM-DD")}', ${streak}) on duplicate key update mdu_bal = mdu_bal + ${drop}, claims = claims + 1, streak = ${streak}, last_used = '${claimtime.format("YYYY-MM-DD")}';`,
-                            async function (err, result) {
+                            async function (err) {
                               if (!err) {
                                 await embed.followUp({ embeds: [claimbox] });
                               } else {
                                 claimbox.setAuthor(
                                   { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
-                                ).setTitle(`Error`).setDescription(`Could not process query`).setColor(0xff0000);
+                                ).setTitle(`Error`).setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
                                 await embed.followUp({ embeds: [claimbox] });
                               }
                             });
@@ -88,17 +86,15 @@ module.exports = {
                   } else {
                     claimbox.setAuthor(
                       { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
-                    ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
+                    ).setTitle("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
                     await embed.followUp({ embeds: [claimbox] });
-                    console.log(err);
                   }
                 });
             } else {
               claimbox.setAuthor(
                 { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
-              ).setTitle("Error: Query Failed, Try Again.").setColor(0xff0000);
+              ).setTitle("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
               await embed.followUp({ embeds: [claimbox] });
-              console.log(err);
             }
             claim.release();
           });

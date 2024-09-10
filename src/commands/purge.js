@@ -7,11 +7,11 @@ module.exports = {
             purge.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.SUCCESS })
             .setTitle("Purged \`" + embed.options.get("purge-limit").value + "\` Messages.")
             .setColor(0x00ff00);
-            await embed.channel.bulkDelete(embed.options.get("purge-limit"))
+            await embed.channel.bulkDelete(Math.floor(embed.options.get("purge-limit")))
             .catch(err =>
             purge.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.FAIL })
-            .setTitle("Error: Messages older than 14 days cannot be deleted. Operation cancelled.")
-            .setDescription('Error Message:\n\`\`\`\n'+ err +'\n\`\`\`')
+            .setTitle("Error: Operation cancelled.")
+            .setDescription('Log:\n\`\`\`\n'+ err +'\n\`\`\`')
             .setColor(0xff0000)
             );
             await embed.reply({ embeds: [purge] });
