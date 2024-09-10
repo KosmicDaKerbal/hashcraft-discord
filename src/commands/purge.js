@@ -11,6 +11,7 @@ module.exports = {
             .catch(err =>
             purge.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.FAIL })
             .setTitle("Error: Messages older than 14 days cannot be deleted. Operation cancelled.")
+            .setDescription('Error Message:\n\`\`\`\n'+ err +'\n\`\`\`')
             .setColor(0xff0000)
             );
             await embed.reply({ embeds: [purge] });

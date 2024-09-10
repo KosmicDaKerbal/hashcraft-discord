@@ -25,8 +25,8 @@ module.exports = {
                     embeds: [restart],
                     components: [component],
                   });
-            const rstime = dayjs.unix() + 10;
-            restart.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.SUCCESS }).setColor(0x00ff00).setTitle("Restarting...").setDescription(`Bot will now restart in <t:${rstime}:R`).setTimestamp();
+            const rstime = dayjs();
+            restart.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.SUCCESS }).setColor(0x00ff00).setTitle("Restarting...").setDescription(`Bot will now restart in <t:${rstime.unix() + 10}:R>`).setTimestamp();
             await rstInteraction.reply({ embeds: [restart] });
             setTimeout(() => { process.exit(22) }, 10000);
             }
