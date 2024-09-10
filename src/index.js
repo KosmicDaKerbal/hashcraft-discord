@@ -64,7 +64,7 @@ client.on("interactionCreate", async (mainInteraction) => {
           setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
         default:
-          if (mainInteraction.member.roles.cache.some(role => role.name === (process.env.SERVER_OWNER || role.name === process.env.MODERATOR))) {
+          if (mainInteraction.member.roles.cache.some(role => role.name === process.env.SERVER_OWNER) || mainInteraction.member.roles.cache.some(role => role.name === process.env.MODERATOR)) {
             switch (mainInteraction.commandName) {
               case 'slowmode':
                 slowmode.set(mainInteraction);
