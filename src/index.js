@@ -75,7 +75,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                 setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
                 break;
               case 'restart':
-                restart.execute(mainInteraction, hit);
+                restart.execute(mainInteraction, hit, client);
                 break; 
             }
           } else {
