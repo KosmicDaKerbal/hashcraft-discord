@@ -44,7 +44,7 @@ const commands = [
     },
     {
         name: 'slowmode',
-        description: "Set a Slowmode: SERVER OWNER ONLY",
+        description: "Set a Slowmode: Admin Command",
         options: [
             {
                 name: 'duration',
@@ -53,6 +53,22 @@ const commands = [
                 required: true,
             },
         ],
+    },
+    {
+        name: 'purge',
+        description: "Purges Past Messages: Admin Command",
+        options: [
+            {
+                name: 'purge-limit',
+                description: 'Number of Messages',
+                type: ApplicationCommandOptionType.Integer,
+                required: true,
+            },
+        ],
+    },
+    {
+        name: 'restart',
+        description: 'Restarts the Bot: Admin Command',
     },
 ];
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);

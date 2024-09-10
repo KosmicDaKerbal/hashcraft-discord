@@ -1,12 +1,6 @@
 const process = require("process");
 const http = require("http");
-const {
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ComponentType,
-} = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require("discord.js");
 module.exports = {
   start: async function (embed, userid, con, client) {
     const u = userid;

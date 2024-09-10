@@ -16,6 +16,8 @@ const stats = require('./commands/stats');
 const deposit = require("./commands/deposit");
 const balance = require("./commands/balance");
 const slowmode = require("./commands/slowmode");
+const purge = require("./commands/purge");
+const restart = require('./commands/restart');
 const con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -31,6 +33,7 @@ const client = new Client({
     IntentsBitField.Flags.MessageContent,
   ],
 });
+const index = new EmbedBuilder();
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
@@ -61,26 +64,33 @@ client.on("interactionCreate", async (mainInteraction) => {
           setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
         default:
-          if (mainInteraction.member.roles.cache.some(role => role.name === process.env.SERVER_OWNER)) {
+          if (mainInteraction.member.roles.cache.some(role => role.name === (process.env.SERVER_OWNER || role.name === process.env.MODERATOR))) {
             switch (mainInteraction.commandName) {
               case 'slowmode':
                 slowmode.set(mainInteraction);
                 setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
                 break;
+              case 'purge':
+                purge.execute(mainInteraction);
+                setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
+                break;
+              case 'restart':
+                restart.execute(mainInteraction, hit);
+                break; 
             }
           } else {
-            const owneronly = new EmbedBuilder().setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-            await mainInteraction.reply({ embeds: [owneronly], ephemeral: true });
+            index.setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+            await mainInteraction.reply({ embeds: [index], ephemeral: true });
           }
           break;
       }
     } else {
-      const commandsonly = new EmbedBuilder().setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-      await mainInteraction.reply({ embeds: [commandsonly], ephemeral: true });
+      index.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+      await mainInteraction.reply({ embeds: [index], ephemeral: true });
     }
   } else {
-    const verify = new EmbedBuilder().setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-    await mainInteraction.reply({ embeds: [verify] });
+    index.setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+    await mainInteraction.reply({ embeds: [index] });
   }
 
 });
@@ -98,7 +108,7 @@ client.on("ready", (c) => {
 client.login(process.env.TOKEN);
 http.createServer(function(req, res){
   hit = hit + 1;
-  if (hit >= (process.env.RESTART * 10)){
+  if (hit >= (process.env.RESTART * 20)){
     process.exit(22);
   }
   res.write(`Bot is Working!\nHit: ${(hit + 1)/2}`);
