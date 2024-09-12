@@ -63,6 +63,8 @@ const commands = [
                 description: 'Number of Messages',
                 type: ApplicationCommandOptionType.Integer,
                 required: true,
+                min_value: 1,
+                max_value: 100,
             },
         ],
     },
