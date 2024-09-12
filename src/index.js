@@ -60,46 +60,40 @@ client.on("interactionCreate", async (mainInteraction) => {
           break;
       }
     } else {
-      priority = 2;
-    }
-    if (mainInteraction.channelId === process.env.BOT_CHANNEL) {
-      switch (mainInteraction.commandName) {
-        case "help":
-          help.send(mainInteraction);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
-          break;
-        case "stats":
-          stats.send(mainInteraction);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
-          break;
-        case "link":
-          link.start(mainInteraction, mainInteraction.user.id, con, client);
-          break;
-        case 'claim':
-          claim.drop(mainInteraction, mainInteraction.user.id, con);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
-          break;
-        case 'deposit':
-          deposit.transfer(mainInteraction, mainInteraction.user.id, con);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
-          break;
-        case 'balance':
-          balance.check(mainInteraction, mainInteraction.user.id, con);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
-          break;
-      }
-    } else {
       priority = 1;
-    }
-    switch (priority){
-      case 2:
+      if (mainInteraction.channelId === process.env.BOT_CHANNEL) {
+        switch (mainInteraction.commandName) {
+          case "help":
+            help.send(mainInteraction);
+            setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
+            break;
+          case "stats":
+            stats.send(mainInteraction);
+            setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
+            break;
+          case "link":
+            link.start(mainInteraction, mainInteraction.user.id, con, client);
+            break;
+          case 'claim':
+            claim.drop(mainInteraction, mainInteraction.user.id, con);
+            setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
+            break;
+          case 'deposit':
+            deposit.transfer(mainInteraction, mainInteraction.user.id, con);
+            setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
+            break;
+          case 'balance':
+            balance.check(mainInteraction, mainInteraction.user.id, con);
+            setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
+            break;
+        }
+      } else if (priority) {
         index.setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
         await mainInteraction.reply({ embeds: [index], ephemeral: true });
-        break;
-      case 1:
+      } else {
         index.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
         await mainInteraction.reply({ embeds: [index], ephemeral: true });
-        break;
+      }
     }
   } else {
     index.setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
