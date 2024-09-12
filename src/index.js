@@ -60,7 +60,7 @@ client.on("interactionCreate", async (mainInteraction) => {
           break;
       }
     } else {
-      priority = 1;
+      priority = 2;
     }
     if (mainInteraction.channelId === process.env.BOT_CHANNEL) {
       switch (mainInteraction.commandName) {
@@ -88,13 +88,15 @@ client.on("interactionCreate", async (mainInteraction) => {
           setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
       }
+    } else {
+      priority = 1;
     }
     switch (priority){
-      case 1:
+      case 2:
         index.setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
         await mainInteraction.reply({ embeds: [index], ephemeral: true });
         break;
-      case 0:
+      case 1:
         index.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
         await mainInteraction.reply({ embeds: [index], ephemeral: true });
         break;
