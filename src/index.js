@@ -60,7 +60,6 @@ client.on("interactionCreate", async (mainInteraction) => {
           break;
       }
     } else {
-      priority = 1;
       if (mainInteraction.channelId === process.env.BOT_CHANNEL) {
         switch (mainInteraction.commandName) {
           case "help":
@@ -86,6 +85,9 @@ client.on("interactionCreate", async (mainInteraction) => {
             balance.check(mainInteraction, mainInteraction.user.id, con);
             setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
             break;
+          default:
+            priority = 1;
+          break;
         }
       } else if (priority) {
         index.setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
