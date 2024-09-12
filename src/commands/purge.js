@@ -7,14 +7,8 @@ module.exports = {
             purge.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.SUCCESS })
             .setTitle("Purged \`" + embed.options.get("purge-limit").value + "\` Messages.")
             .setColor(0x00ff00);
-            embed.options.getInteger("purge-limit")
-            .then(msg => embed.channel.bulkDelete(msg))
-            .catch(err =>
-            purge.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.FAIL })
-            .setTitle("Error: Operation cancelled.")
-            .setDescription('Log:\n\`\`\`\n'+ err +'\n\`\`\`')
-            .setColor(0xff0000)
-            );
+            let msg = embed.options.getInteger("purge-limit")
+            embed.channel.bulkDelete(msg);
             await embed.reply({ embeds: [purge] });
         } else {
             purge.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.FAIL })
