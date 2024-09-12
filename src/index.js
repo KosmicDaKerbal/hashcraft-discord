@@ -38,8 +38,30 @@ const client = new Client({
 const index = new EmbedBuilder();
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
+  var priority = 0;
   client.user.setPresence({ status: 'online' });
   if (mainInteraction.member.roles.cache.some(role => role.name === process.env.VERIFIED_ROLE)) {
+    if (mainInteraction.member.roles.cache.some(role => role.name === process.env.SERVER_OWNER) || mainInteraction.member.roles.cache.some(role => role.name === process.env.MODERATOR)) {
+      switch (mainInteraction.commandName) {
+        case 'slowmode':
+          slowmode.set(mainInteraction);
+          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
+          break;
+        case 'purge':
+          purge.execute(mainInteraction);
+          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
+          break;
+        case 'restart':
+          const reboot = restart.execute(mainInteraction, hit);
+          if (reboot) {
+            client.user.setStatus('invisible');
+            setTimeout(async () => { await client.destroy(); process.exit(22) }, 15000);
+          }
+          break;
+      }
+    } else {
+      priority = 1;
+    }
     if (mainInteraction.channelId === process.env.BOT_CHANNEL) {
       switch (mainInteraction.commandName) {
         case "help":
@@ -65,34 +87,17 @@ client.on("interactionCreate", async (mainInteraction) => {
           balance.check(mainInteraction, mainInteraction.user.id, con);
           setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
-        default:
-          if (mainInteraction.member.roles.cache.some(role => role.name === process.env.SERVER_OWNER) || mainInteraction.member.roles.cache.some(role => role.name === process.env.MODERATOR)) {
-            switch (mainInteraction.commandName) {
-              case 'slowmode':
-                slowmode.set(mainInteraction);
-                setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
-                break;
-              case 'purge':
-                purge.execute(mainInteraction);
-                setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
-                break;
-              case 'restart':
-                const reboot = restart.execute(mainInteraction, hit);
-                if (reboot){
-                  client.user.setStatus('invisible');
-                  setTimeout(async () => { await client.destroy(); process.exit(22) }, 15000);
-                }
-                break; 
-            }
-          } else {
-            index.setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-            await mainInteraction.reply({ embeds: [index], ephemeral: true });
-          }
-          break;
       }
-    } else {
-      index.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-      await mainInteraction.reply({ embeds: [index], ephemeral: true });
+    }
+    switch (priority){
+      case 1:
+        index.setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+        await mainInteraction.reply({ embeds: [index], ephemeral: true });
+        break;
+      case 0:
+        index.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+        await mainInteraction.reply({ embeds: [index], ephemeral: true });
+        break;
     }
   } else {
     index.setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
@@ -112,11 +117,11 @@ client.on("ready", (c) => {
   });
 });
 client.login(process.env.TOKEN);
-http.createServer(function(res){
+http.createServer(function (res) {
   hit = hit + 1;
-  if (hit >= (process.env.RESTART * 20)){
+  if (hit >= (process.env.RESTART * 20)) {
     process.exit(22);
   }
-  res.write(`Bot is Working!\nHit: ${(hit + 1)/2}`);
+  res.write(`Bot is Working!\nHit: ${(hit + 1) / 2}`);
   res.end();
 }).listen(8091);;
