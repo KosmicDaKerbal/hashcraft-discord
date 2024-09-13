@@ -30,7 +30,13 @@ module.exports = {
             await rstInteraction.reply({ embeds: [restart] });
             return 1;
             }
-        })
+        });
+        collect.on("end", async () => {
+            restartConfirm.setDisabled(true);
+            await embed.editReply({
+                components: [component],
+              });
+        });
         return 0;
     }
 }
