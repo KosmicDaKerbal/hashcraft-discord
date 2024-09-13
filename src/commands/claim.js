@@ -103,7 +103,7 @@ module.exports = {
     });
   } else {
     claimbox.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-    await embed.reply({ embeds: [claimbox], ephemeral: true });
+    await embed.followUp({ embeds: [claimbox], ephemeral: true });
   }
   }
 }
