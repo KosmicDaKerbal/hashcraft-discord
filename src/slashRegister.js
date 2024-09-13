@@ -74,6 +74,26 @@ const commands = [
         name: 'restart',
         description: 'Restarts the Bot: Admin Command',
     },
+    {
+        name: 'modbal',
+        description: "Modifies the ⧈ mDU Balance of a user: Admin Command",
+        options: [
+            {
+                name: 'user-to-modify',
+                description: 'The Username whose account is to be modified.',
+                type: ApplicationCommandOptionType.User,
+                required: true,
+            },
+            {
+                name: 'new-balance',
+                description: 'The balance to set for the user',
+                type: ApplicationCommandOptionType.Integer,
+                required: true,
+                min_value: 0,
+                max_value: 1000000,
+            },
+        ],
+    },
 ];
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 (async () => {

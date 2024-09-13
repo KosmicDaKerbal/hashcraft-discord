@@ -19,7 +19,7 @@ const balance = require("./commands/balance");
 const slowmode = require("./commands/slowmode");
 const purge = require("./commands/purge");
 const restart = require('./commands/restart');
-
+const modbal = require('./commands/modbal');
 const con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -43,37 +43,30 @@ client.on("interactionCreate", async (mainInteraction) => {
       switch (mainInteraction.commandName) {
         case "help":
           help.send(mainInteraction);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
         case "stats":
           stats.send(mainInteraction);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
         case "link":
-          link.start(mainInteraction, mainInteraction.user.id, con, client);
+          link.start(mainInteraction, mainInteraction.user.id, con, client); //yes this is a sword art online reference
           break;
         case 'claim':
           claim.drop(mainInteraction, mainInteraction.user.id, con);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
         case 'deposit':
           deposit.transfer(mainInteraction, mainInteraction.user.id, con);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
         case 'balance':
           balance.check(mainInteraction, mainInteraction.user.id, con);
-          setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
           break;
         default:
           if (mainInteraction.member.roles.cache.some(role => role.name === process.env.SERVER_OWNER) || mainInteraction.member.roles.cache.some(role => role.name === process.env.MODERATOR)) {
             switch (mainInteraction.commandName) {
               case 'slowmode':
                 slowmode.set(mainInteraction);
-                setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
                 break;
               case 'purge':
                 purge.execute(mainInteraction);
-                setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
                 break;
               case 'restart':
                 const reboot = restart.execute(mainInteraction, hit);
@@ -81,7 +74,10 @@ client.on("interactionCreate", async (mainInteraction) => {
                   client.user.setStatus('invisible');
                   setTimeout(async () => { await client.destroy(); process.exit(22) }, 15000);
                 }
-                break; 
+              break;
+              case 'modbal':
+                modbal.modify (mainInteraction, con);
+              break;
             }
           } else {
             index.setTitle("Nice try, pleb").setColor(0xff0000).setDescription("You cannot use admin commands when you're not one, duh.").setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
@@ -93,7 +89,7 @@ client.on("interactionCreate", async (mainInteraction) => {
     index.setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
     await mainInteraction.reply({ embeds: [index] });
   }
-
+  setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
 });
 console.log("Connecting...");
 client.on("ready", (c) => {
