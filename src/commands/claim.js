@@ -5,14 +5,15 @@ const {
 } = require("discord.js");
 module.exports = {
   drop: async function (embed, userid, con) {
-    await embed.deferReply();
-    const u = userid;
+    await embed.deferReply();    
     const claimbox = new EmbedBuilder()
       .setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.PROCESSING })
       .setTitle("Please Wait...")
       .setColor(0xf18701)
       .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
       .setTimestamp();
+      if (embed.channelId === process.env.BOT_CHANNEL) {
+    const u = userid;
     con.getConnection(async function (err, claim) {
       if (err) {
         claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })
@@ -100,5 +101,9 @@ module.exports = {
           });
       }
     });
+  } else {
+    claimbox.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+    await embed.reply({ embeds: [claimbox], ephemeral: true });
+  }
   }
 }

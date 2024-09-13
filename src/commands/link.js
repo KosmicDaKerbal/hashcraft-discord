@@ -3,7 +3,6 @@ const http = require("http");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require("discord.js");
 module.exports = {
   start: async function (embed, userid, con, client) {
-    const u = userid;
     const confirmbox = new EmbedBuilder()
       .setTitle("Link Account to User")
       .setDescription("Please Wait...\nConnecting to DB...")
@@ -26,6 +25,8 @@ module.exports = {
       .setStyle(ButtonStyle.Danger)
       .setDisabled(false);
     await embed.deferReply();
+    if (embed.channelId === process.env.BOT_CHANNEL) {
+    const u = userid;
     con.getConnection(async function (err, link) {
       if (err) {
         confirmbox.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.");
@@ -352,5 +353,9 @@ module.exports = {
         );
       }
     });
+  } else {
+    confirmbox.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+    await embed.reply({ embeds: [confirmbox], ephemeral: true });
+  }
   }
 }

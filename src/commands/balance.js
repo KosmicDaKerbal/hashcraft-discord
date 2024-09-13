@@ -6,13 +6,13 @@ module.exports = {
   check: async function (embed, userid, con) {
     await embed.deferReply();
     const bal = new EmbedBuilder().setTitle("mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}` });
+    if (embed.channelId === process.env.BOT_CHANNEL) {
     con.getConnection(async function (err, balance) {
       if (err) {
         bal.setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL })
           .setTitle("Error: Unable to connect to DB.").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
         await embed.followUp({ embeds: [bal] });
       } else {
-        //await embed.followUp({ embeds: [bal] });
         balance.query(
           `insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid}`,
           async function (err) {
@@ -44,5 +44,9 @@ module.exports = {
           });
       }
     });
+  } else {
+      bal.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+      await embed.reply({ embeds: [bal], ephemeral: true });
+    }
   }
 }

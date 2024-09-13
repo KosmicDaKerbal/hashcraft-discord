@@ -12,6 +12,7 @@ module.exports = {
       .setColor(0xf18701)
       .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
       .setTimestamp();
+      if (embed.channelId === process.env.BOT_CHANNEL) {
     con.getConnection(async function (err, depfunc) {
       if (!err) {
         if (embed.options.get("amount").value <= 0) {
@@ -100,5 +101,9 @@ module.exports = {
         await embed.followUp({ embeds: [deposit] });
       }
     });
+  } else {
+    deposit.setTitle("Use the correct channel dammit").setColor(0xff0000).setDescription(`You can only use HashCraft on <#${process.env.BOT_CHANNEL}>.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+    await embed.reply({ embeds: [deposit], ephemeral: true });
+  }
   }
 }
