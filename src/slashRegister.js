@@ -51,6 +51,8 @@ const commands = [
                 description: 'Time in Seconds',
                 type: ApplicationCommandOptionType.Integer,
                 required: true,
+                min_value: 1,
+                max_value: 360,
             },
         ],
     },
