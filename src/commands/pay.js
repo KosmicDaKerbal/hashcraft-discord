@@ -24,7 +24,7 @@ module.exports = {
             await embed.followUp({ embeds: [payembed] });
             } else {
               paycon.query(
-                `insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid}; select wallet_name, mdu_bal from Faucet where userid = ${userid};`,
+                `insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid};\nselect wallet_name, mdu_bal from Faucet where userid = ${userid};`,
                 async function (err, result) {
                   if (!err) {
                     if (result[0].wallet_name == null) {
@@ -71,10 +71,10 @@ module.exports = {
                                 components: [paycomponents],
                               });
                         });
-                      } else {
-                        payembed.setTitle("You don't have enough ⧈ mDU!").setDescription(`Current Balance: \`⧈${userbal}\``).setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL });
-                        await embed.followUp({ embeds: [payembed] });
-                      }
+                        } else {
+                            payembed.setTitle("You don't have enough ⧈ mDU!").setDescription(`Current Balance: \`⧈${userbal}\``).setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL });
+                            await embed.followUp({ embeds: [payembed] });
+                        }
                     }
                   } else {
                     payembed.setTitle("DB Query Failed, Please try again.").setDescription(`Error: \n\`\`\`\n${err}\n\`\`\``).setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL });
