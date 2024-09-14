@@ -17,7 +17,7 @@ module.exports = {
             async function (err) {
               if (!err) {
                 modbal.setAuthor({ name: process.env.BOT_NAME + ' Administration', iconURL: process.env.SUCCESS })
-            .setTitle(`Modified balance of <@${uid}>`).setDescription(`Set user's ⧈ mDU Balance to ⧈${nbal}`).setColor(0x00ff00);
+            .setTitle(`Balance Changed`).setDescription(`Set <@${uid}>'s ⧈ mDU Balance to ⧈${nbal}`).setColor(0x00ff00);
           await embed.followUp({ embeds: [modbal] });
               } else {
                 modbal.setAuthor({ name: process.env.BOT_NAME + ' Administration', iconURL: process.env.FAIL })
