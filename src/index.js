@@ -57,6 +57,9 @@ client.on("interactionCreate", async (mainInteraction) => {
         case 'balance':
           balance.check(mainInteraction, mainInteraction.user.id, con);
           break;
+        case 'pay':
+          mdu.pay(mainInteraction, mainInteraction.user.id, con);
+          break;  
         default:
           if (mainInteraction.member.roles.cache.some(role => role.name === process.env.SERVER_OWNER) || mainInteraction.member.roles.cache.some(role => role.name === process.env.MODERATOR)) {
             switch (mainInteraction.commandName) {

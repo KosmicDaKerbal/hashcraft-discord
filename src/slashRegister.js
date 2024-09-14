@@ -102,6 +102,26 @@ const commands = [
             },
         ],
     },
+    {
+        name: 'pay',
+        description: "Pay a user in ⧈ mDU",
+        options: [
+            {
+                name: 'mdu-recipient',
+                description: 'The user to send ⧈ mDU',
+                type: ApplicationCommandOptionType.User,
+                required: true,
+            },
+            {
+                name: 'mdu-amount',
+                description: 'Amount to pay',
+                type: ApplicationCommandOptionType.Integer,
+                required: true,
+                min_value: 0,
+                max_value: 1000000,
+            },
+        ],
+    },
 ];
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 (async () => {
