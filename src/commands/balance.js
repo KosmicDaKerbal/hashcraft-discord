@@ -11,7 +11,7 @@ module.exports = {
     } else {
       userid = embed.options.get("of-user").value;
     }
-    const bal = new EmbedBuilder().setTitle("⧈ mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}` });
+    const bal = new EmbedBuilder().setTitle("User mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}` });
     if (embed.channelId === process.env.BOT_CHANNEL) {
     con.getConnection(async function (err, balance) {
       if (err) {
