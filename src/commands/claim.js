@@ -62,9 +62,9 @@ module.exports = {
                           }
                           claimbox.setAuthor(
                             { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS }
-                          ).setTitle(`Claim Successful`).setDescription(`Drop: ⧈${drop}\nCurrent streak: ${streak}`).setColor(0x00ff00);
+                          ).setTitle(`Claim Successful`).setDescription(`Drop: \`⧈${drop}\`\nCurrent streak: ${streak}`).setColor(0x00ff00);
                           if (lost && use != null) {
-                            claimbox.setDescription(`Drop: ⧈${drop}\nYou lost your streak of ${streak}`);
+                            claimbox.setDescription(`Drop: \`⧈${drop}\`\nYou lost your streak of ${streak}`);
                             streak = 1;
                           } else if (use == null) {
                             streak = 1;

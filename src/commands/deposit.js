@@ -48,7 +48,7 @@ module.exports = {
                                 deposit.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS })
                                   .setTitle("Deposit Successful")
                                   .setColor(0x00ff00)
-                                  .setDescription(`Successfully converted ⧈${dep} into ${dep / 100} DUCO and sent to Account: ${recip}\nTxID: [${txid}](https://explorer.duinocoin.com?search=${txid})`)
+                                  .setDescription(`Successfully converted \`⧈${dep}\` into \`${dep / 100} ↁ\` and sent to Account: ${recip}\nTxID: [${txid}](https://explorer.duinocoin.com?search=${txid})`)
                                   .setTimestamp();
                               } else {
                                 deposit.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL })

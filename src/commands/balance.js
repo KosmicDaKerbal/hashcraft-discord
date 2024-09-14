@@ -35,7 +35,7 @@ module.exports = {
                       await embed.followUp({ embeds: [bal] });
                     } else {
                       const balc = result[0].mdu_bal;
-                      bal.setDescription(`<@${userid}>'s Current Balance: ⧈${balc}\nRun /deposit to transfer ⧈ mDU to DUCO!`).setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.ICON });
+                      bal.setDescription(`<@${userid}>'s Current Balance: \`⧈${balc}\``).setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.ICON });
                       await embed.followUp({ embeds: [bal] });
                     }
                   } else {
