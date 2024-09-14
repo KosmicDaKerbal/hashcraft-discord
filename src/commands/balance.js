@@ -6,7 +6,7 @@ module.exports = {
   check: async function (embed, uid, con) {
     await embed.deferReply();
     var userid;
-    if (embed.options.get("of-user").value == null){
+    if (embed.options.get("of-user") == null){
       userid = uid;
     } else {
       userid = embed.options.get("of-user").value;
