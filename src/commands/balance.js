@@ -5,14 +5,13 @@ const process = require("process");
 module.exports = {
   check: async function (embed, uid, con) {
     await embed.deferReply();
-    const otheruser = embed.options.get("of-user").value;
     var userid;
-    if (otheruser == null){
+    if (embed.options.get("of-user").value == null){
       userid = uid;
     } else {
-      userid = otheruser;
+      userid = embed.options.get("of-user").value;
     }
-    const bal = new EmbedBuilder().setTitle("mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}` });
+    const bal = new EmbedBuilder().setTitle("⧈ mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}` });
     if (embed.channelId === process.env.BOT_CHANNEL) {
     con.getConnection(async function (err, balance) {
       if (err) {
@@ -35,7 +34,7 @@ module.exports = {
                       await embed.followUp({ embeds: [bal] });
                     } else {
                       const balc = result[0].mdu_bal;
-                      bal.setDescription(`<@${userid}>'s Current Balance: \`⧈${balc}\``).setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.ICON });
+                      bal.setDescription(`<@${userid}>'s Current Balance: \`⧈${balc}\`\nDUCO Balance:\`ↁ ${balc / 100}\``).setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.ICON });
                       await embed.followUp({ embeds: [bal] });
                     }
                   } else {
