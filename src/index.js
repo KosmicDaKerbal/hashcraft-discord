@@ -66,7 +66,7 @@ client.on("interactionCreate", async (mainInteraction) => {
                 purge.execute(mainInteraction);
                 break;
               case 'restart':
-                const reboot = restart.execute(mainInteraction, hit);
+                const reboot = restart.execute(mainInteraction);
                 if (reboot){
                   client.user.setStatus('invisible');
                   setTimeout(async () => { await client.destroy(); process.exit(22) }, 15000);
