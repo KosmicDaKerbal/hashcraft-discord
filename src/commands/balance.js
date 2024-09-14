@@ -3,8 +3,15 @@ const {
 } = require("discord.js");
 const process = require("process");
 module.exports = {
-  check: async function (embed, userid, con) {
+  check: async function (embed, uid, con) {
     await embed.deferReply();
+    const otheruser = embed.options.get("of-user").value;
+    var userid;
+    if (otheruser == null){
+      userid = uid;
+    } else {
+      userid = otheruser;
+    }
     const bal = new EmbedBuilder().setTitle("mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}` });
     if (embed.channelId === process.env.BOT_CHANNEL) {
     con.getConnection(async function (err, balance) {
@@ -28,7 +35,7 @@ module.exports = {
                       await embed.followUp({ embeds: [bal] });
                     } else {
                       const balc = result[0].mdu_bal;
-                      bal.setDescription(`Current Balance: ⧈${balc}\nRun /deposit to transfer ⧈ mDU to DUCO!`).setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.ICON });
+                      bal.setDescription(`<@${userid}>'s Current Balance: ⧈${balc}\nRun /deposit to transfer ⧈ mDU to DUCO!`).setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.ICON });
                       await embed.followUp({ embeds: [bal] });
                     }
                   } else {

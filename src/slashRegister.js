@@ -41,6 +41,14 @@ const commands = [
     {
         name: 'balance',
         description: 'Shows your ⧈ mDU balance',
+        options: [
+            {
+                name: 'of-user',
+                description: 'The Username whose balance to view.',
+                type: ApplicationCommandOptionType.User,
+                required: false,
+            },
+        ]
     },
     {
         name: 'slowmode',

@@ -17,6 +17,7 @@ const slowmode = require("./commands/slowmode");
 const purge = require("./commands/purge");
 const restart = require('./commands/restart');
 const modbal = require('./commands/modbal');
+const mdu = require('./commands/pay');
 const con = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
