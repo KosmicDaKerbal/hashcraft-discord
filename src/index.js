@@ -5,11 +5,8 @@ const {
   EmbedBuilder,
   ActivityType,
 } = require("discord.js");
-var hit = 0;
-
 const process = require("process");
 const mysql = require("mysql");
-const http = require("http");
 const help = require('./commands/help');
 const link = require('./commands/link');
 const claim = require('./commands/claim');
@@ -103,11 +100,3 @@ client.on("ready", (c) => {
   });
 });
 client.login(process.env.TOKEN);
-http.createServer(function(res){
-  hit = hit + 1;
-  if (hit >= (process.env.RESTART * 20)){
-    process.exit(22);
-  }
-  res.write(`Bot is Working!\nHit: ${(hit + 1)/2}`);
-  res.end();
-}).listen(8091);;
