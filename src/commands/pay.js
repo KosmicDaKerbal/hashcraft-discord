@@ -55,7 +55,7 @@ module.exports = {
                                         payembed.setAuthor({ name: `${process.env.BOT_NAME} Payments`, iconURL: process.env.SUCCESS }).setColor(0x00ff00).setTitle("Payment Successful").setDescription(`Paid \`⧈${txnamt}\` to <@${uid}>.`).setTimestamp();
                                         await payInteraction.reply({ embeds: [payembed] });
                                       } else {
-                                        payembed.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL });
+                                        payembed.setDescription("DB Query Failed, Please try again.").setDescription(`Error: \n\`\`\`\n${err}\n\`\`\``).setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL });
                                         await payInteraction.followUp({ embeds: [payembed] });
                                       }
                                     }); 
@@ -77,7 +77,7 @@ module.exports = {
                       }
                     }
                   } else {
-                    payembed.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL });
+                    payembed.setDescription("DB Query Failed, Please try again.").setDescription(`Error: \n\`\`\`\n${err}\n\`\`\``).setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL });
                     await embed.followUp({ embeds: [payembed] });
                   }
                 });
