@@ -75,7 +75,7 @@ module.exports = {
                             });
                           });
                         } else {
-                          deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
+                          deposit.setTitle("Error: Query Failed").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                           await embed.followUp({ embeds: [deposit] });
                         }
                       });
@@ -85,7 +85,7 @@ module.exports = {
                     await embed.followUp({ embeds: [deposit] });
                   }
                 } else {
-                  deposit.setTitle("Error: Query Failed").setDescription("Please try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
+                  deposit.setTitle("Error: Query Failed").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                   await embed.followUp({ embeds: [deposit] });
                 }
               } else {

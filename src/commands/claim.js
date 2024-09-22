@@ -87,14 +87,14 @@ module.exports = {
                   } else {
                     claimbox.setAuthor(
                       { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
-                    ).setTitle("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
+                    ).setTitle("DB Query Failed").setDescription("Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
                     await embed.followUp({ embeds: [claimbox] });
                   }
                 });
             } else {
               claimbox.setAuthor(
                 { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }
-              ).setTitle("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
+              ).setTitle("DB Query Failed").setDescription("Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
               await embed.followUp({ embeds: [claimbox] });
             }
             claim.release();

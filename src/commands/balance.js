@@ -5,13 +5,15 @@ const process = require("process");
 module.exports = {
   check: async function (embed, uid, con) {
     await embed.deferReply();
+    const bal = new EmbedBuilder().setTitle("User mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}` });
     var userid;
     if (embed.options.get("of-user") == null){
       userid = uid;
+      bal.setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`);
     } else {
       userid = embed.options.get("of-user").value;
+      bal.setDescription(`This user has not linked their Duino-Coin Account.`);
     }
-    const bal = new EmbedBuilder().setTitle("User mDU Balance").setDescription("Please Wait...").setColor(0xf18701).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}` });
     if (embed.channelId === process.env.BOT_CHANNEL) {
     con.getConnection(async function (err, balance) {
       if (err) {
@@ -30,7 +32,7 @@ module.exports = {
                     if (result[0].wallet_name == null) {
                       bal.setAuthor(
                         { name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL }
-                      ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
+                      ).setTitle(`Account not linked yet`).setColor(0xff0000);
                       await embed.followUp({ embeds: [bal] });
                     } else {
                       const balc = result[0].mdu_bal;
@@ -38,7 +40,7 @@ module.exports = {
                       await embed.followUp({ embeds: [bal] });
                     }
                   } else {
-                    bal.setDescription("DB Query Failed, Please try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL });
+                    bal.setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000).setTimestamp().setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL });
                     await embed.followUp({ embeds: [bal] });
                   }
                 });
