@@ -35,6 +35,7 @@ const client = new Client({
   ],
 });
 const index = new EmbedBuilder();
+var rbt;
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
@@ -73,6 +74,7 @@ client.on("interactionCreate", async (mainInteraction) => {
               case 'restart':
                 const reboot = await restart.execute(mainInteraction);
                 if (reboot){
+                  rbt = reboot;
                   client.user.setStatus('invisible');
                   setTimeout(async () => { await client.destroy(); process.exit(22) }, 15000);
                 }
@@ -91,7 +93,7 @@ client.on("interactionCreate", async (mainInteraction) => {
     index.setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
     await mainInteraction.reply({ embeds: [index] });
   }
-  if (!reboot){
+  if (!rbt){
     setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
   }
 });
