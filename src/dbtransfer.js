@@ -31,17 +31,25 @@ parent.getConnection(async function (err, copy) {
                     console.log("Error Querying to parent DB");
                 } else {
                     console.log("Retrieved Parent DB Data");
-                    const lgt = result.length;
                     target.getConnection(async function (err, paste) {
                         if (err) {
                             console.log("Error Connecting to target DB");
                         } else {
                             for (i = 0; i < result.length; i++) {
                                 const loc = i;
-                                result[i].last_used = dayjs().format("YYYY-MM-DD");
-                                //console.log(`${result[loc].userid}, '${result[loc].wallet_name}', '${result[loc].last_used}', ${result[loc].claims}, ${result[loc].streak}, ${result[loc].mdu_bal}`);
+                                const time = dayjs(result[loc].last_used);
+                                var convert = time.format("YYYY-MM-DD");
+                                if (convert == 'Invalid Date'){
+                                    convert = null;
+                                } else {
+                                    convert = `'${convert}'`;
+                                }
+                                if (result[loc].wallet_name != null){
+                                    result[loc].wallet_name = `'${result[loc].wallet_name}'`
+                                }
+                                console.log(`${result[loc].userid}, ${result[loc].wallet_name}, ${convert}, ${result[loc].claims}, ${result[loc].streak}, ${result[loc].mdu_bal}`);
                                 paste.query(
-                                    `insert into Faucet (userid, wallet_name, last_used, claims, streak, mdu_bal) values (${result[i].userid}, '${result[i].wallet_name}', '${result[i].last_used}', ${result[i].claims}, ${result[i].streak}, ${result[i].mdu_bal}) on duplicate key update userid = ${result[i].userid};`,
+                                    `insert into Faucet (userid, wallet_name, last_used, claims, streak, mdu_bal) values (${BigInt(result[loc].userid)}, ${result[loc].wallet_name}, ${convert}, ${result[loc].claims}, ${result[loc].streak}, ${result[loc].mdu_bal}) on duplicate key update userid = ${result[loc].userid};`,
                                     async function (err) {
                                         if (err){
                                             console.log("Error Querying to target DB");
