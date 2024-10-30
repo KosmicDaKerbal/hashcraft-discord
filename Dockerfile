@@ -4,5 +4,6 @@ WORKDIR /HashCraft
 COPY . /HashCraft
 #ENTRYPOINT ["npm", "start"]
 #RUN chmod +x docker-entrypoint.sh
+RUN npm i
 #ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
 ENTRYPOINT ["node", "."]
