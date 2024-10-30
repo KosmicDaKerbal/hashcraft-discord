@@ -3,5 +3,6 @@ FROM node:alpine
 WORKDIR /HashCraft
 COPY . /HashCraft
 #ENTRYPOINT ["npm", "start"]
-RUN chmod +x docker-entrypoint.sh
-ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
+#RUN chmod +x docker-entrypoint.sh
+#ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
+ENTRYPOINT ["node", "."]
