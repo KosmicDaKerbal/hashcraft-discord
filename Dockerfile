@@ -2,4 +2,5 @@
 FROM node:alpine
 WORKDIR /HashCraft
 COPY . /HashCraft
-ENTRYPOINT ["npm", "start"]
+#ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
