@@ -10,7 +10,7 @@ module.exports = {
       .setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.PROCESSING })
       .setTitle("Please Wait...")
       .setColor(0xf18701)
-      .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
+      .setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
       .setTimestamp();
       if (embed.channelId === process.env.BOT_CHANNEL) {
     const u = userid;

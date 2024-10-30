@@ -2,7 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 const process = require("process");
 module.exports = {
     set: async function (embed) {
-        const slow = new EmbedBuilder().setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+        const slow = new EmbedBuilder().setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
             embed.channel.setRateLimitPerUser(embed.options.get("duration").value);
             slow.setAuthor({ name: `${process.env.BOT_NAME} Administration`, iconURL: process.env.SUCCESS })
             .setTitle("Set slowmode to " + embed.options.get("duration").value + " seconds.")

@@ -4,10 +4,11 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentTyp
 module.exports = {
   start: async function (embed, userid, con, client) {
     const confirmbox = new EmbedBuilder()
+      .setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.PROCESSING })
       .setTitle("Link Account to User")
       .setDescription("Please Wait...\nConnecting to DB...")
       .setColor(0xff0000)
-      .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
+      .setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
       .setTimestamp();
     const confirm = new ButtonBuilder()
       .setCustomId("confirm")
@@ -173,6 +174,7 @@ module.exports = {
                                                         "Run /claim to get your daily ⧈ mDU"
                                                       )
                                                       .setColor(0x00ff00)
+                                                      .setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.SUCCESS })
                                                       .setTimestamp();
                                                   }
                                                 }

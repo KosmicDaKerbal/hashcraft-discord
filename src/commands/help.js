@@ -49,7 +49,7 @@ module.exports = {
         },
       )
       .setImage(process.env.DONATE)
-      .setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
+      .setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
       .setTimestamp();
     await embed.reply({ embeds: [help] });
   }

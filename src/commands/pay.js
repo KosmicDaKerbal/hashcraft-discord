@@ -5,7 +5,7 @@ module.exports = {
         await embed.deferReply();
         const uid = embed.options.get("mdu-recipient").value;
         const txnamt = embed.options.get("mdu-amount").value;
-        const payembed = new EmbedBuilder().setTitle("Confirm Payment").setColor(0xf18701).setAuthor({ name: `${process.env.BOT_NAME} Payments`, iconURL: process.env.PROCESSING }).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp().setDescription(`Pay \`⧈${txnamt}\` to <@${uid}>?`);
+        const payembed = new EmbedBuilder().setTitle("Confirm Payment").setColor(0xf18701).setAuthor({ name: `${process.env.BOT_NAME} Payments`, iconURL: process.env.PROCESSING }).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp().setDescription(`Pay \`⧈${txnamt}\` to <@${uid}>?`);
         const payconfirm = new ButtonBuilder()
         .setCustomId("payconfirm")
         .setLabel("Confirm ⧈ mDU Payment")
