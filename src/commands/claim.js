@@ -56,7 +56,7 @@ module.exports = {
                           var drop;
                           if (streak <= 100) {
                             //drop = Math.round(((streak * streak) / 111) + 10);
-                            drop = Math.round(Math.pow(1.20225, streak) + 10);
+                            drop = Math.round(Math.pow(1.19775, streak) + 9);
                           } else {
                             drop = 100;
                           }
