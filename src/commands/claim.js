@@ -3,6 +3,11 @@ const dayjs = require('dayjs');
 const {
   EmbedBuilder,
 } = require("discord.js");
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+}
 module.exports = {
   drop: async function (embed, userid, con) {
     await embed.deferReply();    
@@ -58,7 +63,7 @@ module.exports = {
                             //drop = Math.round(((streak * streak) / 111) + 10);
                             drop = Math.round(Math.pow(1.19775, streak) + 9);
                           } else {
-                            drop = 100;
+                            drop = getRandomInt(100,131);
                           }
                           claimbox.setAuthor(
                             { name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS }
