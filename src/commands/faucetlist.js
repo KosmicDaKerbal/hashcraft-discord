@@ -7,7 +7,7 @@ const {EmbedBuilder} = require("discord.js");
         .setColor(0xf18701)
         .addFields(
           {
-            name: "[DuinoFaucet](https://faucet.duinocoin.com/duinocoin)",
+            name: "(DuinoFaucet)[https://faucet.duinocoin.com/duinocoin]",
             value: "1 DUCO per 12 Hours",
             inline: true,
           },
