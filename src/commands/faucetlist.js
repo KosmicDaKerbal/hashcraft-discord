@@ -7,37 +7,37 @@ const {EmbedBuilder} = require("discord.js");
         .setColor(0xf18701)
         .addFields(
           {
-            name: "(DuinoFaucet)[https://faucet.duinocoin.com/duinocoin]",
-            value: "1 DUCO per 12 Hours",
+            name: "DuinoFaucet",
+            value: "[1 DUCO per 12 Hours](https://faucet.duinocoin.com/duinocoin)",
             inline: true,
           },
           {
-            name: "[Amogus Faucet](https://duco-faucet.pcgeek.pl)",
-            value: "0.5 - 2 DUCO every 15 Minutes, or 5 DUCO per day",
+            name: "Amogus Faucet",
+            value: "[0.5 - 2 DUCO every 15 Minutes, or 5 DUCO per day](https://duco-faucet.pcgeek.pl)",
             inline: true,
           },
           {
-            name: "[Pastel Faucet](https://pastelfaucet.com/index.php)",
+            name: "Pastel Faucet",
             value:
-              "0.6 - 1.4 DUCO per day",
+              "[0.6 - 1.4 DUCO per day](https://pastelfaucet.com/index.php)",
             inline: true,
           },
           {
-            name: "[KatFaucet](https://katfaucet.com)",
+            name: "KatFaucet",
             value:
-              "0.01 - 5 DUCO per day",
+              "[0.01 - 5 DUCO per day](https://katfaucet.com)",
             inline: true,
           },
           {
-            name: "[tbwcjw Faucet](https://faucet.tbwcjw.online/)",
+            name: "tbwcjw Faucet",
             value:
-              "0.5 DUCO per 12 Hours",
+              "(0.5 DUCO per 12 Hours](https://faucet.tbwcjw.online/)",
             inline: true,
           },
           {
-            name: "[Hashcraft Faucet](https://discord.gg/vH8fxYZcr8)",
+            name: "Hashcraft Faucet",
             value:
-              "0.1 - 1 DUCO every day",
+              "[0.1 - 1 DUCO every day](https://discord.gg/vH8fxYZcr8)",
             inline: true,
           },
         )
