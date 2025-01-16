@@ -31,7 +31,7 @@ const {EmbedBuilder} = require("discord.js");
           {
             name: "tbwcjw Faucet",
             value:
-              "(0.5 DUCO per 12 Hours](https://faucet.tbwcjw.online/)",
+              "[0.5 DUCO per 12 Hours](https://faucet.tbwcjw.online/)",
             inline: true,
           },
           {
