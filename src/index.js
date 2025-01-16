@@ -18,6 +18,7 @@ const purge = require("./commands/purge");
 const restart = require('./commands/restart');
 const modbal = require('./commands/modbal');
 const mdu = require('./commands/pay');
+const flist = require('./commands/faucetlist');
 const con = mysql.createPool({
   multipleStatements: true,
   host: process.env.MYSQL_HOST,
@@ -48,7 +49,7 @@ client.on("interactionCreate", async (mainInteraction) => {
           stats.send(mainInteraction);
           break;
         case 'faucetlist':
-          claim.send(mainInteraction);
+          flist.send(mainInteraction);
           break;
         case "link":
           link.start(mainInteraction, mainInteraction.user.id, con, client); //yes this is a sword art online reference
