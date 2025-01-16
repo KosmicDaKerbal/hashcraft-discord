@@ -83,6 +83,10 @@ const commands = [
         description: 'Restarts the Bot: Admin Command',
     },
     {
+        name: 'faucetlist',
+        description: 'Shows a list of working Duino-Coin Faucets',
+    },
+    {
         name: 'modbal',
         description: "Modifies the ⧈ mDU Balance of a user: Admin Command",
         options: [

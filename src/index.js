@@ -47,6 +47,9 @@ client.on("interactionCreate", async (mainInteraction) => {
         case "stats":
           stats.send(mainInteraction);
           break;
+        case 'faucetlist':
+          claim.send(mainInteraction);
+          break;
         case "link":
           link.start(mainInteraction, mainInteraction.user.id, con, client); //yes this is a sword art online reference
           break;
