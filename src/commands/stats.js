@@ -23,18 +23,22 @@ module.exports = {
         await embed.editReply({ embeds: [stats] });
       } else {
         constats.query(`select count (*) - 1 as users from Faucet where wallet_name is not null; select sum(claims) as sum from Faucet; select mdu_bal from Faucet where userid = 1;`, [1, 2, 3] , async function (err, result) {
-          if (!err) {/*
+          if (!err) {
+            const users = result[0].users;
+            const fclaims = result[1].sum;
+            const fsent = result[2].mdu_bal/100;
+            /*
             stats.addFields(
               { name: "Registered Users", value: result[0].users, inline: true },
               { name: "Total Faucet Claims", value: result[1].sum, inline: true },
               { name: "Total DUCO Sent", value: (result[2].mdu_bal/100), inline: true }
             );*/
             console.log(result[0]);
-            console.log(result[0].users);
+            console.log(users);
             console.log(result[1]);
-            console.log(result[1].sum);
+            console.log(fclaims);
             console.log(result[2]);
-            console.log(result[2].mdu_bal/100);
+            console.log(fsent);
             await embed.editReply({ embeds: [stats] });
           } else {
             stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
