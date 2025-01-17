@@ -33,7 +33,7 @@ module.exports = {
                           if (json.success) {
                             const txid = String(json.result).split(",")[2];
                             deposit.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS }).setTitle("Deposit Successful").setColor(0x00ff00).setDescription(`Successfully converted \`⧈${dep}\` into \`${dep / 100} ↁ\` and sent to Account: ${recip}\nTxID: [${txid}](https://explorer.duinocoin.com?search=${txid})`).setTimestamp();
-                            depfunc.query(`update Faucet set mdu_bal = ${bal - dep} where Faucet.userid = ${userid}; update Faucet set mdu_bal = mdu_bal + ${dep} where Faucet.userid = 1;`, [1,2], async function (err) {
+                            depfunc.query(`update Faucet set mdu_bal = ${bal - dep} where Faucet.userid = ${userid}; update Faucet set mdu_bal = mdu_bal + ${dep}, claims = claims + 1 where Faucet.userid = 1;`, [1,2], async function (err) {
                                 if (err) {
                                   deposit.setTitle("Error: Query Failed").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setColor(0xff0000);
                                 }
