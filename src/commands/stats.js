@@ -35,6 +35,8 @@ module.exports = {
               { name: "Total Faucet Claims", value: result[1].sum, inline: true },
               { name: "Total DUCO Sent", value: (result[2].mdu_bal/100), inline: true }
             );*/
+            let t = JSON.parse(JSON.stringify(result));
+            console.log (t  + "\n\n");
             console.log(result[0]);
             console.log(users);
             console.log(result[1]);
