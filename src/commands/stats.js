@@ -29,12 +29,12 @@ module.exports = {
             const users = result[0][0].users;
             const fclaims = result[1][0].sum;
             const fsent = result[2][0].mdu_bal;
-            /*
+            
             stats.addFields(
-              { name: "Registered Users", value: result[0].users, inline: true },
-              { name: "Total Faucet Claims", value: result[1].sum, inline: true },
-              { name: "Total DUCO Sent", value: (result[2].mdu_bal/100), inline: true }
-            );*/
+              { name: "Registered Users", value: users, inline: true },
+              { name: "Total Faucet Claims", value: fclaims, inline: true },
+              { name: "Total DUCO Sent", value: fsent / 100, inline: true }
+            );
             console.log (users);
             console.log (fclaims);
             console.log (fsent);
