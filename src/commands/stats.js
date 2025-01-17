@@ -29,7 +29,7 @@ module.exports = {
           if (!err) {
             const users = "" + result[0][0].users;
             const fclaims = "" + result[1][0].sum;
-            const fdeps = "" + result [2][1].claims;
+            const fdeps = "" + result [2][0].claims;
             const fsent = "" + (result[2][0].mdu_bal / 100);
             stats.addFields(
               { name: "Linked Users", value: users, inline: true },
