@@ -22,7 +22,7 @@ module.exports = {
         );
         await embed.editReply({ embeds: [stats] });
       } else {
-        constats.query(`select count (*) - 1 as users from Faucet where wallet_name is not null; select sum(claims) as sum from Faucet; select mdu_bal from Faucet where userid = 1;`, [1, 2, 3] , async function (err, result) {
+        constats.query(`select count (*) - 1 as users from Faucet where wallet_name is not null; select sum(claims) as sum from Faucet; select mdu_bal from Faucet where userid = 1;`, async function (err, result) {
           if (!err) {
             const users = result[0].users;
             const fclaims = result[1].sum;
