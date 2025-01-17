@@ -18,6 +18,7 @@ module.exports = {
         stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
           { name: "Registered Users", value: "Error", inline: true },
           { name: "Total Faucet Claims", value: "Error", inline: true },
+          { name: "Total Deposits", value: "Error", inline: true },
           { name: "Total DUCO Sent", value: "Error", inline: true }
         );
         await embed.editReply({ embeds: [stats] });
@@ -41,6 +42,7 @@ module.exports = {
             stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
               { name: "Registered Users", value: "Error", inline: true },
               { name: "Total Faucet Claims", value: "Error", inline: true },
+              { name: "Total Deposits", value: "Error", inline: true },
               { name: "Total DUCO Sent", value: "Error", inline: true }
             );
             await embed.editReply({ embeds: [stats] });
