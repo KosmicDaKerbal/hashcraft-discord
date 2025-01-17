@@ -29,6 +29,12 @@ module.exports = {
               { name: "Total Faucet Claims", value: result[1].sum, inline: true },
               { name: "Total DUCO Sent", value: (result[2].mdu_bal/100), inline: true }
             );
+            console.log(result[0]);
+            console.log(result[0].users);
+            console.log(result[1]);
+            console.log(result[1].sum);
+            console.log(result[2]);
+            console.log(result[2].mdu_bal/100);
             await embed.editReply({ embeds: [stats] });
           } else {
             stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
