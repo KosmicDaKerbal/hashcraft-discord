@@ -26,9 +26,9 @@ module.exports = {
           select sum(claims) as sum from Faucet where userid != 1; 
           select mdu_bal from Faucet where userid = 1;`, async function (err, result) {
           if (!err) {
-            const users = result[0][0].users;
-            const fclaims = result[1][0].sum;
-            const fsent = result[2][0].mdu_bal;
+            const users = "" + result[0][0].users;
+            const fclaims = "" + result[1][0].sum;
+            const fsent = "" + result[2][0].mdu_bal;
             
             stats.addFields(
               { name: "Registered Users", value: users, inline: true },
