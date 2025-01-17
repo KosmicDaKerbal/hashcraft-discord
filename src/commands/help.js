@@ -1,13 +1,8 @@
-const {
-  EmbedBuilder,
-} = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 const process = require("process");
 module.exports = {
   send: async function (embed) {
-    const help = new EmbedBuilder()
-      .setTitle("Help Section")
-      .setColor(0xf18701)
-      .addFields(
+    const help = new EmbedBuilder().setTitle("Help Section").setColor(0xf18701).addFields(
         {
           name: "/help",
           value: "Complete Commands List for the Bot.",
@@ -40,6 +35,12 @@ module.exports = {
           name: "/deposit",
           value:
             "Convert your ⧈ mDU to DUCO and send it to your account.",
+          inline: true,
+        },
+        {
+          name: "/faucetlist",
+          value:
+            "Shows a list of currently working DuinoCoin Faucets",
           inline: true,
         },
         {

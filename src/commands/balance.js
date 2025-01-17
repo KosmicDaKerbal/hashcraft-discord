@@ -1,7 +1,6 @@
-const {
-  EmbedBuilder,
-} = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 const process = require("process");
+
 module.exports = {
   check: async function (embed, uid, con) {
     await embed.deferReply();
@@ -17,22 +16,15 @@ module.exports = {
     if (embed.channelId === process.env.BOT_CHANNEL) {
     con.getConnection(async function (err, balance) {
       if (err) {
-        bal.setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL })
-          .setTitle("Error: Unable to connect to DB.").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
+        bal.setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL }).setTitle("Error: Unable to connect to DB.").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
         await embed.followUp({ embeds: [bal] });
       } else {
-        balance.query(
-          `insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid}`,
-          async function (err) {
+        balance.query(`insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid}`, async function (err) {
             if (!err) {
-              balance.query(
-                `select wallet_name, mdu_bal from Faucet where userid = ${userid}`,
-                async function (err, result) {
+              balance.query(`select wallet_name, mdu_bal from Faucet where userid = ${userid}`, async function (err, result) {
                   if (!err) {
                     if (result[0].wallet_name == null) {
-                      bal.setAuthor(
-                        { name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL }
-                      ).setTitle(`Account not linked yet`).setColor(0xff0000);
+                      bal.setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL }).setTitle(`Account not linked yet`).setColor(0xff0000);
                       await embed.followUp({ embeds: [bal] });
                     } else {
                       const balc = result[0].mdu_bal;

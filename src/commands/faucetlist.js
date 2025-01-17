@@ -2,10 +2,8 @@ const {EmbedBuilder} = require("discord.js");
   const process = require("process");
   module.exports = {
     send: async function (embed) {
-      const help = new EmbedBuilder()
-        .setTitle("List of Working Duinocoin Faucets")
-        .setColor(0xf18701)
-        .addFields(
+      const help = new EmbedBuilder().setTitle("List of Working Duinocoin Faucets").setColor(0xf18701).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp()
+      .addFields(
           {
             name: "DuinoFaucet",
             value: "[1 DUCO per 12 Hours](https://faucet.duinocoin.com/duinocoin)",
@@ -40,9 +38,7 @@ const {EmbedBuilder} = require("discord.js");
               "[0.1 - 1 DUCO every day](https://discord.gg/vH8fxYZcr8)",
             inline: true,
           },
-        )
-        .setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON })
-        .setTimestamp();
+        );
       await embed.reply({ embeds: [help] });
     }
   }

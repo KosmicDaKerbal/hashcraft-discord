@@ -23,33 +23,23 @@ module.exports = {
             payembed.setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL }).setTitle("Error: Unable to connect to DB.").setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000);
             await embed.followUp({ embeds: [payembed] });
             } else {
-              paycon.query(
-                `insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid};\nselect wallet_name, mdu_bal from Faucet where userid = ${userid};`,
-                async function (err, result) {
+              paycon.query(`insert into Faucet (userid) values (${userid}) on duplicate key update userid = ${userid};\nselect wallet_name, mdu_bal from Faucet where userid = ${userid};`, [1, 2], async function (err, result) {
                   if (!err) {
                     if (result[0].wallet_name == null) {
-                        payembed.setAuthor(
-                          { name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL }
-                        ).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
+                        payembed.setAuthor({ name: process.env.BOT_NAME + ' Payments', iconURL: process.env.FAIL }).setTitle(`Account not linked yet`).setDescription(`You haven't linked your Duino-Coin Account to this discord user. Run /link to do so.`).setColor(0xff0000);
                         await embed.followUp({ embeds: [payembed] });
                       } else {
-                        const userbal = result[0].mdu_bal;
+                        const userbal = result[1].mdu_bal;
                         if (userbal >= txnamt){
                         const paycheck = await embed.followUp({ embeds: [payembed], components: [paycomponents]});
-                        const paycollector = paycheck.createMessageComponentCollector({
-                            componentType: ComponentType.Button,
-                            filter,
-                            time: 15_000,
-                          });
+                        const paycollector = paycheck.createMessageComponentCollector({componentType: ComponentType.Button, filter, time: 15_000,});
                           paycollector.on("collect", async (payInteraction) => {
                             if (payInteraction.customId == 'payconfirm'){
-                                cancel.setDisabled(true)
-                                .setStyle(ButtonStyle.Secondary);
+                                cancel.setDisabled(true).setStyle(ButtonStyle.Secondary);
                                 payconfirm.setDisabled(true);
                                 await embed.editReply({embeds: [payembed], components: [paycomponents],});
                                 await payInteraction.deferReply();
-                                paycon.query(
-                                    `update Faucet set mdu_bal = mdu_bal - ${txnamt} where Faucet.userid = ${userid}; update Faucet set mdu_bal = mdu_bal + ${txnamt} where Faucet.userid = ${uid};`,
+                                paycon.query( `update Faucet set mdu_bal = mdu_bal - ${txnamt} where Faucet.userid = ${userid}; update Faucet set mdu_bal = mdu_bal + ${txnamt} where Faucet.userid = ${uid};`,
                                     async function (err) {
                                       if (!err) {
                                         payembed.setAuthor({ name: `${process.env.BOT_NAME} Payments`, iconURL: process.env.SUCCESS }).setColor(0x00ff00).setTitle("Payment Successful").setDescription(`Paid \`⧈${txnamt}\` to <@${uid}>.`).setTimestamp();

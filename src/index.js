@@ -46,7 +46,7 @@ client.on("interactionCreate", async (mainInteraction) => {
           help.send(mainInteraction);
           break;
         case "stats":
-          stats.send(mainInteraction);
+          stats.send(mainInteraction, con);
           break;
         case 'faucetlist':
           flist.send(mainInteraction);
