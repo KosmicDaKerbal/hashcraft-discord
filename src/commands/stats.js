@@ -27,6 +27,6 @@ module.exports = {
       }
       constats.release();
     });
-    await embed.reply({ embeds: [stats] });
+    await embed.editReply({ embeds: [stats] });
   }
 }
