@@ -23,7 +23,6 @@ module.exports = {
             if (!err) {
               balance.query(`select wallet_name, mdu_bal from Faucet where userid = ${userid}`, async function (err, result) {
                   if (!err) {
-                    console.log(result[0]);
                     if (result[0].wallet_name == null) {
                       bal.setAuthor({ name: process.env.BOT_NAME + ' Faucet', iconURL: process.env.FAIL }).setTitle(`Account not linked yet`).setColor(0xff0000);
                       await embed.followUp({ embeds: [bal] });
