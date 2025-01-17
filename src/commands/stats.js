@@ -23,7 +23,7 @@ module.exports = {
         await embed.editReply({ embeds: [stats] });
       } else {
         constats.query(`select count (*) - 1 as users from Faucet where wallet_name is not null; 
-          select sum(claims) as sum from Faucet; 
+          select sum(claims) as sum from Faucet where userid != 1; 
           select mdu_bal from Faucet where userid = 1;`, async function (err, result) {
           if (!err) {
             const users = result[0].users;
@@ -35,7 +35,7 @@ module.exports = {
               { name: "Total Faucet Claims", value: result[1].sum, inline: true },
               { name: "Total DUCO Sent", value: (result[2].mdu_bal/100), inline: true }
             );*/
-            let t = JSON.parse(JSON.stringify(result[0]) + JSON.stringify(result[1]) + JSON.stringify(result[2]));
+            let t = JSON.parse(JSON.stringify(result[0] + result[1] + result[2]));
             console.log (t  + "\n\n");
             console.log(result[0]);
             console.log(users);
