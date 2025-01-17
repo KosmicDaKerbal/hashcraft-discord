@@ -24,20 +24,18 @@ module.exports = {
       } else {
         constats.query(`select count (*) - 1 as users from Faucet where wallet_name is not null; 
           select sum(claims) as sum from Faucet where userid != 1; 
-          select mdu_bal from Faucet where userid = 1;`, async function (err, result) {
+          select mdu_bal, claims from Faucet where userid = 1;`, async function (err, result) {
           if (!err) {
             const users = "" + result[0][0].users;
             const fclaims = "" + result[1][0].sum;
+            const fdeps = "" + result [2][1].claims;
             const fsent = "" + (result[2][0].mdu_bal / 100);
-            
             stats.addFields(
-              { name: "Registered Users", value: users, inline: true },
+              { name: "Linked Users", value: users, inline: true },
               { name: "Total Faucet Claims", value: fclaims, inline: true },
+              { name: "Total Deposits", value: fdeps, inline: true },
               { name: "Total DUCO Sent", value: fsent, inline: true }
             );
-            console.log (users);
-            console.log (fclaims);
-            console.log (fsent);
             await embed.editReply({ embeds: [stats] });
           } else {
             stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
