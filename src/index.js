@@ -40,11 +40,11 @@ var rbt;
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
-  if (mainInteraction.member.roles.cache.some(role => role.name == null)) {
-    index.setTitle("Invalid Interaction").setColor(0xff0000).setDescription(`Tf you doing by sliding in my DM's\nYou can only use commands in the ${process.env.BOT_NAME} server.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+  if (mainInteraction.guild === null){
+    index.setTitle("Invalid Interaction").setColor(0xff0000).setDescription(`Ew why are you sliding into my DM's\nThese commands are only usable in the ${process.env.BOT_NAME} Server`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
     await mainInteraction.reply({ embeds: [index] });
-  } else if (mainInteraction.member.roles.cache.some(role => role.name === process.env.VERIFIED_ROLE))
-    {
+  } else {
+    if (mainInteraction.member.roles.cache.some(role => role.name === process.env.VERIFIED_ROLE)) {
       switch (mainInteraction.commandName) {
         case "help":
           help.send(mainInteraction);
@@ -97,10 +97,10 @@ client.on("interactionCreate", async (mainInteraction) => {
           }
           break;
       }
-    }
-  else {
+  } else {
     index.setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
     await mainInteraction.reply({ embeds: [index] });
+  }
   }
   if (!rbt){
     setTimeout(() => { client.user.setPresence({ status: 'idle' }); }, 10000);
