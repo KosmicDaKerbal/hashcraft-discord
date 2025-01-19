@@ -125,7 +125,8 @@ module.exports = {
           if (err) console.log(err); else {
             const list = result;
             await client.users.send("898957399677878332", { embeds: [index] });
-            console.log(await guild.members.fetch("344837225533669376"));
+            //console.log(await guild.members.fetch("344837225533669376"));
+            console.log(await guild.members.fetch("759277797138235412"));
             for (i = 0; i <= (list.length - 1); i++){
               
               //await guild.members.fetch(list[i].userid);
