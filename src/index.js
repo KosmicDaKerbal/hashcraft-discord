@@ -125,11 +125,9 @@ module.exports = {
         dm.query(`select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'`, async function (err, result) {
           if (err) console.log(err); else {
             const list = result;
-            await client.users.send("898957399677878332", { embeds: [index] });
             for (i = 0; i <= (list.length - 1); i++){
               if (await guild.members.fetch(list[i].userid)){
-                console.log(i);
-                //await client.users.send(list[i].userid, { embeds: [index] });
+                await client.users.send(list[i].userid, { embeds: [index] });
               }
             }
           }
