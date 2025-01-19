@@ -1,2 +1,7 @@
 import { notify } from './index.js';
-if ( await notify() == 1){process.exit(22);}
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+  } 
+await notify();
+await delay(1000);
+process.exit(22);
