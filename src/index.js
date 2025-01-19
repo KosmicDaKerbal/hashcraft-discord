@@ -126,8 +126,8 @@ module.exports = {
         dm.query(`select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'`, async function (err, result) {
           if (err) console.log(err); else {
             const list = result;
-            let gMem = function (data) {return guild.members.fetch(list[0].userid);}
-            let mem = gMem(data);
+            let gMem = function (data) {return guild.members.fetch(data);}
+            let mem = gMem(list[0].userid);
             mem.then(function (result){
               console.log(result)
             });
