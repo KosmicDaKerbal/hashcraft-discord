@@ -93,7 +93,12 @@ client.on("interactionCreate", async (mainInteraction) => {
           }
           break;
       }
-  } else {
+  } else if (mainInteraction.member.roles.cache.some(role => role.name === null))
+    {
+      index.setTitle("Invalid Interaction").setColor(0xff0000).setDescription(`You can only use commands in the ${process.env.BOT_NAME} server.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+    await mainInteraction.reply({ embeds: [index] });
+    }
+  else {
     index.setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
     await mainInteraction.reply({ embeds: [index] });
   }
