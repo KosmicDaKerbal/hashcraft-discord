@@ -125,6 +125,7 @@ module.exports = {
         dm.query(`select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'`, async function (err, result) {
           if (err) console.log(err); else {
             const list = result;
+            console.log(list[0].userid);
             console.log(await guild.members.fetch(list[0].userid));
             for (i = 0; i <= (list.length - 1); i++){
               //console.log(await guild.members.fetch(list[0].userid));
