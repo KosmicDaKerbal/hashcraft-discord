@@ -115,7 +115,7 @@ client.on("ready", async (c) => {
     status: 'idle'
   });
 });
-await client.login(process.env.TOKEN);
+client.login(process.env.TOKEN);
 module.exports = {
   notify: async function(){
     const time = dayjs();
