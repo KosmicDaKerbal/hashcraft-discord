@@ -126,7 +126,7 @@ module.exports = {
           if (err) console.log(err); else {
             const list = result;
             for (i = 0; i <= (list.length - 1); i++){
-              console.log(await guild.members.fetch(""+list[i].userid));
+              console.log(await guild.members.fetch("815792695779786774"));
               /*if (){
                 index.setTitle("Reminder to Claim!").setColor(0x00ff00).setDescription(`You might lose your streak!\nHead on over to <#${process.env.BOT_CHANNEL}> to claim your daily drop.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
                 console.log(list[i].userid);
