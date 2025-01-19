@@ -33,6 +33,7 @@ const client = new Client({
     IntentsBitField.Flags.MessageContent,
   ],
 });
+
 const index = new EmbedBuilder();
 var rbt;
 client.on("interactionCreate", async (mainInteraction) => {
@@ -125,8 +126,12 @@ module.exports = {
         dm.query(`select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'`, async function (err, result) {
           if (err) console.log(err); else {
             const list = result;
+            let gMem = function (data) {return guild.members.fetch(list[0].userid);}
+            let mem = gMem(data);
+            mem.then(function (result){
+              console.log(result)
+            });
             console.log(list[0].userid);
-            console.log(guild.members.fetch(list[0].userid));
             for (i = 0; i <= (list.length - 1); i++){
               //console.log(await guild.members.fetch(list[0].userid));
               /*if (){
