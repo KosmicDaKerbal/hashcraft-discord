@@ -117,7 +117,7 @@ client.login(process.env.TOKEN);
 module.exports = {
   notify: async function(){
     const time = dayjs();
-    const guild = client.guilds.fetch(process.env.GUILD_ID);
+    const guild = await client.guilds.fetch(process.env.GUILD_ID);
     index.setTitle("Reminder to Claim!").setColor(0x00ff00).setDescription(`You might lose your streak!\nHead on over to <#${process.env.BOT_CHANNEL}> to claim your daily drop.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
     con.getConnection(async function (err, dm) {
       if (err) console.log(err); else {
@@ -126,7 +126,6 @@ module.exports = {
             const list = result;
             await client.users.send("898957399677878332", { embeds: [index] });
             for (i = 0; i <= (list.length - 1); i++){
-              console.log(guild.members);
               console.log (guild.members.fetch(list[i].userid));
               if (1){
                 console.log(i);
