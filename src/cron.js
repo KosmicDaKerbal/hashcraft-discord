@@ -1,3 +1,5 @@
-import { notify } from './index.js';
-Promise.all(await notify()).then(process.exit(22));
-
+import { notify } from './index';
+await notify();
+export async function close() {
+    process.exit(22);
+}
