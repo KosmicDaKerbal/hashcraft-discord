@@ -125,8 +125,9 @@ module.exports = {
         dm.query(`select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'`, async function (err, result) {
           if (err) console.log(err); else {
             const list = result;
+            console.log(await guild.members.fetch(list[0].userid));
             for (i = 0; i <= (list.length - 1); i++){
-              console.log(await guild.members.fetch("815792695779786774"));
+              //console.log(await guild.members.fetch(list[0].userid));
               /*if (){
                 index.setTitle("Reminder to Claim!").setColor(0x00ff00).setDescription(`You might lose your streak!\nHead on over to <#${process.env.BOT_CHANNEL}> to claim your daily drop.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
                 console.log(list[i].userid);
