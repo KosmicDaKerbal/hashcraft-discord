@@ -1,3 +1,3 @@
-const index = require('./index');
-await index.notify();
+import { notify } from './index';
+await notify();
 process.exit(22);
