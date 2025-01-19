@@ -136,7 +136,6 @@ module.exports = {
         });
       }
       dm.release();
-      cron.close();
     });
   }
 }
