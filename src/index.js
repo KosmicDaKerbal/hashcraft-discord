@@ -95,7 +95,7 @@ client.on("interactionCreate", async (mainInteraction) => {
       }
   } else if (mainInteraction.member.roles.cache.some(role => role.name === null))
     {
-      index.setTitle("Invalid Interaction").setColor(0xff0000).setDescription(`You can only use commands in the ${process.env.BOT_NAME} server.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+      index.setTitle("Invalid Interaction").setColor(0xff0000).setDescription(`Tf you doing by sliding in my DM's\nYou can only use commands in the ${process.env.BOT_NAME} server.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
     await mainInteraction.reply({ embeds: [index] });
     }
   else {
