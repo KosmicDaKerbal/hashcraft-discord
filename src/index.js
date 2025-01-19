@@ -17,7 +17,7 @@ const mdu = require('./commands/pay');
 const flist = require('./commands/faucetlist');
 const con = mysql.createPool({
   multipleStatements: true,
-  upportBigNumbers: true, 
+  supportBigNumbers: true, 
   bigNumberStrings: true,
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
