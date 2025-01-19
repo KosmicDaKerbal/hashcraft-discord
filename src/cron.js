@@ -1,3 +1,3 @@
 const index = require('./index');
-index.notify();
+await index.notify();
 process.exit(22);
