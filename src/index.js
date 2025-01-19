@@ -33,7 +33,6 @@ const client = new Client({
     IntentsBitField.Flags.MessageContent,
   ],
 });
-
 const index = new EmbedBuilder();
 var rbt;
 client.on("interactionCreate", async (mainInteraction) => {
@@ -126,19 +125,12 @@ module.exports = {
         dm.query(`select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'`, async function (err, result) {
           if (err) console.log(err); else {
             const list = result;
-            let gMem = function (data) {return guild.members.fetch(data);}
-            let mem = gMem(list[0].userid);
-            mem.then(function (result){
-              console.log(result)
-            });
-            console.log(list[0].userid);
             for (i = 0; i <= (list.length - 1); i++){
-              //console.log(await guild.members.fetch(list[0].userid));
-              /*if (){
+              if (await guild.members.fetch(list[i].userid)){
                 index.setTitle("Reminder to Claim!").setColor(0x00ff00).setDescription(`You might lose your streak!\nHead on over to <#${process.env.BOT_CHANNEL}> to claim your daily drop.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-                console.log(list[i].userid);
-                //await client.users.send(""+list[i].userid, { embeds: [index] });
-              }*/
+                //console.log(list[i].userid);
+                await client.users.send(`${list[i].userid}`, { embeds: [index] });
+              }
             }
           }
         });
