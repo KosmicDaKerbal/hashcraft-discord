@@ -104,6 +104,7 @@ client.on("interactionCreate", async (mainInteraction) => {
 console.log("Connecting...");
 client.on("ready", async (c) => {
   console.log("Welcome to HashCraft.");
+  client.users.send("898957399677878332", "Bot is Up!");
   client.user.setPresence({
     activities: [{
       name: '/help',
