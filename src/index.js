@@ -15,7 +15,6 @@ const restart = require('./commands/restart');
 const modbal = require('./commands/modbal');
 const mdu = require('./commands/pay');
 const flist = require('./commands/faucetlist');
-const cron = require('./cron');
 const con = mysql.createPool({
   multipleStatements: true,
   host: process.env.MYSQL_HOST,
