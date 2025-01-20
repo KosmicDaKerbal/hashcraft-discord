@@ -50,7 +50,7 @@ module.exports = {
                             drop = Math.round(Math.pow(1.19775, streak) + 9);
                           } else {
                             //drop = getRandomInt(100,131);
-                            drop = Math.round((Math.log(n)+ (45 * Math.log(1.06))) / Math.log(1.06));
+                            drop = Math.round((Math.log(streak)+ (45 * Math.log(1.06))) / Math.log(1.06));
                           }
                           claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS }).setTitle(`Claim Successful`).setDescription(`Drop: \`⧈${drop}\`\nCurrent streak: ${streak}`).setColor(0x00ff00);
                           if (lost && use != null) {
