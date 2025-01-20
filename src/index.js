@@ -1,7 +1,7 @@
 require('dotenv').config({ path: require('find-config')('.env') });
 const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require("discord.js");
 const process = require("process");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const dayjs = require('dayjs');
 const help = require('./commands/help');
 const link = require('./commands/link');
