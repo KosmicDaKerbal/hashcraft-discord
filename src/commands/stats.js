@@ -19,23 +19,27 @@ module.exports = {
           { name: "Registered Users", value: "Error", inline: true },
           { name: "Total Faucet Claims", value: "Error", inline: true },
           { name: "Total Deposits", value: "Error", inline: true },
-          { name: "Total DUCO Sent", value: "Error", inline: true }
+          { name: "Total DUCO Sent", value: "Error", inline: true },
+          { name: "Total ⧈ mDU in circulation", value: "Error", inline: true }
         );
         await embed.editReply({ embeds: [stats] });
       } else {
         constats.query(`select count (*) - 1 as users from Faucet where wallet_name is not null; 
           select sum(claims) as sum from Faucet where userid != 1; 
-          select mdu_bal, claims from Faucet where userid = 1;`, async function (err, result) {
+          select mdu_bal, claims from Faucet where userid = 1;
+          select mdu_bal from Faucet where userid != 1`, async function (err, result) {
           if (!err) {
             const users = "" + result[0][0].users;
             const fclaims = "" + result[1][0].sum;
             const fdeps = "" + result [2][0].claims;
             const fsent = "" + (result[2][0].mdu_bal / 100);
+            const circ = "" + result [3][0].mdu_bal;
             stats.addFields(
               { name: "Linked Users", value: users, inline: true },
               { name: "Total Faucet Claims", value: fclaims, inline: true },
               { name: "Total Deposits", value: fdeps, inline: true },
-              { name: "Total DUCO Sent", value: fsent, inline: true }
+              { name: "Total DUCO Sent", value: fsent, inline: true },
+              { name: "Total ⧈ mDU in circulation", value: circ, inline: true }
             );
             await embed.editReply({ embeds: [stats] });
           } else {
@@ -43,7 +47,8 @@ module.exports = {
               { name: "Registered Users", value: "Error", inline: true },
               { name: "Total Faucet Claims", value: "Error", inline: true },
               { name: "Total Deposits", value: "Error", inline: true },
-              { name: "Total DUCO Sent", value: "Error", inline: true }
+              { name: "Total DUCO Sent", value: "Error", inline: true },
+              { name: "Total ⧈ mDU in circulation", value: "Error", inline: true }
             );
             await embed.editReply({ embeds: [stats] });
           }
