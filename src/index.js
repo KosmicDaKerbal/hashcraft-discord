@@ -125,9 +125,10 @@ module.exports = {
         //select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'
         dm.query(`select userid from Faucet where wallet_name = 'KosmicDaKerbal'`, async function (err, result) {
           if (err) console.log(err); else {
+            index.setTitle("Reminder to claim!").setColor(0x00ff00).setDescription(`You might lose your streak 🔥!\nHead on over to <#1267863776925847592> to claim your daily drop.`).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
             console.log (await guild.members.fetch(result[0].userid));
-            //client.users.send(result[0].userid, { embeds: [index] });
-            client.users.send("" + result[0].userid, "yo");
+            client.users.send(result[0].userid, { embeds: [index] });
+            //client.users.send("" + result[0].userid, "yo");
           }
         });
       }
