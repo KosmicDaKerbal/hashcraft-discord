@@ -118,6 +118,7 @@ client.on("ready", async (c) => {
 client.login(process.env.TOKEN);
 module.exports = {
   notify: async function(){
+    var out;
     const time = dayjs();
     const guild = await client.guilds.fetch(process.env.GUILD_ID);
     con.getConnection(async function (err, dm) {
@@ -126,6 +127,7 @@ module.exports = {
           if (err) console.log(err); else {
             index.setTitle("Reminder to claim!").setColor(0x00ff00).setDescription(`You might lose your streak 🔥!\nHead on over to <#1267863776925847592> to claim your daily drop.`).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
             for (i = 0; i <= (result.length - 1); i++){
+              out = 3000;
               const uid = result[i].userid;
               try{
                 await guild.members.fetch(uid)
@@ -145,8 +147,7 @@ module.exports = {
         });
       }
       dm.release();
-      var t = setTimeout(function() {process.exit(22);}, 7200000);
-      t.unref();
+      setTimeout(function() {process.exit(22);}, out);
     });
   }
 }
