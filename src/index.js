@@ -126,7 +126,7 @@ module.exports = {
         dm.query(`select userid from Faucet where wallet_name = 'KosmicDaKerbal'`, async function (err, result) {
           if (err) console.log(err); else {
             console.log (await guild.members.fetch(result[0].userid));
-            await client.users.send(`${result[0].userid}`, { embeds: [index] });
+            client.users.send(result[0].userid, { embeds: [index] });
           }
         });
       }
