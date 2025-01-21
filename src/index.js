@@ -147,5 +147,6 @@ module.exports = {
       }
       dm.release();
     });
+    return 4;
   }
 }
