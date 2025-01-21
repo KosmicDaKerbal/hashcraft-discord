@@ -1,2 +1,3 @@
 import { notify } from './index.js';
-Promise.all(await notify()).then(() => {process.exit(22);});
+const complete = await notify();
+Promise.all(complete).then(() => {process.exit(22);});
