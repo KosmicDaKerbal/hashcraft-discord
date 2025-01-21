@@ -42,7 +42,7 @@ module.exports = {
                             streak = streak + 1;
                             lost = [0,0];
                           } else {
-                            lost = [0,streak];
+                            lost = [1, streak];
                             streak = 1;
                           }
                           var drop;
