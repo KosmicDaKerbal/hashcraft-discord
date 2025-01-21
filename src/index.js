@@ -127,7 +127,9 @@ module.exports = {
           if (err) console.log(err); else {
             index.setTitle("Reminder to claim!").setColor(0x00ff00).setDescription(`You might lose your streak 🔥!\nHead on over to <#1267863776925847592> to claim your daily drop.`).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
             //console.log (await guild.members.fetch(result[0].userid));
-            if (await guild.members.fetch('344837225533669376') === null){
+            //898957399677878332
+            //344837225533669376
+            if (await guild.members.fetch('898957399677878332') === null){
               console.log ("This user has left the server.");
             } else {
               console.log (`Sent claim reminder to user ${result[0].userid}`);
