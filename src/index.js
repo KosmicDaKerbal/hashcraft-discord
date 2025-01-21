@@ -130,7 +130,7 @@ module.exports = {
             //898957399677878332
             //344837225533669376
             try{
-              await guild.members.fetch('898957399677878332')
+              await guild.members.fetch('344837225533669376')
               .then((member) => {
                 if (member == false){
                   console.log ("This user has left the server.");
