@@ -145,6 +145,7 @@ module.exports = {
         });
       }
       dm.release();
+      process.exit(22);
     });
   }
 }
