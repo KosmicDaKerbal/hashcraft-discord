@@ -134,9 +134,6 @@ module.exports = {
                   if (member == false){
                     console.log ("This user has left the server.");
                   } else {
-                    const o1 = JSON.parse(uid);
-                    const o2 = o1.user;
-                    console.log(o2);
                     console.log (`Sent claim reminder to user ${uid}`);
                     //setTimeout(() => {client.users.send(uid, { embeds: [index] }).catch((err)=>{console.log ("This user does not allow DM's from server members.")});}, 500);
                   }
