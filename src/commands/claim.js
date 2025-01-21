@@ -37,12 +37,12 @@ module.exports = {
                           await embed.followUp({ embeds: [claimbox] });
                           break;
                         default:
-                          var lost;
+                          var lost = [];
                           if (timediff == 1) {
                             streak = streak + 1;
-                            lost = 0;
+                            lost = [0,0];
                           } else {
-                            lost = 1;
+                            lost = [0,streak];
                             streak = 1;
                           }
                           var drop;
@@ -54,7 +54,7 @@ module.exports = {
                           }
                           claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS }).setTitle(`Claim Successful`).setDescription(`Drop: \`⧈${drop}\`\nCurrent streak: ${streak}`).setColor(0x00ff00);
                           if (lost && use != null) {
-                            claimbox.setDescription(`Drop: \`⧈${drop}\`\nYou lost your streak of ${streak}`);
+                            claimbox.setDescription(`Drop: \`⧈${drop}\`\nYou lost your streak of ${lost[1]}`);
                           } else if (use == null) {
                             streak = 1;
                           }
