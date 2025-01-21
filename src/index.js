@@ -129,13 +129,20 @@ module.exports = {
             //console.log (await guild.members.fetch(result[0].userid));
             //898957399677878332
             //344837225533669376
-            if (await guild.members.fetch('898957399677878332') === null){
-              console.log ("This user has left the server.");
-            } else {
-              console.log (`Sent claim reminder to user ${result[0].userid}`);
-              client.users.send(result[0].userid, { embeds: [index] });
-            }
+            try{
+              await guild.members.fetch('898957399677878332')
+              .then((member) => {
+                if (member == false){
+                  console.log ("This user has left the server.");
+                } else {
+                  console.log (`Sent claim reminder to user ${result[0].userid}`);
+                  client.users.send(result[0].userid, { embeds: [index] });
+                }
+              }).catch ((err) => {console.log ("This user has left the server.");});
+          } catch (e){
+            console.log ("This user has left the server.");
           }
+        }
         });
       }
       dm.release();
