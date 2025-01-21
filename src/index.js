@@ -122,25 +122,25 @@ module.exports = {
     const guild = await client.guilds.fetch(process.env.GUILD_ID);
     con.getConnection(async function (err, dm) {
       if (err) console.log(err); else {
-        //select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'
-        dm.query(`select userid from Faucet where wallet_name = 'KosmicDaKerbal'`, async function (err, result) {
+        dm.query(`select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'`, async function (err, result) {
           if (err) console.log(err); else {
-            index.setTitle("Reminder to claim!").setColor(0x00ff00).setDescription(`You might lose your streak 🔥!\nHead on over to <#1267863776925847592> to claim your daily drop.`).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-            //console.log (await guild.members.fetch(result[0].userid));
-            //898957399677878332
-            //344837225533669376
-            try{
-              await guild.members.fetch('344837225533669376')
-              .then((member) => {
-                if (member == false){
-                  console.log ("This user has left the server.");
-                } else {
-                  console.log (`Sent claim reminder to user ${result[0].userid}`);
-                  client.users.send(result[0].userid, { embeds: [index] });
-                }
-              }).catch ((err) => {console.log ("This user has left the server.");});
-          } catch (e){
-            console.log ("This user has left the server.");
+            //index.setTitle("Reminder to claim!").setColor(0x00ff00).setDescription(`You might lose your streak 🔥!\nHead on over to <#1267863776925847592> to claim your daily drop.`).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
+            index.setTitle("Reminder to claim!").setColor(0x00ff00).setDescription(`You might lose your streak 🔥!\nHead on over to <#1267863776925847592> to claim your daily drop.`).setFooter({text: `This is a test. If you successfully see this, ping @KosmicDaKerbal.`, iconURL: process.env.ICON }).setTimestamp();
+            for (i = 0; i<=result.length; i++){
+              const uid = result[i].userid;
+              try{
+                await guild.members.fetch(uid)
+                .then((member) => {
+                  if (member == false){
+                    console.log ("This user has left the server.");
+                  } else {
+                    console.log (`Sent claim reminder to user ${uid}`);
+                    client.users.send(uid, { embeds: [index] });
+                  }
+                }).catch ((err) => {console.log ("This user has left the server.");});
+            } catch (e){
+              console.log ("This user has left the server.");
+            }
           }
         }
         });
