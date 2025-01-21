@@ -126,13 +126,14 @@ module.exports = {
           if (err) console.log(err); else {
             //index.setTitle("Reminder to claim!").setColor(0x00ff00).setDescription(`You might lose your streak 🔥!\nHead on over to <#1267863776925847592> to claim your daily drop.`).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
             index.setTitle("Reminder to claim!").setColor(0x00ff00).setDescription(`You might lose your streak 🔥!\nHead on over to <#1267863776925847592> to claim your daily drop.`).setFooter({text: `This is a test. If you successfully see this, ping @KosmicDaKerbal.`, iconURL: process.env.ICON }).setTimestamp();
-            for (i = 0; i<=result.length - 1; i++){
+            for (i = 0; i <= (result.length - 1); i++){
               const uid = result[i].userid;
               try{
                 await guild.members.fetch(uid)
                 .then((member) => {
                   if (member == false){
                     console.log ("This user has left the server.");
+                    console.log(err);
                   } else {
                     console.log (`Sent claim reminder to user ${uid.user.globalName}`);
                     //setTimeout(() => {client.users.send(uid, { embeds: [index] }).catch((err)=>{console.log ("This user does not allow DM's from server members.")});}, 500);
@@ -140,6 +141,7 @@ module.exports = {
                 }).catch ((err) => {console.log ("This user has left the server.");});
             } catch (e){
               console.log ("This user has left the server.");
+              console.log(e);
             }
           }
         }
