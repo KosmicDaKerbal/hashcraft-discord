@@ -122,16 +122,11 @@ module.exports = {
     const guild = await client.guilds.fetch(process.env.GUILD_ID);
     con.getConnection(async function (err, dm) {
       if (err) console.log(err); else {
-        dm.query(`select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'`, async function (err, result) {
+        //select userid from Faucet where last_used != '${time.format("YYYY-MM-DD")}'
+        dm.query(`select userid from Faucet where wallet_name = 'KosmicDaKerbal'`, async function (err, result) {
           if (err) console.log(err); else {
-            const list = result;
-            for (i = 0; i <= (list.length - 1); i++){
-              if (await guild.members.fetch(list[i].userid)){
-                index.setTitle("Reminder to Claim!").setColor(0x00ff00).setDescription(`You might lose your streak!\nHead on over to <#${process.env.BOT_CHANNEL}> to claim your daily drop.`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-                //console.log(list[i].userid);
-                await client.users.send(`${list[i].userid}`, { embeds: [index] });
-              }
-            }
+            await guild.members.fetch(result[0].userid);
+            await client.users.send(`${result[0].userid}`, { embeds: [index] });
           }
         });
       }
