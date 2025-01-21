@@ -53,7 +53,7 @@ module.exports = {
                             drop = Math.round((Math.log(streak)+ (45 * Math.log(1.06))) / Math.log(1.06));
                           }
                           claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS }).setTitle(`Claim Successful`).setDescription(`Drop: \`⧈${drop}\`\nCurrent streak: ${streak}`).setColor(0x00ff00);
-                          if (lost && use != null) {
+                          if (lost[0] && use != null) {
                             claimbox.setDescription(`Drop: \`⧈${drop}\`\nYou lost your streak of ${lost[1]}`);
                           } else if (use == null) {
                             streak = 1;
