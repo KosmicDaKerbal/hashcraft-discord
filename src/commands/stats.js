@@ -27,13 +27,13 @@ module.exports = {
         constats.query(`select count (*) - 1 as users from Faucet where wallet_name is not null; 
           select sum(claims) as sum from Faucet where userid != 1; 
           select mdu_bal, claims from Faucet where userid = 1;
-          select mdu_bal from Faucet where userid != 1;`, async function (err, result) {
+          select sum(mdu_bal) as circulation from Faucet where userid != 1;`, async function (err, result) {
           if (!err) {
             const users = "" + result[0][0].users;
             const fclaims = "" + result[1][0].sum;
             const fdeps = "" + result [2][0].claims;
             const fsent = "" + (result[2][0].mdu_bal / 100);
-            const circ = "" + result [3][0].mdu_bal;
+            const circ = "" + result [3][0].circulation;
             stats.addFields(
               { name: "Linked Users", value: users, inline: true },
               { name: "Total Faucet Claims", value: fclaims, inline: true },
