@@ -134,7 +134,7 @@ module.exports = {
                     console.log ("This user has left the server.");
                   } else {
                     console.log (`Sent claim reminder to user ${uid}`);
-                    //setTimeout(() => {client.users.send(uid, { embeds: [index] }).catch((err)=>{console.log ("This user does not allow DM's from server members.")});}, 500);
+                    setTimeout(() => {client.users.send(uid, { embeds: [index] }).catch((err)=>{console.log ("This user does not allow DM's from server members.")});}, 500);
                   }
                 }).catch ((err) => {console.log ("This user has left the server.");});
             } catch (e){
@@ -145,7 +145,8 @@ module.exports = {
         });
       }
       dm.release();
-      process.exit(22);
+      var t = setTimeout(function() {process.exit(22);}, 7200000);
+      t.unref();
     });
   }
 }
