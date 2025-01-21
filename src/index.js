@@ -133,16 +133,14 @@ module.exports = {
                 .then((member) => {
                   if (member == false){
                     console.log ("This user has left the server.");
-                    console.log(err);
                   } else {
                     const mem = JSON.parse(uid);
                     console.log (`Sent claim reminder to user ${mem.user.globalName}`);
                     //setTimeout(() => {client.users.send(uid, { embeds: [index] }).catch((err)=>{console.log ("This user does not allow DM's from server members.")});}, 500);
                   }
-                }).catch ((err) => {console.log ("This user has left the server.");console.log(err);});
+                }).catch ((err) => {console.log ("This user has left the server.");});
             } catch (e){
               console.log ("This user has left the server.");
-              console.log(e);
             }
           }
         }
