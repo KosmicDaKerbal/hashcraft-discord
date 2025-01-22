@@ -133,7 +133,7 @@ module.exports = {
                   if (member == false){
                     console.log ("This user has left the server.");
                   } else {
-                    console.log (`Sent claim reminder to user ${uid}`);
+                    console.log (`Sent claim reminder to user ${uid}, streak ${result[i].streak}`);
                     setTimeout(() => {client.users.send(uid, { embeds: [index] }).catch((err)=>{console.log ("This user does not allow DM's from server members.")});}, 500);
                   }
                 }).catch ((err) => {console.log ("This user has left the server.");});
