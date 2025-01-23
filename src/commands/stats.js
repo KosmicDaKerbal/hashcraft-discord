@@ -19,7 +19,7 @@ module.exports = {
     sql.getConnection(async function (err, constats) {
       if (err) {
         stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
-          { name: "Database (Size)", value: process.env.STAT_DB + "(Error)", inline: true },
+          { name: "Database (Size)", value: process.env.STAT_DB + " (Error)", inline: true },
           { name: "Registered Users", value: "Error", inline: true },
           { name: "Total Faucet Claims", value: "Error", inline: true },
           { name: "Total Deposits", value: "Error", inline: true },
@@ -41,7 +41,7 @@ module.exports = {
             const circ = "⧈" + result [3][0].circulation;
             const size = format(result [4][0].size);
             stats.addFields(
-              { name: "Database (Size)", value: process.env.STAT_DB + `(${size})`, inline: true },
+              { name: "Database (Size)", value: process.env.STAT_DB + ` (${size})`, inline: true },
               { name: "Linked Users", value: users, inline: true },
               { name: "Total Faucet Claims", value: fclaims, inline: true },
               { name: "Total Deposits", value: fdeps, inline: true },
@@ -51,7 +51,7 @@ module.exports = {
             await embed.editReply({ embeds: [stats] });
           } else {
             stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
-              { name: "Database (Size)", value: process.env.STAT_DB + "(Error)", inline: true },
+              { name: "Database (Size)", value: process.env.STAT_DB + " (Error)", inline: true },
               { name: "Registered Users", value: "Error", inline: true },
               { name: "Total Faucet Claims", value: "Error", inline: true },
               { name: "Total Deposits", value: "Error", inline: true },
