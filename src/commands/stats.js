@@ -1,5 +1,9 @@
 const process = require("process");
 const {EmbedBuilder} = require("discord.js");
+function format (mb){
+if (mb > 1024) {return mb/1024 + "MB"};
+return mb + "kB";
+}
 module.exports = {
   send: async function (embed, sql) {
     var ram = 0;
@@ -10,12 +14,12 @@ module.exports = {
     const stats = new EmbedBuilder().setTitle("Bot Statistics").setColor(0xf18701).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp().setImage(process.env.SERVER)
     .addFields(
       { name: "Host", value: process.env.STAT_SERVER, inline: true },
-      { name: "Database", value: process.env.STAT_DB, inline: true },
       { name: "RAM Usage", value: ram + "MB", inline: true }
     );
     sql.getConnection(async function (err, constats) {
       if (err) {
         stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
+          { name: "Database (Size)", value: process.env.STAT_DB + "(Error)", inline: true },
           { name: "Registered Users", value: "Error", inline: true },
           { name: "Total Faucet Claims", value: "Error", inline: true },
           { name: "Total Deposits", value: "Error", inline: true },
@@ -27,14 +31,17 @@ module.exports = {
         constats.query(`select count (*) - 1 as users from Faucet where wallet_name is not null; 
           select sum(claims) as sum from Faucet where userid != 1; 
           select mdu_bal, claims from Faucet where userid = 1;
-          select sum(mdu_bal) as circulation from Faucet where userid != 1;`, async function (err, result) {
+          select sum(mdu_bal) as circulation from Faucet where userid != 1;
+          select round((DATA_LENGTH + INDEX_LENGTH) / 1024) AS size from information_schema.TABLES where table_name = 'Faucet'`, async function (err, result) {
           if (!err) {
             const users = "" + result[0][0].users;
             const fclaims = "" + result[1][0].sum;
             const fdeps = "" + result [2][0].claims;
             const fsent = "ↁ" + (result[2][0].mdu_bal / 100);
             const circ = "⧈" + result [3][0].circulation;
+            const size = format(result [4][0].size);
             stats.addFields(
+              { name: "Database (Size)", value: process.env.STAT_DB + `(${size})`, inline: true },
               { name: "Linked Users", value: users, inline: true },
               { name: "Total Faucet Claims", value: fclaims, inline: true },
               { name: "Total Deposits", value: fdeps, inline: true },
@@ -44,6 +51,7 @@ module.exports = {
             await embed.editReply({ embeds: [stats] });
           } else {
             stats.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").addFields(
+              { name: "Database (Size)", value: process.env.STAT_DB + "(Error)", inline: true },
               { name: "Registered Users", value: "Error", inline: true },
               { name: "Total Faucet Claims", value: "Error", inline: true },
               { name: "Total Deposits", value: "Error", inline: true },
