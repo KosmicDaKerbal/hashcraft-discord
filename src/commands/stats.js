@@ -8,8 +8,7 @@ module.exports = {
   send: async function (embed, sql) {
     var ram = 0;
     const mem = process.memoryUsage();
-    console.log(mem)
-    ram = mem.rss/1048576;
+    ram = mem.external/1048576;
     ram = Math.round(ram);
     await embed.deferReply();
     const stats = new EmbedBuilder().setTitle("Bot Statistics").setColor(0xf18701).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp().setImage(process.env.SERVER)
