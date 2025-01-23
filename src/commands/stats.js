@@ -8,6 +8,7 @@ module.exports = {
   send: async function (embed, sql) {
     var ram = 0;
     const mem = process.memoryUsage();
+    console.log(mem)
     ram = mem.rss/1048576;
     ram = Math.round(ram);
     await embed.deferReply();
