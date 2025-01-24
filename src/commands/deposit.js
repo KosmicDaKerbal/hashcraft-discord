@@ -21,7 +21,7 @@ module.exports = {
                 if (recip != null) {
                   if (!err) {
                     if (bal >= dep) {
-                      const url = `http://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(send) + `&memo=Also check out https://faucet.tbwcjw.online`;
+                      const url = `http://server.duinocoin.com/transaction/?username=` + encodeURIComponent(process.env.MASTER_USER) + `&password=` + encodeURIComponent(process.env.MASTER_KEY) + `&recipient=` + encodeURIComponent(recip) + `&amount=` + encodeURIComponent(send) + `&memo=HashCraft Faucet https://discord.gg/vH8fxYZcr8`;
                       http.get(url, (res) => {
                         let data = "";
                         res.on("data", (chunk) => {
