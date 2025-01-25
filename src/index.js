@@ -38,18 +38,9 @@ const index = new EmbedBuilder();
 var rbt;
 function timeFormat (time){
 time = Math.round(time);
-if (time > 60) {
-  const m = Math.floor(time/60);
-  const s = time - (m*60);
-  return `${m} minutes and ${s} seconds`;
-} else if (time > 3600) {
-  const h = Math.floor(time/3600);
-  const m = Math.floor((time - (h*3600))/60);
-  const s = time - (h * 3600) - (m * 60);
-  return `${h} hours, ${m} minutes and ${s} seconds`;
-} else {
-  return `${time} seconds`;
-}
+if (time > 60) return `${Math.floor(time/60)} minutes and ${time % 60} seconds`;
+else if (time > 3600) return `${Math.floor(time/3600)} hours, ${Math.floor((time % 3600)/60)} minutes and ${time % 3600} seconds`;
+return `${time} seconds`;
 }
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
