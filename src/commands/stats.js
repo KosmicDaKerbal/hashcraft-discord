@@ -4,6 +4,12 @@ function format (mb){
 if (mb > 1024) {return mb/1024 + "MB"};
 return mb + "kB";
 }
+function timeFormat (time){
+  time = Math.round(time);
+  if (time > 60) return `${Math.floor(time/60)} minutes and ${time % 60} seconds`;
+  else if (time > 3600) return `${Math.floor(time/3600)} hours, ${Math.floor((time % 3600)/60)} minutes and ${time % 3600} seconds`;
+  return `${time} seconds`;
+  }
 module.exports = {
   send: async function (embed, sql) {
     var ram = 0;
@@ -14,7 +20,8 @@ module.exports = {
     const stats = new EmbedBuilder().setTitle("Bot Statistics").setColor(0xf18701).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp().setImage(process.env.SERVER)
     .addFields(
       { name: "Host", value: process.env.STAT_SERVER, inline: true },
-      { name: "RAM Usage", value: ram + "MB", inline: true }
+      { name: "RAM Usage", value: ram + "MB", inline: true },
+      { name: "Uptime", value: timeFormat(process.uptime()), inline: true }
     );
     sql.getConnection(async function (err, constats) {
       if (err) {
