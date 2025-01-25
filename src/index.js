@@ -132,7 +132,7 @@ client.on("ready", async (c) => {
   });
 });
 client.login(process.env.TOKEN);
-http.createServer(function (res) {
+server.createServer(function (res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.write(`Bot running for ${timeFormat(process.uptime())}`);
   res.end();
