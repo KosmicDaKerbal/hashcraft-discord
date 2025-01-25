@@ -27,6 +27,8 @@ services:
   hashcraft:
     image: hashcraft
     restart: always
+    ports:
+      - "6436:6436"
     depends_on:
       - mariadb
     networks:
