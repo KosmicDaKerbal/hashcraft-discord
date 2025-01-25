@@ -3,6 +3,7 @@ const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require("discord
 const process = require("process");
 const mysql = require("mysql2");
 const dayjs = require('dayjs');
+const server = require ('http');
 const help = require('./commands/help');
 const link = require('./commands/link');
 const claim = require('./commands/claim');
@@ -35,6 +36,21 @@ const client = new Client({
 });
 const index = new EmbedBuilder();
 var rbt;
+function timeFormat (time){
+time = Math.round(time);
+if (time > 60) {
+  const m = Math.floor(time/60);
+  const s = time - (m*60);
+  return `${m} minutes and ${s} seconds`;
+} else if (time > 3600) {
+  const h = Math.floor(time/3600);
+  const m = Math.floor((time - (h*3600))/60);
+  const s = time - (h * 3600) - (m * 60);
+  return `${h} hours, ${m} minutes and ${s} seconds`;
+} else {
+  return `${time} seconds`;
+}
+}
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
@@ -116,6 +132,11 @@ client.on("ready", async (c) => {
   });
 });
 client.login(process.env.TOKEN);
+http.createServer(function (res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write(`Bot running for ${timeFormat(process.uptime())}`);
+  res.end();
+}).listen(6436);
 module.exports = {
   notify: async function(){
     const time = dayjs();
