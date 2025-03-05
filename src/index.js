@@ -106,7 +106,7 @@ client.on("interactionCreate", async (mainInteraction) => {
       }
   } else {
     index.setTitle("User not verified").setColor(0xff0000).setDescription(`Whoa there, we don't know whether you're a human or not.\nVerify yourself in the <#${process.env.VERIFICATION_CHANNEL}> channel`).setFooter({ text: `${process.env.BOT_NAME} v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
-    await mainInteraction.reply({ embeds: [index] });
+    await mainInteraction.reply({ embeds: [index], ephemeral: true });
   }
   }
   if (!rbt){
