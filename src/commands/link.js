@@ -12,16 +12,16 @@ module.exports = {
     const u = userid;
     con.getConnection(async function (err, link) {
       if (err) {
-        confirmbox.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setAuthor({ iconURL: process.env.FAIL });
+        confirmbox.setDescription("Log: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.FAIL });
         await embed.followUp({ embeds: [confirmbox] });
       } else {
         link.query(`insert into Faucet (userid) values (${u}) on duplicate key update userid = ${u}`, async function (err, result) {
             if (err) {
-              confirmbox.setAuthor({ iconURL: process.env.FAIL }).setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.");
+              confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.FAIL }).setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.");
               await embed.followUp({ embeds: [confirmbox] });
             } else {
               link.query(`select wallet_name from Faucet where userid = ${u}`, async function (err, result) {
-                  if (err) {confirmbox.setAuthor({ iconURL: process.env.FAIL }).setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.");
+                  if (err) {confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.FAIL }).setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.");
                     await embed.followUp({ embeds: [confirmbox] });
                   } else {
                     if (result[0].wallet_name === null) {
@@ -36,7 +36,7 @@ module.exports = {
                           case "confirm":
                             confirm.setDisabled(true);
                             cancel.setDisabled(true).setStyle(ButtonStyle.Secondary);
-                            confirmbox.setAuthor({ iconURL: process.env.SUCCESS });
+                            confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.SUCCESS });
                             await embed.editReply({embeds: [confirmbox], components: [choice],});
                             await sqlInteraction.deferReply();
                             cancel.setDisabled(false).setStyle(ButtonStyle.Danger);
@@ -54,13 +54,13 @@ module.exports = {
                                       const collector =rep.createMessageComponentCollector({componentType: ComponentType.Button,filter,time: 10_000,});
                                       collector.on("collect", async (linkInteraction) => {
                                           await linkInteraction.deferReply();
-                                          const e1 = confirmbox.setAuthor({ iconURL: process.env.SUCCESS });
+                                          const e1 = confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.SUCCESS });
                                           switch (linkInteraction.customId) {
                                             case "confirm":
                                               cancel.setStyle(ButtonStyle.Secondary);
                                               link.query(`insert into Faucet(userid, wallet_name) values (${u}, '${String(embed.options.get("account-name").value)}') on duplicate key update userid = ${u}, wallet_name = '${String(embed.options.get("account-name").value)}';`, async function (err, result) {
                                                   if (err) {
-                                                    confirmbox.setAuthor({ iconURL: process.env.FAIL }).setTitle("Link " +String(embed.options.get("account-name").value) +" Failed").setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000).setTimestamp();
+                                                    confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.FAIL }).setTitle("Link " +String(embed.options.get("account-name").value) +" Failed").setDescription("DB Query Failed, Error Message: \n\`\`\`\n" + err + "\n\`\`\`\nPlease try again.").setColor(0xff0000).setTimestamp();
                                                     confirm.setStyle(ButtonStyle.Secondary);
                                                     cancel.setStyle(ButtonStyle.Secondary);
                                                   } else {
@@ -70,7 +70,7 @@ module.exports = {
                                               );
                                               break;
                                             case "cancel":
-                                              confirmbox.setAuthor({ iconURL: process.env.FAIL }).setTitle("Cancelled Linking Account " +String(embed.options.get("account-name").value)).setDescription("Try Again?").setColor(0xff0000).setTimestamp();
+                                              confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.FAIL }).setTitle("Cancelled Linking Account " +String(embed.options.get("account-name").value)).setDescription("Try Again?").setColor(0xff0000).setTimestamp();
                                               confirm.setStyle(ButtonStyle.Secondary);
                                               break;
                                           }
@@ -87,7 +87,7 @@ module.exports = {
                                         await sqlInteraction.editReply({components: [choice2]});
                                       });
                                     } else {
-                                      confirmbox.setAuthor({ iconURL: process.env.FAIL }).setDescription("Error: " + String(json.message)).setColor(0xff0000).setTimestamp();
+                                      confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.FAIL }).setDescription("Error: " + String(json.message)).setColor(0xff0000).setTimestamp();
                                       confirm.setDisabled(true);
                                       cancel.setDisabled(true);
                                       await sqlInteraction.followUp({embeds: [confirmbox]});
@@ -101,7 +101,7 @@ module.exports = {
                               });
                             break;
                           case "cancel":
-                            confirmbox.setAuthor({ iconURL: process.env.FAIL }).setTitle("Cancelled Linking Account " + String(embed.options.get("account-name").value)).setDescription("Try Again?").setColor(0xff0000).setTimestamp();
+                            confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.FAIL }).setTitle("Cancelled Linking Account " + String(embed.options.get("account-name").value)).setDescription("Try Again?").setColor(0xff0000).setTimestamp();
                             await sqlInteraction.reply({ embeds: [confirmbox] });
                             confirm.setDisabled(true).setStyle(ButtonStyle.Secondary);;
                             cancel.setDisabled(true).setStyle(ButtonStyle.Danger);
