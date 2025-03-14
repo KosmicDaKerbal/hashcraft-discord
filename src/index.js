@@ -36,14 +36,6 @@ const client = new Client({
 });
 const index = new EmbedBuilder();
 var rbt;
-/*
-function timeFormat (time){
-time = Math.round(time);
-if (time > 60) return `${Math.floor(time/60)} minutes and ${time % 60} seconds`;
-else if (time > 3600) return `${Math.floor(time/3600)} hours, ${Math.floor((time % 3600)/60)} minutes and ${time % 3600} seconds`;
-return `${time} seconds`;
-}
-*/
 client.on("interactionCreate", async (mainInteraction) => {
   if (!mainInteraction.isChatInputCommand()) return;
   client.user.setPresence({ status: 'online' });
