@@ -34,8 +34,8 @@ module.exports = {
                       switch (timediff) {
                         case 0:
                           //const cool = dayjs();
-                          const cooldown = claimtime.add(1, 'day');
-                          claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again <t:${cooldown.unix().set('hour', 0).set('minute', 0).set('second', 0)}:R>`).setColor(0xff0000);
+                          const cooldown = claimtime.add(1, 'day').set('hour', 0).set('minute', 0).set('second', 0);
+                          claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again <t:${cooldown.unix()}:R>`).setColor(0xff0000);
                           await embed.followUp({ embeds: [claimbox] });
                           break;
                         default:
