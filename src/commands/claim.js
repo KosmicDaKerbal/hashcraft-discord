@@ -10,9 +10,9 @@ function getRandomInt(min, max) {
 */
 module.exports = {
   drop: async function (embed, userid, con) {
-    await embed.deferReply();    
     const claimbox = new EmbedBuilder().setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.PROCESSING }).setTitle("Please Wait...").setColor(0xf18701).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
       if (embed.channelId === process.env.BOT_CHANNEL) {
+      await embed.deferReply();  
     const u = userid;
     con.getConnection(async function (err, claim) {
       if (err) {
@@ -30,10 +30,11 @@ module.exports = {
                     } else {
                       var streak = result[0].streak;
                       const use = result[0].last_used;
-                      const timediff = claimtime.diff(use, 'day')
+                      const timediff = claimtime.diff(use, 'day');
                       switch (timediff) {
                         case 0:
-                          claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again tomorrow.`).setColor(0xff0000);
+                          const cool = dayjs.set('date', claimtime.add(1, 'day')).set('hour', 0).set('minute', 0).set('second', 0);
+                          claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again in <t:${cool.unix() + 15}:R>`).setColor(0xff0000);
                           await embed.followUp({ embeds: [claimbox] });
                           break;
                         default:
