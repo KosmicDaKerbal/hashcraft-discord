@@ -1,13 +1,6 @@
 const process = require("process");
 const dayjs = require('dayjs');
 const {EmbedBuilder} = require("discord.js");
-/*
-function getRandomInt(min, max) {
-  const minCeiled = Math.ceil(min);
-  const maxFloored = Math.floor(max);
-  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
-}
-*/
 module.exports = {
   drop: async function (embed, userid, con) {
     const claimbox = new EmbedBuilder().setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.PROCESSING }).setTitle("Please Wait...").setColor(0xf18701).setFooter({ text: `v${process.env.BOT_VERSION}`, iconURL: process.env.ICON }).setTimestamp();
@@ -33,7 +26,6 @@ module.exports = {
                       const timediff = claimtime.diff(use, 'day');
                       switch (timediff) {
                         case 0:
-                          //const cool = dayjs();
                           const cooldown = claimtime.add(1, 'day').set('hour', 0).set('minute', 0).set('second', 0);
                           claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.FAIL }).setTitle(`Don't be Greedy!`).setDescription(`You have claimed already. Try again <t:${cooldown.unix()}:R>`).setColor(0xff0000);
                           await embed.followUp({ embeds: [claimbox] });
@@ -51,7 +43,6 @@ module.exports = {
                           if (streak <= 25) {
                             drop = Math.round(Math.pow(1.19775, streak) + 9);
                           } else {
-                            //drop = getRandomInt(100,131);
                             drop = Math.round((Math.log(streak)+ (45 * Math.log(1.06))) / Math.log(1.06));
                           }
                           claimbox.setAuthor({ name: `${process.env.BOT_NAME} Faucet`, iconURL: process.env.SUCCESS }).setTitle(`Claim Successful`).setDescription(`Drop: \`⧈${drop}\`\nCurrent streak: ${streak}`).setColor(0x00ff00);
