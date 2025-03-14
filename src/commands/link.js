@@ -47,7 +47,7 @@ module.exports = {
                                   res.on("end", async () => {
                                     const json = JSON.parse(data);
                                     if (json.success) {
-                                      confirmbox.setDescription("Confirm Account Link: " +String(embed.options.get("account-name").value)).setColor(0xffff00).setTimestamp();
+                                      confirmbox.setAuthor({ name: `${process.env.BOT_NAME} Registration`, iconURL: process.env.PROCESSING }).setDescription("Confirm Account Link: " +String(embed.options.get("account-name").value)).setColor(0xffff00).setTimestamp();
                                       const choice2 =new ActionRowBuilder().addComponents(cancel,confirm);
                                       const filter = (i) => i.user.id === sqlInteraction.user.id;
                                       const rep = await sqlInteraction.followUp({embeds: [confirmbox],components: [choice2],fetchReply: true,});
