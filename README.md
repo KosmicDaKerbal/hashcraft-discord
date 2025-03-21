@@ -15,5 +15,5 @@ This faucet uses an in-system currency called mDU (Symbol: ⧈). The current con
 5. Bot status can be viewed using `/stats`
 6. You can also view a bunch of other DuinoCoin Faucets simly using the command `/faucetlist`
 
-You can use the faucet [in the HashCraft Discord Server.](https://discord.gg/vH8fxYZcr8)
+You can use the faucet [in the HashCraft Discord Server.](https://discord.gg/vH8fxYZcr8)<br>
 Hashcraft is now a part of the Upcycle Network: https://github.com/Upcycle-Network/project-hashcraft
